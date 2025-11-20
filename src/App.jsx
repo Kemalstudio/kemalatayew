@@ -142,29 +142,29 @@ const HorizontalScrollSection = () => {
   const cards = [
     { 
       id: 1, 
-      title: 'ИНТУИЦИЯ', 
-      subtitle: 'Чистый инстинкт дизайна',
+      title: 'Kemal Atayew', 
+      subtitle: 'Best Proffesianal Design',
       img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800',
       color: '#00f2ea'
     },
     { 
       id: 2, 
-      title: 'СИЛА', 
-      subtitle: 'Неограниченная производительность',
+      title: 'Kemal Atayew', 
+      subtitle: 'Best Proffesianal Design',
       img: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800',
       color: '#ff6b6b'
     },
     { 
       id: 3, 
-      title: 'ИННОВАЦИИ', 
-      subtitle: 'Технологии будущего сегодня',
+      title: 'Kemal Atayew', 
+      subtitle: 'Best Proffesianal Design',
       img: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800',
       color: '#ffd93d'
     },
     { 
       id: 4, 
-      title: 'БУДУЩЕЕ', 
-      subtitle: 'Следующая эра вычислений',
+      title: 'Kemal Atayew', 
+      subtitle: 'Best Proffesianal Design',
       img: 'https://images.unsplash.com/photo-1526666923127-b2970f64b422?w=800',
       color: '#6bcf7f'
     },
