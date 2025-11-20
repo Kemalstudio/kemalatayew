@@ -1,41 +1,92 @@
-.App {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #000;
-  color: #fff;
-  text-align: center;
+/* Базовые стили и темная тема */
+body {
+  margin: 0;
+  font-family: 'Montserrat', 'Segoe UI', 'Roboto', sans-serif;
+  background: #000000;
+  color: #ffffff;
+  /* Плавный скролл для лучшего ощущения */
+  scroll-behavior: smooth;
 }
 
-.title {
-  font-size: 4rem;
-  font-weight: bold;
-  text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.parallax-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.parallax-content {
+/* Контейнер для анимации, занимает весь экран */
+.parallax-container {
+  height: 200vh; /* Делаем секцию высокой, чтобы было "пространство" для анимации */
   position: relative;
+  overflow: hidden;
+}
+
+/* Обертка, которая "липнет" к экрану, пока мы скроллим внутри .parallax-container */
+.text-wrapper {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Устанавливаем перспективу для 3D-ощущения, хотя здесь не используется 3D transform */
+  perspective: 1000px;
+}
+
+/* Все дочерние элементы .text-wrapper позиционируются абсолютно,
+чтобы они могли свободно двигаться друг над другом */
+.text-wrapper > * {
+  position: absolute;
+}
+
+/* Стилизация основного текста */
+h1, h2 {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  white-space: nowrap; /* Чтобы текст не переносился */
+  text-shadow: 0 0 30px rgba(78, 255, 224, 0.2);
+}
+
+.text-main {
+  font-size: clamp(4rem, 20vw, 15rem); /* Адаптивный размер шрифта */
+  color: #fff;
+  z-index: 10;
+}
+
+/* Стилизация текста-обводки */
+.text-outline {
+  font-size: clamp(4.5rem, 22vw, 16rem);
+  color: transparent;
+  -webkit-text-stroke: 2px #4effd0;
   z-index: 1;
 }
 
-.content-section {
-  padding: 100px 20px;
+/* Стилизация второстепенного текста */
+.text-secondary {
+    font-size: clamp(2rem, 10vw, 8rem);
+    color: #4effd0;
+    z-index: 20;
 }
 
-.content-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+/* Декоративная линия для дополнительной динамики */
+.decorative-line {
+    width: 30vw;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #4effd0, transparent);
+    z-index: 5;
+    opacity: 0.7;
 }
 
-.content-section p {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  max-width: 600px;
-  margin: 0 auto;
+
+/* Контейнер для контента после анимации */
+.content-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+  background-color: #0a0a0a;
+  text-align: center;
+}
+
+.content-container h2 {
+  color: #4effd0;
 }
