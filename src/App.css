@@ -1,5 +1,5 @@
 /* --- ГЛОБАЛЬНЫЕ СТИЛИ --- */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 
 * {
   margin: 0;
@@ -7,43 +7,52 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'Montserrat', sans-serif;
   background: #0a0a0a;
-  color: #fff;
+  color: #ffffff;
   overflow-x: hidden;
-  cursor: default;
+  line-height: 1.6;
 }
 
-.app-container {
+.app {
   position: relative;
 }
 
-/* --- ЧАСТИЦЫ --- */
-.particle-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
+/* --- ОБЩИЕ СТИЛИ ДЛЯ СЕКЦИЙ --- */
+.section-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #ffffff 0%, #00f2ea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
 }
 
-.particle {
-  position: absolute;
-  background: rgba(0, 242, 234, 0.3);
-  border-radius: 50%;
-  pointer-events: none;
+.section-text {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  opacity: 0.9;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  text-align: center;
+  font-weight: 300;
 }
 
 /* --- СЦЕНА 1: ГЕРОЙ --- */
-.hero-container {
+.hero-section {
   height: 300vh;
   position: relative;
 }
 
-.hero-sticky-wrapper {
+.hero-sticky {
   position: sticky;
   top: 0;
   height: 100vh;
@@ -51,309 +60,325 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 1000px;
 }
 
-.hero-background {
+.hero-layer {
   position: absolute;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  background: radial-gradient(circle at center, rgba(0, 114, 255, 0.15) 0%, transparent 50%);
-  transform-origin: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
-.hero-midground {
-  position: absolute;
-  top: -25%;
-  left: -25%;
-  right: -25%;
-  bottom: -25%;
-  background: radial-gradient(circle at 30% 70%, rgba(255, 107, 107, 0.1) 0%, transparent 40%);
-  transform-origin: center;
+.background-layer {
+  background: radial-gradient(circle at 20% 80%, rgba(0, 114, 255, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 50%);
 }
 
-.hero-foreground {
-  position: absolute;
-  top: -10%;
-  left: -10%;
-  right: -10%;
-  bottom: -10%;
-  background: radial-gradient(circle at 70% 30%, rgba(0, 242, 234, 0.1) 0%, transparent 40%);
+.middleground-layer {
+  background: radial-gradient(circle at 50% 50%, rgba(0, 242, 234, 0.1) 0%, transparent 60%);
 }
 
-.hero-text-wrapper {
+.foreground-layer {
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.02) 50%, transparent 70%);
+}
+
+.hero-content {
   position: relative;
   z-index: 10;
   text-align: center;
-  transform-style: preserve-3d;
+  padding: 0 2rem;
 }
 
-.hero-text-wrapper h1 {
-  font-size: clamp(6rem, 20vw, 25rem);
+.hero-title {
+  font-size: clamp(6rem, 18vw, 20rem);
   font-weight: 900;
-  background: linear-gradient(45deg, #00f2ea, #0072ff, #ff6b6b);
-  background-size: 200% 200%;
+  background: linear-gradient(135deg, #ffffff 0%, #00f2ea 50%, #0072ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: gradientShift 8s ease infinite;
   margin-bottom: 2rem;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
 }
 
-.hero-text-wrapper p {
-  font-size: clamp(1rem, 3vw, 1.5rem);
+.hero-subtitle {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
   font-weight: 300;
-  opacity: 0.8;
-  letter-spacing: 0.2em;
+  opacity: 0.9;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-/* --- СЦЕНА 2: ГОРИЗОНТАЛЬНАЯ ГАЛЕРЕЯ --- */
-.horizontal-scroll-container {
-  height: 400vh;
-  position: relative;
-  background: linear-gradient(to bottom, #0a0a0a, #111, #0a0a0a);
-}
-
-.horizontal-sticky-wrapper {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.horizontal-content {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.horizontal-content h2 {
-  font-size: clamp(3rem, 8vw, 8rem);
-  text-align: center;
-  margin-bottom: 4rem;
-  background: linear-gradient(45deg, #fff, #00f2ea);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.horizontal-cards-wrapper {
-  display: flex;
-  height: 60%;
-  width: 400%;
-}
-
-.card {
-  width: 100vw;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-
-.card-content {
-  text-align: center;
-  max-width: 600px;
-}
-
-.card h3 {
-  font-size: clamp(3rem, 6vw, 5rem);
-  margin-bottom: 1rem;
-  font-weight: 800;
-}
-
-.card p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  opacity: 0.8;
-  font-weight: 300;
-}
-
-.card img {
-  width: 100%;
-  max-width: 500px;
-  border-radius: 20px;
-  object-fit: cover;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.5),
-    0 0 100px rgba(0, 242, 234, 0.1);
-}
-
-/* --- СЦЕНА 3: СЕТКА --- */
-.staggered-grid-container {
-  min-height: 150vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 8rem 2rem;
-  background: linear-gradient(to bottom, #0a0a0a, #050505);
-  transform-style: preserve-3d;
-}
-
-.staggered-grid-container h2 {
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  margin-bottom: 6rem;
-  text-align: center;
-  background: linear-gradient(45deg, #ffd93d, #ff6b6b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  width: 100%;
-  max-width: 1200px;
-  perspective: 1000px;
-}
-
-.grid-item {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 3rem 2rem;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transform-style: preserve-3d;
-}
-
-.grid-item h3 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
-}
-
-.grid-item p {
-  font-size: 1rem;
-  opacity: 0.7;
-  font-weight: 300;
-}
-
-.grid-item-glow {
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(0, 242, 234, 0.1) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.grid-item:hover .grid-item-glow {
-  opacity: 1;
-}
-
-/* --- СЦЕНА 4: SVG --- */
-.morphing-svg-container {
+/* --- СЦЕНА 2: ТЕКСТ С ПОЯВЛЕНИЕМ --- */
+.text-reveal-section {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(45deg, #050505, #0a0a0a);
+  padding: 8rem 2rem;
+  background: linear-gradient(to bottom, #0a0a0a, #111111, #0a0a0a);
 }
 
-.svg-wrapper {
-  width: 80%;
-  max-width: 800px;
-}
-
-/* --- СЦЕНА 5: ФИНАЛ --- */
-.finale-container {
-  height: 200vh;
-  position: relative;
-  background: linear-gradient(to bottom, #050505, #000);
-}
-
-.finale-content {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.text-reveal-container {
+  max-width: 1000px;
   text-align: center;
 }
 
-.finale-content h1 {
-  font-size: clamp(4rem, 15vw, 20rem);
-  font-weight: 900;
-  background: linear-gradient(45deg, #00f2ea, #0072ff, #ff6b6b, #ffd93d);
-  background-size: 300% 300%;
+/* --- СЦЕНА 3: ГАЛЕРЕЯ --- */
+.gallery-section {
+  min-height: 100vh;
+  padding: 8rem 2rem;
+  background: linear-gradient(to bottom, #0a0a0a, #050505);
+}
+
+.gallery-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 3rem;
+  margin-top: 4rem;
+}
+
+.gallery-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border-radius: 24px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.card-image-container {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+}
+
+.card-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
+}
+
+.card-content {
+  padding: 2.5rem;
+}
+
+.card-content h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #00f2ea, #0072ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: finaleGradient 6s ease infinite;
-  margin-bottom: 2rem;
 }
 
-.finale-content h2 {
-  font-size: clamp(1.5rem, 4vw, 3rem);
-  font-weight: 300;
-  letter-spacing: 0.3em;
+.card-content p {
+  font-size: 1rem;
   opacity: 0.8;
+  line-height: 1.6;
+  font-weight: 300;
 }
 
-.finale-orb {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 242, 234, 0.3), transparent 70%);
-  border: 2px solid rgba(0, 242, 234, 0.5);
+/* --- СЦЕНА 4: СТАТИСТИКА --- */
+.stats-section {
+  min-height: 100vh;
+  padding: 8rem 2rem;
+  background: linear-gradient(to bottom, #050505, #0a0a0a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stats-container {
+  max-width: 1000px;
+  text-align: center;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 4rem;
   margin-top: 4rem;
-  position: relative;
 }
 
-.finale-orb::before {
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #00f2ea, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  opacity: 0.9;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* --- СЦЕНА 5: ФИНАЛЬНЫЙ ПРИЗЫВ --- */
+.final-cta-section {
+  min-height: 100vh;
+  padding: 8rem 2rem;
+  background: linear-gradient(135deg, #050505 0%, #0a0a0a 50%, #000000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.final-cta-container {
+  max-width: 800px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.final-title {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 900;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, #00f2ea 50%, #0072ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+
+.final-subtitle {
+  font-size: 1.3rem;
+  opacity: 0.9;
+  margin-bottom: 3rem;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+.cta-button {
+  background: linear-gradient(135deg, #00f2ea 0%, #0072ff 100%);
+  border: none;
+  padding: 1.5rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #000000;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
   content: '';
   position: absolute;
-  top: -10px;
-  left: -10px;
-  right: -10px;
-  bottom: -10px;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.cta-button:hover::before {
+  left: 100%;
+}
+
+.floating-orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0, 242, 234, 0.1) 0%, transparent 70%);
   border-radius: 50%;
-  border: 1px solid rgba(0, 242, 234, 0.2);
-  animation: pulse 4s ease-in-out infinite;
-}
-
-@keyframes finaleGradient {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.1); opacity: 0.5; }
+  z-index: 1;
+  pointer-events: none;
 }
 
 /* --- АДАПТИВНОСТЬ --- */
 @media (max-width: 768px) {
-  .grid {
+  .hero-title {
+    font-size: clamp(4rem, 15vw, 12rem);
+  }
+  
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  
+  .card-content {
+    padding: 2rem;
+  }
+  
+  .text-reveal-section,
+  .gallery-section,
+  .stats-section,
+  .final-cta-section {
+    padding: 6rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
     grid-template-columns: 1fr;
   }
   
-  .hero-text-wrapper h1 {
-    font-size: clamp(4rem, 15vw, 15rem);
+  .hero-content {
+    padding: 0 1rem;
   }
   
-  .card {
-    padding: 1rem;
+  .section-text {
+    font-size: 1.1rem;
   }
+}
+
+/* --- СКРОЛЛБАР --- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #00f2ea, #0072ff);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #00f2ea, #ff6b6b);
 }
