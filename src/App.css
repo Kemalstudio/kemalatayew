@@ -1,92 +1,158 @@
-/* Базовые стили и темная тема */
+/* --- ГЛОБАЛЬНЫЕ СТИЛИ И ШРИФТЫ --- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap');
+
 body {
   margin: 0;
-  font-family: 'Montserrat', 'Segoe UI', 'Roboto', sans-serif;
-  background: #000000;
-  color: #ffffff;
-  /* Плавный скролл для лучшего ощущения */
-  scroll-behavior: smooth;
+  font-family: 'Montserrat', sans-serif;
+  background: #050505;
+  color: #fff;
 }
 
-/* Контейнер для анимации, занимает весь экран */
-.parallax-container {
-  height: 200vh; /* Делаем секцию высокой, чтобы было "пространство" для анимации */
+.app-container {
+  overflow-x: hidden;
+}
+
+h1,
+h2 {
+  text-transform: uppercase;
+  font-weight: 900;
+  margin: 0;
+  letter-spacing: -0.05em;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* --- СТИЛИ СЦЕНЫ 1: ГЕРОЙ --- */
+.hero-container {
+  height: 250vh;
   position: relative;
-  overflow: hidden;
 }
 
-/* Обертка, которая "липнет" к экрану, пока мы скроллим внутри .parallax-container */
-.text-wrapper {
+.hero-sticky-wrapper {
   position: sticky;
   top: 0;
   height: 100vh;
+  overflow: hidden;
   display: flex;
-  justify-content: center;
   align-items: center;
-  /* Устанавливаем перспективу для 3D-ощущения, хотя здесь не используется 3D transform */
-  perspective: 1000px;
+  justify-content: center;
 }
 
-/* Все дочерние элементы .text-wrapper позиционируются абсолютно,
-чтобы они могли свободно двигаться друг над другом */
-.text-wrapper > * {
+.hero-background {
   position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(circle at 50% 50%, rgba(0, 242, 234, 0.2), transparent 60%);
+  width: 100%;
+  height: 100%;
 }
 
-/* Стилизация основного текста */
-h1, h2 {
-  margin: 0;
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  text-transform: uppercase;
-  white-space: nowrap; /* Чтобы текст не переносился */
-  text-shadow: 0 0 30px rgba(78, 255, 224, 0.2);
-}
-
-.text-main {
-  font-size: clamp(4rem, 20vw, 15rem); /* Адаптивный размер шрифта */
-  color: #fff;
+.hero-text-wrapper {
+  position: relative;
   z-index: 10;
 }
 
-/* Стилизация текста-обводки */
-.text-outline {
-  font-size: clamp(4.5rem, 22vw, 16rem);
-  color: transparent;
-  -webkit-text-stroke: 2px #4effd0;
-  z-index: 1;
-}
-
-/* Стилизация второстепенного текста */
-.text-secondary {
-    font-size: clamp(2rem, 10vw, 8rem);
-    color: #4effd0;
-    z-index: 20;
-}
-
-/* Декоративная линия для дополнительной динамики */
-.decorative-line {
-    width: 30vw;
-    height: 4px;
-    background: linear-gradient(90deg, transparent, #4effd0, transparent);
-    z-index: 5;
-    opacity: 0.7;
+.hero-text-wrapper h1 {
+  font-size: clamp(4rem, 25vw, 20rem);
+  color: #fff;
 }
 
 
-/* Контейнер для контента после анимации */
-.content-container {
+/* --- СТИЛИ СЦЕНЫ 2: ГОРИЗОНТАЛЬНЫЙ СКРОЛЛ --- */
+.horizontal-scroll-container {
+  height: 400vh;
+  position: relative;
+}
+
+.horizontal-sticky-wrapper {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.horizontal-cards-wrapper {
+  display: flex;
+  height: 100%;
+  width: 400%;
+  /* 100% на каждую из 4 карточек */
+}
+
+.card {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.card h2 {
+  font-size: clamp(2rem, 8vw, 6rem);
+  margin-bottom: 2rem;
+  color: #00f2ea;
+}
+
+.card img {
+  width: 70%;
+  max-width: 600px;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+
+/* --- СТИЛИ СЦЕНЫ 3: СЕТКА С ЗАДЕРЖКОЙ --- */
+.staggered-grid-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 2rem;
+  box-sizing: border-box;
+  background-color: #0a0a0a;
+}
+
+.staggered-grid-container h2 {
+  font-size: clamp(2rem, 6vw, 4rem);
+  margin-bottom: 4rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.grid-item {
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(45deg, #00f2ea, #0072ff);
+  border-radius: 15px;
+}
+
+
+/* --- СТИЛИ СЦЕНЫ 4: ФИНАЛ --- */
+.finale-container {
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
-  box-sizing: border-box;
-  background-color: #0a0a0a;
-  text-align: center;
 }
 
-.content-container h2 {
-  color: #4effd0;
+.finale-container svg {
+  width: 80%;
+  max-width: 500px;
+  margin-bottom: 2rem;
+}
+
+.finale-container h1 {
+  font-size: clamp(2rem, 7vw, 5rem);
+  text-align: center;
 }
