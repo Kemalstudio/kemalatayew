@@ -19,10 +19,10 @@ const VerticalTicker = ({ items, speed = 50 }) => {
       <motion.div
         className="ticker-track"
         animate={{ y: -currentIndex * 100 + '%' }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 300, 
-          damping: 30 
+        transition={{
+          type: "spring",
+          stiffness: 200,
+          damping: 25
         }}
       >
         {items.map((item, index) => (
@@ -30,6 +30,7 @@ const VerticalTicker = ({ items, speed = 50 }) => {
             {item}
           </div>
         ))}
+        {/* Loop back to the first item for a seamless transition */}
         <div className="ticker-item">
           {items[0]}
         </div>
@@ -43,126 +44,89 @@ const HorizontalScrollSection = () => {
   const containerRef = useRef(null);
   const horizontalRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
-  
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // Use motion value event to track scroll progress
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (latest > 0.1 && latest < 0.9) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
+    setIsVisible(latest > 0.1 && latest < 0.9);
   });
 
-  // Horizontal scroll animation - more dramatic movement
-  const xTransform = useTransform(scrollYProgress, [0, 1], ['0%', '-150%']);
-  const smoothX = useSpring(xTransform, { 
-    stiffness: 100, 
-    damping: 30,
+  const xTransform = useTransform(scrollYProgress, [0, 1], ['5%', '-125%']);
+  const smoothX = useSpring(xTransform, {
+    stiffness: 150,
+    damping: 40,
     mass: 0.5
   });
 
-  // Scale animation for cards
-  const scaleTransform = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.6, 1, 1, 0.6]);
-  const smoothScale = useSpring(scaleTransform, { stiffness: 100, damping: 30 });
+  const scaleTransform = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.7, 1, 1, 0.7]);
+  const smoothScale = useSpring(scaleTransform, { stiffness: 150, damping: 40 });
 
-  // Opacity animation
-  const opacityTransform = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0.3, 1, 1, 0.3]);
-  const smoothOpacity = useSpring(opacityTransform, { stiffness: 100, damping: 30 });
+  const opacityTransform = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
+  const smoothOpacity = useSpring(opacityTransform, { stiffness: 150, damping: 40 });
 
-  // Rotation animation for fun
-  const rotateTransform = useTransform(scrollYProgress, [0, 1], [0, 5]);
-  const smoothRotate = useSpring(rotateTransform, { stiffness: 50, damping: 20 });
+  const rotateTransform = useTransform(scrollYProgress, [0, 1], [-10, 10]);
+  const smoothRotate = useSpring(rotateTransform, { stiffness: 100, damping: 30 });
 
   const scrollItems = [
     {
-      title: "Smooth Experience",
-      description: "Butter-smooth animations powered by Framer Motion with advanced physics",
-      color: "#00f2ea",
+      title: "Dominant Performance",
+      description: "Engineered for peak performance with next-gen hardware.",
+      color: "#ff6c00",
       icon: "🚀",
-      gradient: "linear-gradient(135deg, #00f2ea, #0072ff)"
+      gradient: "linear-gradient(145deg, #ff6c00, #ff8c00)"
     },
     {
-      title: "Performance First", 
-      description: "Optimized for 60fps animations with hardware acceleration",
-      color: "#0072ff",
+      title: "Futuristic Design",
+      description: "Aggressive aesthetics with customizable RGB lighting.",
+      color: "#00c6ff",
       icon: "⚡",
-      gradient: "linear-gradient(135deg, #0072ff, #00f2ea)"
+      gradient: "linear-gradient(145deg, #00c6ff, #0072ff)"
     },
     {
-      title: "Creative Freedom",
-      description: "Unlimited possibilities for your designs with powerful APIs",
-      color: "#ff6b6b",
+      title: "Immersive Experience",
+      description: "Dive into new worlds with cutting-edge visual technology.",
+      color: "#e91e63",
       icon: "🎨",
-      gradient: "linear-gradient(135deg, #ff6b6b, #ffa726)"
+      gradient: "linear-gradient(145deg, #e91e63, #c2185b)"
     },
     {
-      title: "Professional Results",
-      description: "Studio-quality animations that impress your clients",
+      title: "Built to Last",
+      description: "Premium materials and robust construction for longevity.",
       color: "#a855f7",
       icon: "💎",
-      gradient: "linear-gradient(135deg, #a855f7, #ec4899)"
+      gradient: "linear-gradient(145deg, #a855f7, #9333ea)"
     },
     {
-      title: "Cross Platform",
-      description: "Works perfectly on all devices and screen sizes",
+      title: "Cross-Platform Synergy",
+      description: "Seamless integration across all your devices.",
       color: "#10b981",
       icon: "📱",
-      gradient: "linear-gradient(135deg, #10b981, #059669)"
+      gradient: "linear-gradient(145deg, #10b981, #059669)"
     },
     {
-      title: "Easy Integration",
-      description: "Simple to implement in any React project with clean API",
+      title: "Simple & Powerful",
+      description: "Intuitive software for easy customization and control.",
       color: "#f59e0b",
       icon: "🔧",
-      gradient: "linear-gradient(135deg, #f59e0b, #d97706)"
+      gradient: "linear-gradient(145deg, #f59e0b, #d97706)"
     },
     {
-      title: "Powerful Features",
-      description: "Advanced animations made simple with intuitive controls",
+      title: "Advanced Features",
+      description: "Unlock the full potential of your hardware with our tools.",
       color: "#ef4444",
       icon: "🌟",
-      gradient: "linear-gradient(135deg, #ef4444, #dc2626)"
+      gradient: "linear-gradient(145deg, #ef4444, #dc2626)"
     },
     {
-      title: "Community Support",
-      description: "Backed by a vibrant developer community and great docs",
+      title: "Elite Community",
+      description: "Join a passionate community of builders and gamers.",
       color: "#8b5cf6",
       icon: "👥",
-      gradient: "linear-gradient(135deg, #8b5cf6, #7c3aed)"
+      gradient: "linear-gradient(145deg, #8b5cf6, #7c3aed)"
     },
-    {
-      title: "Real-time Preview",
-      description: "See your animations live as you build them",
-      color: "#06b6d4",
-      icon: "👁️",
-      gradient: "linear-gradient(135deg, #06b6d4, #0891b2)"
-    },
-    {
-      title: "Production Ready",
-      description: "Battle-tested in thousands of production applications",
-      color: "#84cc16",
-      icon: "🏆",
-      gradient: "linear-gradient(135deg, #84cc16, #65a30d)"
-    },
-    {
-      title: "Flexible Config",
-      description: "Customize every aspect of your animations",
-      color: "#f97316",
-      icon: "⚙️",
-      gradient: "linear-gradient(135deg, #f97316, #ea580c)"
-    },
-    {
-      title: "Great Documentation",
-      description: "Comprehensive docs with examples and tutorials",
-      color: "#8b5cf6",
-      icon: "📚",
-      gradient: "linear-gradient(135deg, #8b5cf6, #7c3aed)"
-    }
   ];
 
   return (
@@ -174,7 +138,7 @@ const HorizontalScrollSection = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          Scroll Horizontally
+          Explore The Arsenal
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 30 }}
@@ -182,23 +146,15 @@ const HorizontalScrollSection = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          Scroll down to see the horizontal animation effect
+          Engage with our core technologies through interactive scroll.
         </motion.p>
-        
-        <motion.div 
-          className="scroll-hint-top"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <span>↓ Scroll Down ↓</span>
-        </motion.div>
       </div>
 
       <div className="horizontal-scroll-container">
-        <motion.div 
+        <motion.div
           ref={horizontalRef}
           className="horizontal-scroll-content"
-          style={{ 
+          style={{
             x: smoothX,
             scale: smoothScale,
             opacity: smoothOpacity,
@@ -209,48 +165,45 @@ const HorizontalScrollSection = () => {
             <motion.div
               key={index}
               className="horizontal-card"
-              initial={{ opacity: 0, y: 100, scale: 0.8, rotateY: 180 }}
-              whileInView={{ 
-                opacity: 1, 
-                y: 0, 
+              initial={{ opacity: 0, y: 100, scale: 0.8, rotateX: -20 }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
                 scale: 1,
-                rotateY: 0
+                rotateX: 0
               }}
               transition={{
                 duration: 0.8,
-                delay: index * 0.05,
+                delay: index * 0.08,
                 type: "spring",
                 stiffness: 100
               }}
-              viewport={{ once: true, margin: "-100px" }}
-              whileHover={{ 
+              viewport={{ once: true, margin: "-150px" }}
+              whileHover={{
                 scale: 1.05,
                 y: -15,
-                rotateY: 5,
                 transition: { duration: 0.3 }
               }}
-              whileTap={{ scale: 0.95 }}
             >
-              <div 
+              <div
                 className="card-inner"
-                style={{ 
-                  borderColor: item.color,
-                  background: item.gradient,
+                style={{
+                  '--glow-color': item.color,
                 }}
               >
-                <motion.div 
+                <div className="card-glare"></div>
+                <motion.div
                   className="card-icon"
-                  style={{ color: '#ffffff' }}
-                  whileHover={{ scale: 1.2, rotate: 360 }}
+                  whileHover={{ scale: 1.2, rotate: 15 }}
                   transition={{ duration: 0.5 }}
                 >
                   {item.icon}
                 </motion.div>
-                <h3 style={{ color: '#ffffff' }}>{item.title}</h3>
-                <p style={{ color: 'rgba(255,255,255,0.9)' }}>{item.description}</p>
-                <motion.div 
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+                <motion.div
                   className="progress-indicator"
-                  style={{ backgroundColor: '#ffffff' }}
+                  style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
                   whileHover={{ scaleX: 1.5 }}
                   transition={{ duration: 0.3 }}
                 />
@@ -260,8 +213,7 @@ const HorizontalScrollSection = () => {
         </motion.div>
       </div>
 
-      {/* Scroll Progress Indicator */}
-      <motion.div 
+      <motion.div
         className="scroll-progress-container"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -269,49 +221,24 @@ const HorizontalScrollSection = () => {
         viewport={{ once: true }}
       >
         <div className="scroll-progress-bar">
-          <motion.div 
+          <motion.div
             className="scroll-progress-fill"
             style={{ scaleX: scrollYProgress }}
           />
         </div>
-        <motion.div 
+        <motion.div
           className="scroll-hint"
-          animate={{ x: [-5, 5, -5] }}
+          animate={{ y: [-3, 3, -3] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         >
-          {isVisible ? "🠔 Scroll Horizontal 🠖" : "↓ Scroll Down ↓"}
+          {isVisible ? "SYSTEM ENGAGED" : "INITIATE SCROLL"}
         </motion.div>
       </motion.div>
 
-      {/* Background Elements */}
       <div className="background-elements">
-        <motion.div 
-          className="bg-circle-1"
-          animate={{ 
-            x: [0, 100, 0],
-            y: [0, -50, 0],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div 
-          className="bg-circle-2"
-          animate={{ 
-            x: [0, -80, 0],
-            y: [0, 60, 0],
-            scale: [1, 1.3, 1]
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div 
-          className="bg-circle-3"
-          animate={{ 
-            x: [0, 120, 0],
-            y: [0, 30, 0],
-            scale: [1, 1.1, 1]
-          }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-        />
+        <motion.div className="bg-grid" />
+        <motion.div className="bg-line-1" animate={{ y: [0, -100, 0] }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }}/>
+        <motion.div className="bg-line-2" animate={{ y: [0, 120, 0] }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }}/>
       </div>
     </section>
   );
@@ -323,177 +250,132 @@ function App() {
     {
       title: "Simple API",
       description: "Motion's pick-up-and-play API is easy to start and fun to master.",
-      links: [
-        "Get started with Motion for React",
-        "Get started with Motion", 
-        "Get started with Motion for Vue"
-      ]
+      links: ["Get started with Motion for React", "Get started with Motion", "Get started with Motion for Vue"]
     },
     {
-      title: "Independent transforms", 
+      title: "Independent transforms",
       description: "Animate x, y, rotateZ etc independently, without wrapper elements.",
-      links: [
-        "Learn how to animate with Motion for React",
-        "Learn how to animate with Motion",
-        "Learn how to animate with Motion for Vue"
-      ]
+      links: ["Learn how to animate with Motion for React", "Learn how to animate with Motion", "Learn how to animate with Motion for Vue"]
     },
     {
       title: "Scroll animation",
-      description: "Smooth, hardware-accelerated scroll animations.", 
-      links: [
-        "Create scroll animations with Motion for React",
-        "Create scroll animations with Motion's scroll function",
-        "Create scroll animations with Motion for Vue"
-      ]
+      description: "Smooth, hardware-accelerated scroll animations.",
+      links: ["Create scroll animations with Motion for React", "Create scroll animations with Motion's scroll function", "Create scroll animations with Motion for Vue"]
     },
     {
       title: "Exit animation",
       description: "Motion's AnimatePresence makes it easy to animate elements as they exit.",
-      links: [
-        "Create exit animations with Motion for React's AnimatePresence component",
-        "Create exit animations with Motion for Vue's AnimatePresence component"
-      ]
+      links: ["Create exit animations with Motion for React's AnimatePresence component", "Create exit animations with Motion for Vue's AnimatePresence component"]
     },
     {
       title: "Gestures",
       description: "Hover, press and drag gestures that feel native, not 'webby'.",
-      links: [
-        "Learn more about gesture animations with React",
-        "Learn more about Motion's hover function", 
-        "Learn more about Motion for Vue gesture animations"
-      ]
+      links: ["Learn more about gesture animations with React", "Learn more about Motion's hover function", "Learn more about Motion for Vue gesture animations"]
     },
     {
       title: "Layout animation",
       description: "Animate between different layouts with Motion's industry-leading layout animation engine.",
-      links: [
-        "Get started with layout animation in React",
-        "Start with the View Transitions API in JS",
-        "Get started with layout animations in Vue"
-      ]
+      links: ["Get started with layout animation in React", "Start with the View Transitions API in JS", "Get started with layout animations in Vue"]
     },
-    {
-      title: "Timeline sequences",
-      description: "Variants, stagger and timelines make it easy to precisely orchestrate animations.",
-      links: [
-        "Orchestrate React animations with variants",
-        "Learn more about animation sequences with the animate function",
-        "Get started with animation orchestration in Vue"
-      ]
-    },
-    {
-      title: "Spring physics", 
-      description: "Real spring physics for great-feeling animations.",
-      links: [
-        "Learn more about staggering in Motion for React",
-        "Learn more about Motion's stagger function"
-      ]
-    }
   ];
 
   const tickerItems = features.map(feature => feature.title);
 
   return (
     <div className="app">
-      {/* Hero Section */}
       <section className="hero">
         <div className="hero-content">
           <motion.h1
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            initial={{ opacity: 0, y: 50, skewX: -10 }}
+            animate={{ opacity: 1, y: 0, skewX: 0 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            Motion Features
+            FUTURE <span className="highlight">MOTION</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 1 }}
+            transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            Discover the powerful features of Framer Motion
+            Unleashing the next generation of web animation.
           </motion.p>
         </div>
-        
+
         <div className="ticker-section">
           <div className="ticker-label">
-            <motion.span
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              FEATURES
-            </motion.span>
+             <span>CORE FEATURES</span>
           </div>
-          <VerticalTicker items={tickerItems} speed={50} />
+          <VerticalTicker items={tickerItems} speed={40} />
         </div>
+        <div className="hero-vignette"></div>
       </section>
 
-      {/* Horizontal Scroll Section */}
       <HorizontalScrollSection />
 
-      {/* Features Grid */}
       <section className="features-grid">
         <div className="container">
-          <motion.div 
+          <motion.div
             className="section-header"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2>All Features</h2>
-            <p>Explore the complete set of Framer Motion capabilities</p>
+            <h2>Technical Specifications</h2>
+            <p>A deep dive into the powerful Framer Motion capabilities.</p>
           </motion.div>
-          
+
           {features.map((feature, index) => (
             <motion.div
               key={index}
               className="feature-card"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ 
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.5 }}
+              whileHover={{
                 scale: 1.02,
                 y: -5
               }}
             >
-              <h3>{feature.title}</h3>
-              <p>{feature.description}</p>
-              <div className="links">
-                {feature.links.map((link, linkIndex) => (
-                  <motion.a
-                    key={linkIndex}
-                    href="#"
-                    className="link"
-                    whileHover={{ x: 5 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                  >
-                    {link} →
-                  </motion.a>
-                ))}
+              <div className="feature-card-glow"></div>
+              <div className="feature-card-content">
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
+                <div className="links">
+                  {feature.links.map((link, linkIndex) => (
+                    <motion.a
+                      key={linkIndex}
+                      href="#"
+                      className="link"
+                      whileHover={{ x: 8, color: '#ff6c00' }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      {link} <span>&gt;</span>
+                    </motion.a>
+                  ))}
+                </div>
               </div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* Continuous Ticker */}
       <section className="continuous-ticker-section">
         <motion.div
           className="continuous-ticker"
-          animate={{ x: [0, -2000] }}
+          animate={{ x: ['0%', '-100%'] }}
           transition={{
-            duration: 40,
+            duration: 50,
             repeat: Infinity,
             ease: "linear"
           }}
         >
-          {[...tickerItems, ...tickerItems, ...tickerItems, ...tickerItems].map((item, index) => (
-            <motion.div 
-              key={index} 
+          {[...tickerItems, ...tickerItems].map((item, index) => (
+            <motion.div
+              key={index}
               className="ticker-word"
-              whileHover={{ scale: 1.2, color: "#00f2ea" }}
+              whileHover={{ scale: 1.1, color: "#ff6c00" }}
               transition={{ duration: 0.3 }}
             >
               {item}
