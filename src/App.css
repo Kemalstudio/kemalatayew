@@ -644,7 +644,7 @@ html, body {
   background: linear-gradient(135deg, #00f2ea, #ff6b6b);
 }
 
-/* Horizontal scroll specifi */
+/* Horizontal scroll specif */
 .horizontal-scroll-wrapper::-webkit-scrollbar {
   height: 12px;
 }
