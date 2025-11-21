@@ -1,16 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import './App.css';
 
-// Регистрируем плагин ScrollTrigger
-gsap.registerPlugin(ScrollTrigger);
-
-// --- VERTICAL SCROLLING TICKER COMPONENT ---
+// Vertical Ticker Component
 const VerticalTicker = ({ items, speed = 50 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const containerRef = useRef(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,7 +15,7 @@ const VerticalTicker = ({ items, speed = 50 }) => {
   }, [items.length, speed]);
 
   return (
-    <div className="ticker-container" ref={containerRef}>
+    <div className="ticker-container">
       <motion.div
         className="ticker-track"
         animate={{ y: -currentIndex * 100 + '%' }}
@@ -44,75 +38,29 @@ const VerticalTicker = ({ items, speed = 50 }) => {
   );
 };
 
-// --- HORIZONTAL SCROLL SECTION ---
+// Horizontal Scroll Section
 const HorizontalScrollSection = () => {
-  const sectionRef = useRef(null);
-  const triggerRef = useRef(null);
-  const horizontalRef = useRef(null);
+  const containerRef = useRef(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    const trigger = triggerRef.current;
-    const horizontal = horizontalRef.current;
-
-    const scrollWidth = horizontal.scrollWidth - window.innerWidth;
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: trigger,
-        start: "top top",
-        end: `+=${scrollWidth}`,
-        pin: section,
-        scrub: 1,
-        anticipatePin: 1,
-        markers: false, // Set to true for debugging
-      }
-    });
-
-    tl.to(horizontal, {
-      x: -scrollWidth,
-      duration: 1,
-      ease: "power2.inOut"
-    });
-
-    // Анимация для отдельных элементов
-    gsap.utils.toArray('.scroll-item').forEach((item, index) => {
-      gsap.fromTo(item, 
-        {
-          opacity: 0,
-          y: 100,
-          scale: 0.8
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: "back.out(1.7)",
-          scrollTrigger: {
-            trigger: item,
-            containerAnimation: tl,
-            start: "left 80%",
-            end: "left 20%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, []);
+  const xTransform = useTransform(scrollYProgress, [0, 1], ['0%', '-50%']);
+  const smoothX = useSpring(xTransform, { 
+    stiffness: 100, 
+    damping: 30 
+  });
 
   const scrollItems = [
     {
       title: "Smooth Experience",
-      description: "Butter-smooth animations powered by GSAP",
+      description: "Butter-smooth animations powered by Framer Motion",
       color: "#00f2ea"
     },
     {
-      title: "Performance First",
+      title: "Performance First", 
       description: "Optimized for 60fps animations",
       color: "#0072ff"
     },
@@ -134,35 +82,57 @@ const HorizontalScrollSection = () => {
   ];
 
   return (
-    <section className="horizontal-scroll-section" ref={sectionRef}>
-      <div className="scroll-trigger" ref={triggerRef}></div>
-      <div className="horizontal-container" ref={horizontalRef}>
-        <div className="horizontal-content">
+    <section ref={containerRef} className="horizontal-scroll-wrapper">
+      <div className="horizontal-scroll-container">
+        <motion.div 
+          className="horizontal-scroll-content"
+          style={{ x: smoothX }}
+        >
           {scrollItems.map((item, index) => (
-            <div key={index} className="scroll-item">
+            <motion.div
+              key={index}
+              className="horizontal-card"
+              initial={{ opacity: 0, y: 100, scale: 0.8 }}
+              whileInView={{ 
+                opacity: 1, 
+                y: 0, 
+                scale: 1
+              }}
+              transition={{
+                duration: 0.8,
+                delay: index * 0.1,
+                type: "spring",
+                stiffness: 100
+              }}
+              viewport={{ once: true, margin: "-100px" }}
+              whileHover={{ 
+                scale: 1.05,
+                y: -10
+              }}
+            >
               <div 
-                className="scroll-card"
+                className="card-inner"
                 style={{ 
                   borderColor: item.color,
-                  background: `linear-gradient(145deg, ${item.color}15, ${item.color}05)`
+                  background: `linear-gradient(135deg, ${item.color}20, ${item.color}05)`
                 }}
               >
                 <h3 style={{ color: item.color }}>{item.title}</h3>
                 <p>{item.description}</p>
                 <div 
-                  className="scroll-indicator"
+                  className="progress-indicator"
                   style={{ backgroundColor: item.color }}
                 ></div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
 };
 
-// --- MAIN APP COMPONENT ---
+// Main App Component
 function App() {
   const features = [
     {
@@ -241,7 +211,7 @@ function App() {
 
   return (
     <div className="app">
-      {/* Hero Section with Ticker */}
+      {/* Hero Section */}
       <section className="hero">
         <div className="hero-content">
           <motion.h1
@@ -289,8 +259,7 @@ function App() {
               viewport={{ once: true }}
               whileHover={{ 
                 scale: 1.02,
-                y: -5,
-                transition: { duration: 0.3 }
+                y: -5
               }}
             >
               <h3>{feature.title}</h3>
@@ -313,7 +282,7 @@ function App() {
         </div>
       </section>
 
-      {/* Continuous Vertical Ticker */}
+      {/* Continuous Ticker */}
       <section className="continuous-ticker-section">
         <motion.div
           className="continuous-ticker"
