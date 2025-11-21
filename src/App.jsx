@@ -41,52 +41,109 @@ const VerticalTicker = ({ items, speed = 50 }) => {
 // Horizontal Scroll Section
 const HorizontalScrollSection = () => {
   const containerRef = useRef(null);
+  const horizontalRef = useRef(null);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  const xTransform = useTransform(scrollYProgress, [0, 1], ['0%', '-50%']);
+  // Horizontal scroll animation
+  const xTransform = useTransform(scrollYProgress, [0, 1], ['0%', '-80%']);
   const smoothX = useSpring(xTransform, { 
     stiffness: 100, 
     damping: 30 
   });
 
+  // Scale animation for cards
+  const scaleTransform = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.8, 1, 1, 0.8]);
+  const smoothScale = useSpring(scaleTransform, { stiffness: 100, damping: 30 });
+
+  // Opacity animation
+  const opacityTransform = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
+  const smoothOpacity = useSpring(opacityTransform, { stiffness: 100, damping: 30 });
+
   const scrollItems = [
     {
       title: "Smooth Experience",
       description: "Butter-smooth animations powered by Framer Motion",
-      color: "#00f2ea"
+      color: "#00f2ea",
+      icon: "🚀"
     },
     {
       title: "Performance First", 
       description: "Optimized for 60fps animations",
-      color: "#0072ff"
+      color: "#0072ff",
+      icon: "⚡"
     },
     {
       title: "Creative Freedom",
       description: "Unlimited possibilities for your designs",
-      color: "#ff6b6b"
+      color: "#ff6b6b",
+      icon: "🎨"
     },
     {
       title: "Professional Results",
       description: "Studio-quality animations for your projects",
-      color: "#a855f7"
+      color: "#a855f7",
+      icon: "💎"
     },
     {
       title: "Cross Platform",
       description: "Works perfectly on all devices",
-      color: "#10b981"
+      color: "#10b981",
+      icon: "📱"
+    },
+    {
+      title: "Easy Integration",
+      description: "Simple to implement in any React project",
+      color: "#f59e0b",
+      icon: "🔧"
+    },
+    {
+      title: "Powerful Features",
+      description: "Advanced animations made simple",
+      color: "#ef4444",
+      icon: "🌟"
+    },
+    {
+      title: "Community Support",
+      description: "Backed by a vibrant developer community",
+      color: "#8b5cf6",
+      icon: "👥"
     }
   ];
 
   return (
     <section ref={containerRef} className="horizontal-scroll-wrapper">
+      <div className="scroll-section-header">
+        <motion.h2
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          Scroll Horizontally
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          viewport={{ once: true }}
+        >
+          Drag or scroll to explore amazing features
+        </motion.p>
+      </div>
+
       <div className="horizontal-scroll-container">
         <motion.div 
+          ref={horizontalRef}
           className="horizontal-scroll-content"
-          style={{ x: smoothX }}
+          style={{ 
+            x: smoothX,
+            scale: smoothScale,
+            opacity: smoothOpacity
+          }}
         >
           {scrollItems.map((item, index) => (
             <motion.div
@@ -107,8 +164,10 @@ const HorizontalScrollSection = () => {
               viewport={{ once: true, margin: "-100px" }}
               whileHover={{ 
                 scale: 1.05,
-                y: -10
+                y: -10,
+                transition: { duration: 0.3 }
               }}
+              whileTap={{ scale: 0.95 }}
             >
               <div 
                 className="card-inner"
@@ -117,6 +176,9 @@ const HorizontalScrollSection = () => {
                   background: `linear-gradient(135deg, ${item.color}20, ${item.color}05)`
                 }}
               >
+                <div className="card-icon" style={{ color: item.color }}>
+                  {item.icon}
+                </div>
                 <h3 style={{ color: item.color }}>{item.title}</h3>
                 <p>{item.description}</p>
                 <div 
@@ -126,6 +188,21 @@ const HorizontalScrollSection = () => {
               </div>
             </motion.div>
           ))}
+        </motion.div>
+      </div>
+
+      {/* Scroll Progress Indicator */}
+      <div className="scroll-progress-container">
+        <motion.div 
+          className="scroll-progress-bar"
+          style={{ scaleX: scrollYProgress }}
+        />
+        <motion.div 
+          className="scroll-hint"
+          animate={{ x: [0, 10, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          ← Scroll horizontally →
         </motion.div>
       </div>
     </section>
@@ -239,7 +316,7 @@ function App() {
               FEATURES
             </motion.span>
           </div>
-          <VerticalTicker items={tickerItems} speed={30} />
+          <VerticalTicker items={tickerItems} speed={50} />
         </div>
       </section>
 
@@ -249,6 +326,17 @@ function App() {
       {/* Features Grid */}
       <section className="features-grid">
         <div className="container">
+          <motion.div 
+            className="section-header"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2>All Features</h2>
+            <p>Explore the complete set of Framer Motion capabilities</p>
+          </motion.div>
+          
           {features.map((feature, index) => (
             <motion.div
               key={index}
@@ -286,14 +374,14 @@ function App() {
       <section className="continuous-ticker-section">
         <motion.div
           className="continuous-ticker"
-          animate={{ y: [-100, 0] }}
+          animate={{ x: [0, -1000] }}
           transition={{
-            duration: 20,
+            duration: 30,
             repeat: Infinity,
             ease: "linear"
           }}
         >
-          {[...tickerItems, ...tickerItems].map((item, index) => (
+          {[...tickerItems, ...tickerItems, ...tickerItems].map((item, index) => (
             <div key={index} className="ticker-word">
               {item}
               <span className="dot">•</span>
