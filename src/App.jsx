@@ -178,7 +178,6 @@ const HorizontalScrollSection = () => {
   );
 };
 
-// Основной компонент приложения
 function App() {
   const features = [
     { title: "Простой API", description: "Интуитивный API, который легко освоить." },
