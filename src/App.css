@@ -22,6 +22,7 @@ html, body {
   min-height: 100vh;
   width: 100%;
   background: #000000;
+  position: relative;
 }
 
 /* --- HERO SECTION --- */
@@ -135,7 +136,7 @@ html, body {
 
 /* --- HORIZONTAL SCROLL SECTION --- */
 .horizontal-scroll-wrapper {
-  min-height: 100vh;
+  min-height: 150vh; /* Increased height for more scroll space */
   position: relative;
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
   overflow: hidden;
@@ -143,29 +144,47 @@ html, body {
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  padding: 2rem 0;
+  padding: 4rem 0;
 }
 
 .scroll-section-header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 6rem;
   padding: 0 2rem;
+  position: relative;
+  z-index: 10;
 }
 
 .scroll-section-header h2 {
-  font-size: 3rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #00f2ea, #0072ff);
+  font-size: 4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #00f2ea, #0072ff, #ff6b6b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
 }
 
 .scroll-section-header p {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   opacity: 0.8;
   font-weight: 300;
+  margin-bottom: 2rem;
+}
+
+.scroll-hint-top {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #00f2ea;
+  opacity: 0.8;
+}
+
+.scroll-hint-top span {
+  background: rgba(0, 242, 234, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  border: 1px solid rgba(0, 242, 234, 0.3);
 }
 
 .horizontal-scroll-container {
@@ -175,26 +194,30 @@ html, body {
   align-items: center;
   position: relative;
   overflow: visible;
+  margin: 4rem 0;
 }
 
 .horizontal-scroll-content {
   display: flex;
-  gap: 3rem;
-  padding: 0 15vw;
+  gap: 2.5rem;
+  padding: 0 20vw;
   height: 100%;
   align-items: center;
   will-change: transform;
+  position: relative;
+  z-index: 5;
 }
 
 .horizontal-card {
   flex-shrink: 0;
-  width: 350px;
-  height: 450px;
+  width: 320px;
+  height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
   perspective: 1000px;
   cursor: grab;
+  position: relative;
 }
 
 .horizontal-card:active {
@@ -203,9 +226,7 @@ html, body {
 
 .card-inner {
   width: 100%;
-  height: 400px;
-  background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  border: 2px solid;
+  height: 380px;
   border-radius: 24px;
   padding: 2.5rem 2rem;
   display: flex;
@@ -215,8 +236,9 @@ html, body {
   text-align: center;
   backdrop-filter: blur(20px);
   box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 25px 50px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -232,7 +254,7 @@ html, body {
   height: 100%;
   background: linear-gradient(90deg, 
     transparent, 
-    rgba(255, 255, 255, 0.1), 
+    rgba(255, 255, 255, 0.2), 
     transparent);
   transition: left 0.6s ease;
 }
@@ -242,17 +264,18 @@ html, body {
 }
 
 .horizontal-card:hover .card-inner {
-  transform: translateZ(20px) rotateY(5deg);
+  transform: translateZ(30px) rotateY(5deg) rotateX(5deg);
   box-shadow: 
-    0 30px 60px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 35px 70px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .card-icon {
-  font-size: 3rem;
+  font-size: 3.5rem;
   margin-bottom: 1.5rem;
   display: block;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
 }
 
 .card-inner h3 {
@@ -262,22 +285,24 @@ html, body {
   background: none;
   -webkit-text-fill-color: unset;
   line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .card-inner p {
-  font-size: 1.1rem;
-  opacity: 0.9;
+  font-size: 1rem;
   line-height: 1.6;
-  font-weight: 300;
+  font-weight: 400;
   margin-bottom: 2rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 .progress-indicator {
-  width: 60px;
+  width: 80px;
   height: 4px;
   border-radius: 2px;
   position: relative;
   overflow: hidden;
+  background: rgba(255,255,255,0.5);
 }
 
 .progress-indicator::after {
@@ -287,7 +312,7 @@ html, body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
   animation: shimmer 2s infinite;
 }
 
@@ -303,37 +328,84 @@ html, body {
 /* Scroll Progress */
 .scroll-progress-container {
   position: absolute;
-  bottom: 2rem;
+  bottom: 3rem;
   left: 50%;
   transform: translateX(-50%);
-  width: 300px;
+  width: 400px;
   text-align: center;
+  z-index: 10;
 }
 
 .scroll-progress-bar {
   width: 100%;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
   overflow: hidden;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.scroll-progress-bar::before {
-  content: '';
-  display: block;
+.scroll-progress-fill {
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #00f2ea, #0072ff);
-  border-radius: 2px;
+  background: linear-gradient(90deg, #00f2ea, #0072ff, #ff6b6b, #a855f7);
+  border-radius: 3px;
   transform-origin: left;
 }
 
 .scroll-hint {
-  font-size: 0.9rem;
-  opacity: 0.7;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #00f2ea;
+  opacity: 0.9;
   letter-spacing: 0.1em;
+  background: rgba(0, 242, 234, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  border: 1px solid rgba(0, 242, 234, 0.3);
+}
+
+/* Background Elements */
+.background-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bg-circle-1, .bg-circle-2, .bg-circle-3 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.1;
+}
+
+.bg-circle-1 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #00f2ea, #0072ff);
+  top: 10%;
+  left: 10%;
+}
+
+.bg-circle-2 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, #ff6b6b, #a855f7);
+  top: 60%;
+  right: 10%;
+}
+
+.bg-circle-3 {
+  width: 250px;
+  height: 250px;
+  background: linear-gradient(135deg, #10b981, #f59e0b);
+  bottom: 20%;
+  left: 20%;
 }
 
 /* --- FEATURES GRID --- */
@@ -459,7 +531,7 @@ html, body {
 
 /* --- CONTINUOUS TICKER SECTION --- */
 .continuous-ticker-section {
-  padding: 4rem 0;
+  padding: 6rem 0;
   background: #000000;
   overflow: hidden;
   position: relative;
@@ -535,21 +607,21 @@ html, body {
   }
   
   .scroll-section-header h2 {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
   
   .horizontal-scroll-content {
     gap: 2rem;
-    padding: 0 10vw;
+    padding: 0 15vw;
   }
   
   .horizontal-card {
     width: 280px;
-    height: 400px;
+    height: 380px;
   }
   
   .card-inner {
-    height: 350px;
+    height: 340px;
     padding: 2rem 1.5rem;
   }
   
@@ -576,7 +648,11 @@ html, body {
   }
   
   .continuous-ticker-section {
-    padding: 2rem 0;
+    padding: 4rem 0;
+  }
+  
+  .scroll-progress-container {
+    width: 300px;
   }
 }
 
@@ -604,7 +680,7 @@ html, body {
   
   .horizontal-card {
     width: 250px;
-    height: 380px;
+    height: 360px;
   }
   
   .card-inner {
@@ -622,6 +698,10 @@ html, body {
   
   .feature-card p {
     font-size: 0.9rem;
+  }
+  
+  .scroll-section-header h2 {
+    font-size: 2rem;
   }
 }
 
@@ -642,19 +722,4 @@ html, body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #00f2ea, #ff6b6b);
-}
-
-/* Horizontal scroll spe */
-.horizontal-scroll-wrapper::-webkit-scrollbar {
-  height: 12px;
-}
-
-.horizontal-scroll-wrapper::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-}
-
-.horizontal-scroll-wrapper::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #00f2ea, #0072ff);
-  border-radius: 6px;
 }
