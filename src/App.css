@@ -1,4 +1,4 @@
-/* --- GLOBAL STYLES --- */
+/* --- ГЛОБАЛЬНЫЕ СТИЛИ --- */
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Exo+2:wght@300;400;600;800&display=swap');
 
 :root {
@@ -6,7 +6,6 @@
   --g-blue: #00c6ff;
   --g-dark-bg: #0a0a0f;
   --g-mid-bg: #14141c;
-  --g-light-bg: #2a2a3a;
   --g-text-light: #e0e0e0;
   --g-text-dark: #a0a0b0;
 }
@@ -34,7 +33,7 @@ html, body {
   position: relative;
 }
 
-/* --- HERO SECTION --- */
+/* --- СЕКЦИЯ HERO --- */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -42,9 +41,7 @@ html, body {
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  background-image: 
-    radial-gradient(circle at 50% 50%, rgba(10, 10, 15, 0.9) 0%, rgba(10, 10, 15, 1) 70%),
-    url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+  background-image: radial-gradient(circle at 50% 50%, rgba(10, 10, 15, 0.9) 0%, rgba(10, 10, 15, 1) 70%);
   position: relative;
   overflow: hidden;
 }
@@ -91,7 +88,7 @@ html, body {
   letter-spacing: 0.02em;
 }
 
-/* --- TICKER SECTION --- */
+/* --- СЕКЦИЯ ТИКЕРА --- */
 .ticker-section {
   display: flex;
   align-items: center;
@@ -147,7 +144,7 @@ html, body {
   text-align: center;
 }
 
-/* --- HORIZONTAL SCROLL SECTION --- */
+/* --- СЕКЦИЯ ГОРИЗОНТАЛЬНОЙ ПРОКРУТКИ --- */
 .horizontal-scroll-wrapper {
   min-height: 200vh;
   position: relative;
@@ -206,13 +203,12 @@ html, body {
   will-change: transform;
   position: relative;
   z-index: 5;
-  perspective: 2000px;
 }
 
 .horizontal-card {
   flex-shrink: 0;
-  width: 340px;
-  height: 450px;
+  width: 380px; /* Ширина карточки */
+  height: 500px; /* Высота карточки */
   perspective: 1500px;
   cursor: pointer;
   position: relative;
@@ -221,38 +217,23 @@ html, body {
 .card-inner {
   width: 100%;
   height: 100%;
-  border-radius: 4px;
-  padding: 2.5rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  justify-content: flex-start;
   background: linear-gradient(160deg, var(--g-mid-bg), var(--g-dark-bg));
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   position: relative;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform-style: preserve-3d;
   clip-path: polygon(0 15px, 15px 0, 100% 0, 100% 100%, 0 100%);
 }
 
-.card-inner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 50% 50%, transparent 50%, var(--glow-color) 120%);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  filter: blur(50px);
-}
-
-.horizontal-card:hover .card-inner::before {
-  opacity: 0.15;
+.horizontal-card:hover .card-inner {
+  transform: translateY(-10px);
+  border-color: var(--glow-color);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 20px var(--glow-color);
 }
 
 .card-glare {
@@ -264,48 +245,60 @@ html, body {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
   transform: skewX(-25deg);
   transition: left 0.8s ease;
+  z-index: 3;
 }
 
 .horizontal-card:hover .card-glare {
   left: 150%;
 }
 
-.horizontal-card:hover .card-inner {
-  transform: translateZ(20px) rotateY(5deg);
-  border-color: var(--glow-color);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 20px var(--glow-color);
-}
-
-.card-icon {
-  font-size: 4rem;
+/* Стили для изображения продукта */
+.card-image-container {
+  width: 100%;
+  height: 60%; /* Изображение занимает 60% высоты карточки */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 1.5rem;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+  position: relative;
 }
 
-.card-inner h3 {
+.product-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+  transition: transform 0.4s ease;
+}
+
+.horizontal-card:hover .product-image {
+  transform: scale(1.08);
+}
+
+/* Стили для текстового контента */
+.card-text-content {
+  width: 100%;
+  text-align: center;
+}
+
+.card-text-content h3 {
   font-family: 'Roboto Condensed', sans-serif;
   font-size: 1.8rem;
   font-weight: 700;
   text-transform: uppercase;
   color: #fff;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
-.card-inner p {
+.card-text-content p {
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.5;
   font-weight: 300;
   color: var(--g-text-dark);
-  margin-bottom: 2rem;
 }
 
-.progress-indicator {
-  width: 60px;
-  height: 3px;
-  border-radius: 1px;
-}
 
-/* Scroll Progress */
+/* Индикатор прокрутки */
 .scroll-progress-container {
   position: absolute;
   bottom: 4rem;
@@ -320,7 +313,6 @@ html, body {
   width: 100%;
   height: 4px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
   overflow: hidden;
   margin-bottom: 1.5rem;
 }
@@ -329,7 +321,6 @@ html, body {
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, var(--g-orange), var(--g-blue));
-  border-radius: 2px;
   transform-origin: left;
 }
 
@@ -342,19 +333,8 @@ html, body {
   letter-spacing: 0.2em;
 }
 
-/* Background Elements */
-.background-elements {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.bg-grid {
+/* Фоновые элементы */
+.background-elements .bg-grid {
   position: absolute;
   top: 0;
   left: 0;
@@ -365,21 +345,10 @@ html, body {
     linear-gradient(90deg, rgba(255,108,0,0.05) 1px, transparent 1px);
   background-size: 50px 50px;
   opacity: 0.5;
+  z-index: 1;
 }
 
-.bg-line-1, .bg-line-2 {
-    position: absolute;
-    width: 2px;
-    height: 100%;
-    background: var(--g-orange);
-    opacity: 0.1;
-    filter: blur(2px);
-}
-.bg-line-1 { left: 20%; }
-.bg-line-2 { left: 80%; }
-
-
-/* --- FEATURES GRID --- */
+/* Сетка с характеристиками */
 .features-grid {
   padding: 8rem 2rem;
   background: var(--g-dark-bg);
@@ -396,6 +365,14 @@ html, body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 1rem;
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+.section-header p {
+    font-size: 1.2rem;
+    opacity: 0.8;
 }
 
 .container {
@@ -454,35 +431,9 @@ html, body {
 
 .feature-card p {
   color: var(--g-text-dark);
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  font-weight: 300;
 }
 
-.links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.link {
-  color: var(--g-blue);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  opacity: 0.8;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.link:hover {
-  opacity: 1;
-  gap: 0.8rem;
-}
-
-/* --- CONTINUOUS TICKER SECTION --- */
+/* --- НЕПРЕРЫВНАЯ БЕГУЩАЯ СТРОКА --- */
 .continuous-ticker-section {
   padding: 4rem 0;
   background: #000;
@@ -496,7 +447,7 @@ html, body {
   display: flex;
   gap: 3rem;
   white-space: nowrap;
-  width: 200%; /* For seamless loop */
+  width: 200%;
 }
 
 .ticker-word {
@@ -523,48 +474,16 @@ html, body {
   opacity: 0.5;
 }
 
-/* --- RESPONSIVE DESIGN --- */
+/* --- АДАПТИВНЫЙ ДИЗАЙН --- */
 @media (max-width: 768px) {
   .hero h1 { font-size: 3rem; }
-  .hero p { font-size: 1.2rem; }
-  .ticker-item { font-size: 2rem; }
-  
   .scroll-section-header h2 { font-size: 2.5rem; }
-  .horizontal-scroll-content { gap: 2rem; }
-  .horizontal-card { width: 280px; height: 380px; }
-  .card-inner h3 { font-size: 1.5rem; }
-  
-  .container { grid-template-columns: 1fr; gap: 1.5rem; padding: 0 1rem; }
-  .section-header h2 { font-size: 2.5rem; }
-  .ticker-word { font-size: 2.5rem; }
+  .horizontal-card { width: 300px; height: 420px; }
+  .container { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 480px) {
-  .hero h1 { font-size: 2.5rem; }
-  .hero p { font-size: 1rem; }
-  
-  .ticker-section { flex-direction: column; }
-  .ticker-label { writing-mode: horizontal-tb; transform: none; }
-  
-  .horizontal-scroll-wrapper { min-height: 150vh; }
-  .horizontal-card { width: 250px; height: 360px; }
-  .card-inner { padding: 1.5rem; }
-}
-
-/* --- SCROLLBAR --- */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--g-dark-bg);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--g-light-bg);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--g-orange);
-}
+/* --- СКРОЛЛБАР --- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--g-dark-bg); }
+::-webkit-scrollbar-thumb { background: var(--g-mid-bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--g-orange); }
