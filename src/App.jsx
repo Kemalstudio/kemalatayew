@@ -1,6 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring, animate } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './App.css';
+
+// Регистрируем плагин ScrollTrigger
+gsap.registerPlugin(ScrollTrigger);
 
 // --- VERTICAL SCROLLING TICKER COMPONENT ---
 const VerticalTicker = ({ items, speed = 50 }) => {
@@ -31,12 +36,129 @@ const VerticalTicker = ({ items, speed = 50 }) => {
             {item}
           </div>
         ))}
-        {/* Duplicate first item for seamless loop */}
         <div className="ticker-item">
           {items[0]}
         </div>
       </motion.div>
     </div>
+  );
+};
+
+// --- HORIZONTAL SCROLL SECTION ---
+const HorizontalScrollSection = () => {
+  const sectionRef = useRef(null);
+  const triggerRef = useRef(null);
+  const horizontalRef = useRef(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const trigger = triggerRef.current;
+    const horizontal = horizontalRef.current;
+
+    const scrollWidth = horizontal.scrollWidth - window.innerWidth;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: trigger,
+        start: "top top",
+        end: `+=${scrollWidth}`,
+        pin: section,
+        scrub: 1,
+        anticipatePin: 1,
+        markers: false, // Set to true for debugging
+      }
+    });
+
+    tl.to(horizontal, {
+      x: -scrollWidth,
+      duration: 1,
+      ease: "power2.inOut"
+    });
+
+    // Анимация для отдельных элементов
+    gsap.utils.toArray('.scroll-item').forEach((item, index) => {
+      gsap.fromTo(item, 
+        {
+          opacity: 0,
+          y: 100,
+          scale: 0.8
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: item,
+            containerAnimation: tl,
+            start: "left 80%",
+            end: "left 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
+  const scrollItems = [
+    {
+      title: "Smooth Experience",
+      description: "Butter-smooth animations powered by GSAP",
+      color: "#00f2ea"
+    },
+    {
+      title: "Performance First",
+      description: "Optimized for 60fps animations",
+      color: "#0072ff"
+    },
+    {
+      title: "Creative Freedom",
+      description: "Unlimited possibilities for your designs",
+      color: "#ff6b6b"
+    },
+    {
+      title: "Professional Results",
+      description: "Studio-quality animations for your projects",
+      color: "#a855f7"
+    },
+    {
+      title: "Cross Platform",
+      description: "Works perfectly on all devices",
+      color: "#10b981"
+    }
+  ];
+
+  return (
+    <section className="horizontal-scroll-section" ref={sectionRef}>
+      <div className="scroll-trigger" ref={triggerRef}></div>
+      <div className="horizontal-container" ref={horizontalRef}>
+        <div className="horizontal-content">
+          {scrollItems.map((item, index) => (
+            <div key={index} className="scroll-item">
+              <div 
+                className="scroll-card"
+                style={{ 
+                  borderColor: item.color,
+                  background: `linear-gradient(145deg, ${item.color}15, ${item.color}05)`
+                }}
+              >
+                <h3 style={{ color: item.color }}>{item.title}</h3>
+                <p>{item.description}</p>
+                <div 
+                  className="scroll-indicator"
+                  style={{ backgroundColor: item.color }}
+                ></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 
@@ -150,6 +272,9 @@ function App() {
           <VerticalTicker items={tickerItems} speed={30} />
         </div>
       </section>
+
+      {/* Horizontal Scroll Section */}
+      <HorizontalScrollSection />
 
       {/* Features Grid */}
       <section className="features-grid">
