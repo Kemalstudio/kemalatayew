@@ -68,7 +68,7 @@ const HorizontalScrollSection = () => {
     {
       title: "Видеокарта 'Фотон'",
       description: "Фотореалистичная графика нового поколения.",
-      color: "#00c6ff",z
+      color: "#00c6ff",
       image: "/images/videocard.png" 
     },
     {
