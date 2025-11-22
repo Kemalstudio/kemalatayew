@@ -525,7 +525,7 @@ const InteractiveFeaturesSection = () => {
   );
 };
 
-// Секция статистики
+// Секция статистик
 const StatsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
