@@ -57,7 +57,7 @@ const HorizontalScrollSection = () => {
   
   // --- ДАННЫЕ ВАШИХ ПРОДУКТОВ ---
   // ВАЖНО: Замените эти данные на свои продукты.
-  // Поместите изображения в папку `public/images/` вашего проек
+  // Поместите изображения в папку `public/images/` вашего прое
   const scrollItems = [
     {
       title: "Процессор 'Квант'",
@@ -68,7 +68,7 @@ const HorizontalScrollSection = () => {
     {
       title: "Видеокарта 'Фотон'",
       description: "Фотореалистичная графика нового поколения.",
-      color: "#00c6ff",
+      color: "#00c6ff",z
       image: "/images/videocard.png" 
     },
     {
