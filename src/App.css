@@ -256,7 +256,7 @@ body {
   left: 100%;
 }
 
-.project-index {
+.product-index {
   position: absolute;
   top: 25px;
   right: 25px;
@@ -278,11 +278,10 @@ body {
   margin-bottom: 30px;
 }
 
-.project-image {
+.product-image {
   max-width: 90%;
   max-height: 90%;
-  object-fit: cover;
-  border-radius: 12px;
+  object-fit: contain;
   z-index: 2;
   position: relative;
   filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
@@ -316,12 +315,12 @@ body {
   font-size: 1rem;
 }
 
-.tech-list {
+.specs-list {
   list-style: none;
   margin-bottom: 30px;
 }
 
-.tech-list li {
+.specs-list li {
   padding: 8px 0;
   color: rgba(255, 255, 255, 0.8);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -330,19 +329,19 @@ body {
   padding-left: 15px;
 }
 
-.tech-list li::before {
-  content: '▹';
+.specs-list li::before {
+  content: '›';
   position: absolute;
   left: 0;
   color: var(--glow-color);
   font-weight: bold;
 }
 
-.tech-list li:last-child {
+.specs-list li:last-child {
   border-bottom: none;
 }
 
-.project-button {
+.product-button {
   background: transparent;
   border: 2px solid;
   color: white;
@@ -528,24 +527,6 @@ body {
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.6;
   font-size: 1rem;
-  margin-bottom: 20px;
-}
-
-.tech-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-}
-
-.tech-tag {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .card-glow {
@@ -639,7 +620,7 @@ body {
 
 /* Футер */
 .footer {
-  padding: 120px 0 60px;
+  padding: 120px 0;
   background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
   text-align: center;
   position: relative;
@@ -664,41 +645,6 @@ body {
   margin-left: auto;
   margin-right: auto;
   line-height: 1.6;
-}
-
-.footer-info {
-  margin-top: 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 30px;
-}
-
-.contact-info {
-  text-align: left;
-}
-
-.contact-info p {
-  margin-bottom: 10px;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.social-links {
-  display: flex;
-  gap: 20px;
-}
-
-.social-links a {
-  color: #ff6c00;
-  text-decoration: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.social-links a:hover {
-  color: #00c6ff;
 }
 
 /* Параллакс звезды */
@@ -851,11 +797,6 @@ body {
   
   .scroll-section-header h2 {
     font-size: 2.5rem;
-  }
-  
-  .footer-info {
-    flex-direction: column;
-    text-align: center;
   }
 }
 
