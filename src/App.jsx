@@ -853,7 +853,7 @@ function App() {
             transition={{ delay: 0.3 }}
           >
             <div className="contact-info">
-              <p>📧 your.email@example.com</p>
+              <p>📧 your.email@example.co</p>
               <p>📱 +993 (64) 00 - 53 - 74</p>
               <p>📍 Ашхабад, Туркменистан</p>
             </div>
