@@ -720,7 +720,7 @@ function App() {
         <div className="hero-vignette"></div>
       </section>
 
-      {/* Основная горизонтальная секция с проектам */}
+      {/* Основная горизонтальная секция с проекта */}
       <HorizontalScrollSection />
 
       {/* Секция с навыками */}
