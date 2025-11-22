@@ -63,13 +63,13 @@ const HorizontalScrollSection = () => {
       title: "Процессор 'Квант'",
       description: "Непревзойденная мощность для самых требовательных задач.",
       color: "#ff6c00",
-      image: "/images/processor.png" // Пример пути к вашему изображению
+      image: "/images/processor.png"  
     },
     {
       title: "Видеокарта 'Фотон'",
       description: "Фотореалистичная графика нового поколения.",
       color: "#00c6ff",
-      image: "/images/videocard.png" // Пример пути
+      image: "/images/videocard.png" 
     },
     {
       title: "Материнская плата 'Генезис'",
@@ -93,7 +93,7 @@ const HorizontalScrollSection = () => {
       title: "Корпус 'Цитадель'",
       description: "Футуристичный дизайн и продуманное охлаждение.",
       color: "#f59e0b",
-      image: "/images/case.png" // Пример пути
+      image: "/images/case.png" 
     },
   ];
 
