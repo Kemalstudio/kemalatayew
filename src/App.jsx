@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from 'framer-motion';
 import './App.css';
 
-// Компонент вертикального тикера (бегущей ст
+// Компонент вертикального тикера (бегущей с
 const VerticalTicker = ({ items, speed = 50 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
