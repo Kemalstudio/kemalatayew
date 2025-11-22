@@ -114,62 +114,62 @@ const HorizontalScrollSection = () => {
     clamp: false
   });
 
-  const scrollItems = [
+  const portfolioProjects = [
     {
-      title: "Процессор 'Квант'",
-      description: "Непревзойденная мощность для самых требовательных задач.",
+      title: "E-Commerce Platform",
+      description: "Полнофункциональная платформа электронной коммерции с React и Node.js",
       color: "#ff6c00",
-      image: "/images/processor.png",
-      specs: ["8 ядер", "5.2 ГГц", "128 МБ кэш"]
+      image: "/images/ecommerce.png",
+      tech: ["React", "Node.js", "MongoDB", "Stripe API"]
     },
     {
-      title: "Видеокарта 'Фотон'",
-      description: "Фотореалистичная графика нового поколения.",
+      title: "Task Management App",
+      description: "Приложение для управления задачами с реальным временем обновления",
       color: "#00c6ff",
-      image: "/images/videocard.png",
-      specs: ["24 ГБ GDDR6X", "RTX ускорение", "4K 240FPS"]
+      image: "/images/taskapp.png",
+      tech: ["React Native", "Firebase", "Redux", "Push Notifications"]
     },
     {
-      title: "Материнская плата 'Генезис'",
-      description: "Надежная основа для вашей идеальной сборки.",
+      title: "Social Media Dashboard",
+      description: "Панель управления социальными сетями с аналитикой в реальном времени",
       color: "#e91e63",
-      image: "/images/motherboard.png",
-      specs: ["PCIe 5.0", "4 слота M.2", "Wi-Fi 6E"]
+      image: "/images/dashboard.png",
+      tech: ["Vue.js", "Express", "PostgreSQL", "Chart.js"]
     },
     {
-      title: "SSD 'Импульс'",
-      description: "Молниеносная скорость загрузки игр и приложений.",
+      title: "Weather Forecast App",
+      description: "Приложение прогноза погоды с красивым UI и офлайн-режимом",
       color: "#a855f7",
-      image: "/images/ssd.png",
-      specs: ["7 ГБ/с чтение", "6.5 ГБ/с запись", "2 ТБ память"]
+      image: "/images/weather.png",
+      tech: ["React", "Weather API", "PWA", "Local Storage"]
     },
     {
-      title: "ОЗУ 'Вектор'",
-      description: "Высокочастотная память для максимальной производительности.",
+      title: "Fitness Tracker",
+      description: "Трекер фитнеса с мониторингом активности и целей",
       color: "#10b981",
-      image: "/images/ram.png",
-      specs: ["DDR5 6400 МГц", "CL32 тайминги", "RGB подсветка"]
+      image: "/images/fitness.png",
+      tech: ["React Native", "Health APIs", "GraphQL", "Apple HealthKit"]
     },
     {
-      title: "Корпус 'Цитадель'",
-      description: "Футуристичный дизайн и продуманное охлаждение.",
+      title: "Portfolio Website",
+      description: "Анимированное портфолио с современным дизайном и интерактивностью",
       color: "#f59e0b",
-      image: "/images/case.png",
-      specs: ["Температурное стекло", "4 вентилятора", "USB-C фронтальный"]
+      image: "/images/portfolio.png",
+      tech: ["React", "Framer Motion", "Three.js", "GSAP"]
     },
     {
-      title: "Блок питания 'Титан'",
-      description: "Стабильное питание для вашей системы.",
+      title: "Chat Application",
+      description: "Приложение реального времени чата с комнатами и файловым обменом",
       color: "#6366f1",
-      image: "/images/psu.png",
-      specs: ["1200W 80+ Platinum", "Полная модульность", "12-летняя гарантия"]
+      image: "/images/chat.png",
+      tech: ["Socket.io", "React", "Node.js", "File Upload"]
     },
     {
-      title: "Охлаждение 'Арктика'",
-      description: "Эффективное охлаждение для разгона.",
+      title: "Learning Platform",
+      description: "Образовательная платформа с курсами и системой прогресса",
       color: "#06b6d4",
-      image: "/images/cooler.png",
-      specs: ["360mm радиатор", "6 тепловых трубок", "ARGB синхронизация"]
+      image: "/images/learning.png",
+      tech: ["Next.js", "Prisma", "MySQL", "Video Streaming"]
     }
   ];
 
@@ -184,7 +184,7 @@ const HorizontalScrollSection = () => {
           transition={{ duration: 1.2, ease: "easeOut" }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          ИЗУЧИТЕ НАШ АРСЕНАЛ
+          МОИ ПРОЕКТЫ
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 30 }}
@@ -192,7 +192,7 @@ const HorizontalScrollSection = () => {
           transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          Погрузитесь в мир наших технологий с помощью интерактивной прокрутки
+          Исследуйте мои работы через интерактивную прокрутку
         </motion.p>
       </div>
 
@@ -201,7 +201,7 @@ const HorizontalScrollSection = () => {
           className="horizontal-scroll-content"
           style={{ x: smoothX }}
         >
-          {scrollItems.map((item, index) => (
+          {portfolioProjects.map((project, index) => (
             <motion.div
               key={index}
               className="horizontal-card"
@@ -220,11 +220,11 @@ const HorizontalScrollSection = () => {
                 transition: { duration: 0.5, ease: "easeOut" } 
               }}
             >
-              <div className="card-inner" style={{ '--glow-color': item.color }}>
+              <div className="card-inner" style={{ '--glow-color': project.color }}>
                 <div className="card-glare"></div>
                 
                 <motion.div 
-                  className="product-index"
+                  className="project-index"
                   initial={{ opacity: 0, scale: 0 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.15 + 0.5, duration: 0.8 }}
@@ -238,9 +238,9 @@ const HorizontalScrollSection = () => {
                   transition={{ duration: 0.6, ease: "easeOut" }}
                 >
                   <motion.img 
-                    src={item.image} 
-                    alt={item.title} 
-                    className="product-image" 
+                    src={project.image} 
+                    alt={project.title} 
+                    className="project-image" 
                     whileHover={{ rotateY: 15, scale: 1.1 }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                   />
@@ -264,41 +264,41 @@ const HorizontalScrollSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.15 + 0.3 }}
                   >
-                    {item.title}
+                    {project.title}
                   </motion.h3>
                   <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.15 + 0.4 }}
                   >
-                    {item.description}
+                    {project.description}
                   </motion.p>
                   
-                  <motion.ul className="specs-list">
-                    {item.specs.map((spec, specIndex) => (
+                  <motion.ul className="tech-list">
+                    {project.tech.map((tech, techIndex) => (
                       <motion.li 
-                        key={specIndex}
+                        key={techIndex}
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ 
-                          delay: index * 0.15 + 0.5 + specIndex * 0.1,
+                          delay: index * 0.15 + 0.5 + techIndex * 0.1,
                           duration: 0.6 
                         }}
                       >
-                        {spec}
+                        {tech}
                       </motion.li>
                     ))}
                   </motion.ul>
                   
                   <motion.button 
-                    className="product-button"
+                    className="project-button"
                     whileHover={{ 
                       scale: 1.05,
-                      backgroundColor: item.color,
+                      backgroundColor: project.color,
                       y: -2
                     }}
                     whileTap={{ scale: 0.95 }}
-                    style={{ borderColor: item.color }}
+                    style={{ borderColor: project.color }}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.15 + 0.8 }}
@@ -307,7 +307,7 @@ const HorizontalScrollSection = () => {
                       animate={{ x: [0, 5, 0] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
-                      Узнать больше ›
+                      Посмотреть проект ›
                     </motion.span>
                   </motion.button>
                 </div>
@@ -342,7 +342,7 @@ const HorizontalScrollSection = () => {
             ease: "easeInOut" 
           }}
         >
-          {isVisible ? "🌀 СИСТЕМА АКТИВИРОВАНА" : "⌛ НАЧНИТЕ ПРОКРУТКУ"}
+          {isVisible ? "🌀 ПРОЕКТЫ ЗАГРУЖЕНЫ" : "⌛ НАЧНИТЕ ПРОКРУТКУ"}
         </motion.div>
       </motion.div>
 
@@ -383,8 +383,8 @@ const HorizontalScrollSection = () => {
   );
 };
 
-// Секция с интерактивными возможностями
-const InteractiveFeaturesSection = () => {
+// Секция с навыками
+const SkillsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -394,37 +394,37 @@ const InteractiveFeaturesSection = () => {
   const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 0.8]);
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
 
-  const features = [
+  const skills = [
     {
-      icon: "🚀",
-      title: "Максимальная производительность",
-      description: "Оптимизированная архитектура для игр и профессиональных приложений",
+      icon: "⚛️",
+      title: "Frontend Development",
+      description: "React, Vue.js, TypeScript, Modern CSS, Responsive Design",
       gradient: "from-purple-500 to-pink-500"
     },
     {
-      icon: "❄️",
-      title: "Эффективное охлаждение",
-      description: "Инновационная система охлаждения с минимальным уровнем шума",
+      icon: "🔧",
+      title: "Backend Development",
+      description: "Node.js, Express, Python, REST APIs, Database Design",
       gradient: "from-cyan-500 to-blue-500"
     },
     {
-      icon: "⚡",
-      title: "Энергоэффективность",
-      description: "Передовые технологии энергосбережения без компромиссов в мощности",
+      icon: "📱",
+      title: "Mobile Development",
+      description: "React Native, iOS & Android, Cross-platform Solutions",
       gradient: "from-green-500 to-emerald-500"
     },
     {
-      icon: "🔧",
-      title: "Простота установки",
-      description: "Интуитивно понятный монтаж и настройка для любого пользователя",
+      icon: "🛠️",
+      title: "Tools & Technologies",
+      description: "Git, Docker, AWS, CI/CD, Testing, Agile Methodology",
       gradient: "from-orange-500 to-red-500"
     }
   ];
 
   return (
-    <section ref={containerRef} className="interactive-features">
+    <section ref={containerRef} className="skills-section">
       <motion.div 
-        className="features-background"
+        className="skills-background"
         style={{ scale, y }}
       />
       
@@ -453,7 +453,7 @@ const InteractiveFeaturesSection = () => {
               color: "transparent"
             }}
           >
-            ИННОВАЦИОННЫЕ ВОЗМОЖНОСТИ
+            МОИ НАВЫКИ
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -461,15 +461,15 @@ const InteractiveFeaturesSection = () => {
             transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
             viewport={{ once: true, margin: "-100px" }}
           >
-            Откройте для себя технологии будущего уже сегодня
+            Технологии и инструменты, которые я использую для создания цифровых решений
           </motion.p>
         </motion.div>
 
-        <div className="features-grid-interactive">
-          {features.map((feature, index) => (
+        <div className="skills-grid">
+          {skills.map((skill, index) => (
             <motion.div
               key={index}
-              className="interactive-card"
+              className="skill-card"
               initial={{ opacity: 0, y: 60, scale: 0.9 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ 
@@ -485,7 +485,7 @@ const InteractiveFeaturesSection = () => {
               }}
             >
               <motion.div 
-                className="card-icon"
+                className="skill-icon"
                 animate={{ 
                   rotate: [0, 10, -5, 0],
                   scale: [1, 1.1, 1.05, 1]
@@ -497,14 +497,14 @@ const InteractiveFeaturesSection = () => {
                   ease: "easeInOut"
                 }}
               >
-                {feature.icon}
+                {skill.icon}
               </motion.div>
               
-              <h3>{feature.title}</h3>
-              <p>{feature.description}</p>
+              <h3>{skill.title}</h3>
+              <p>{skill.description}</p>
               
               <motion.div 
-                className="card-glow"
+                className="skill-glow"
                 animate={{ 
                   opacity: [0.2, 0.5, 0.2],
                   scale: [1, 1.3, 1],
@@ -525,6 +525,7 @@ const InteractiveFeaturesSection = () => {
   );
 };
 
+// Секция статистики
 const StatsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -536,10 +537,10 @@ const StatsSection = () => {
   const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
 
   const stats = [
-    { number: "99.9%", label: "Надежность системы", suffix: "" },
-    { number: "2.5x", label: "Выше производительность", suffix: "" },
-    { number: "45", label: "Дней бесперебойной работы", suffix: "" },
-    { number: "10", label: "Лет гарантии", suffix: "+" }
+    { number: "25", label: "Завершенных проектов", suffix: "+" },
+    { number: "3", label: "Года опыта", suffix: "+" },
+    { number: "15", label: "Довольных клиентов", suffix: "+" },
+    { number: "99", label: "Успешных решений", suffix: "%" }
   ];
 
   return (
@@ -608,34 +609,34 @@ const StatsSection = () => {
 function App() {
   const features = [
     { 
-      title: "Простой API", 
-      description: "Интуитивный API, который легко освоить.",
-      icon: "⚡"
+      title: "React Development", 
+      description: "Современные React приложения с hooks и контекстом",
+      icon: "⚛️"
     },
     { 
-      title: "Трансформации", 
-      description: "Независимая анимация x, y, вращения и других свойств.",
-      icon: "🔄"
+      title: "Responsive Design", 
+      description: "Адаптивный дизайн для всех устройств и экранов",
+      icon: "📱"
     },
     { 
-      title: "Анимация прокрутки", 
-      description: "Плавная, аппаратно-ускоренная анимация при скролле.",
-      icon: "📜"
+      title: "API Integration", 
+      description: "Интеграция с REST API и сторонними сервисами",
+      icon: "🔌"
     },
     { 
-      title: "Анимация выхода", 
-      description: "Легкая анимация элементов при их исчезновении со страницы.",
-      icon: "👋"
+      title: "Database Design", 
+      description: "Проектирование и оптимизация баз данных",
+      icon: "🗃️"
     },
     { 
-      title: "Жесты", 
-      description: "Нативная поддержка жестов наведения, нажатия и перетаскивания.",
-      icon: "👆"
+      title: "Mobile Apps", 
+      description: "Кроссплатформенные мобильные приложения",
+      icon: "📲"
     },
     { 
-      title: "Анимация макета", 
-      description: "Анимация переходов между различными состояниями макета.",
-      icon: "🎭"
+      title: "UI/UX Design", 
+      description: "Создание интуитивных пользовательских интерфейсов",
+      icon: "🎨"
     },
   ];
 
@@ -653,7 +654,7 @@ function App() {
             animate={{ opacity: 1, y: 0, skewX: 0 }}
             transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            ТЕХНОЛОГИИ <span className="highlight">БУДУЩЕГО</span>
+            JUNIOR <span className="highlight">FULL STACK</span> DEVELOPER
           </motion.h1>
           
           <motion.p
@@ -661,7 +662,7 @@ function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            Представляем новое поколение высокопроизводительных решений для геймеров и профессионалов
+            Создаю современные веб и мобильные приложения с фокусом на пользовательский опыт и производительность
           </motion.p>
 
           <motion.div
@@ -676,7 +677,7 @@ function App() {
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              Начать сборку
+              Связаться со мной
             </motion.button>
             <motion.button 
               className="btn-secondary"
@@ -684,7 +685,7 @@ function App() {
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              Смотреть обзор
+              Скачать резюме
             </motion.button>
           </motion.div>
         </div>
@@ -697,7 +698,7 @@ function App() {
               }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              КЛЮЧЕВЫЕ ОСОБЕННОСТИ
+              ТЕХНОЛОГИИ
             </motion.span>
           </div>
           <VerticalTicker items={tickerItems} speed={50} />
@@ -719,17 +720,17 @@ function App() {
         <div className="hero-vignette"></div>
       </section>
 
-      {/* Основная горизонтальная секция */}
+      {/* Основная горизонтальная секция с проектами */}
       <HorizontalScrollSection />
 
-      {/* Секция с интерактивными возможностями */}
-      <InteractiveFeaturesSection />
+      {/* Секция с навыками */}
+      <SkillsSection />
 
       {/* Секция со статистикой */}
       <StatsSection />
 
-      {/* Сетка характеристик */}
-      <section className="features-grid">
+      {/* Сетка услуг */}
+      <section className="services-grid">
         <div className="container">
           <motion.div
             className="section-header"
@@ -738,15 +739,15 @@ function App() {
             transition={{ duration: 1.2, ease: "easeOut" }}
             viewport={{ once: true, margin: "-100px" }}
           >
-            <h2>Технические характеристики</h2>
-            <p>Полный обзор всех возможностей наших технологий</p>
+            <h2>Мои Услуги</h2>
+            <p>Полный цикл разработки от идеи до запуска</p>
           </motion.div>
 
-          <div className="features-grid-content">
-            {features.map((feature, index) => (
+          <div className="services-grid-content">
+            {features.map((service, index) => (
               <motion.div
                 key={index}
-                className="feature-card"
+                className="service-card"
                 initial={{ opacity: 0, y: 60, scale: 0.9 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ 
@@ -761,11 +762,11 @@ function App() {
                   transition: { duration: 0.4, ease: "easeOut" }
                 }}
               >
-                <div className="feature-card-glow"></div>
-                <div className="feature-icon">{feature.icon}</div>
-                <div className="feature-card-content">
-                  <h3>{feature.title}</h3>
-                  <p>{feature.description}</p>
+                <div className="service-card-glow"></div>
+                <div className="service-icon">{service.icon}</div>
+                <div className="service-card-content">
+                  <h3>{service.title}</h3>
+                  <p>{service.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -819,15 +820,15 @@ function App() {
             whileInView={{ y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h3>ГОТОВЫ К ИННОВАЦИЯМ?</h3>
-            <p>Присоединяйтесь к будущему технологий сегодня</p>
+            <h3>ГОТОВЫ К СОТРУДНИЧЕСТВУ?</h3>
+            <p>Давайте создадим что-то удивительное вместе</p>
             <motion.button
               className="btn-primary"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              Связаться с нами
+              Начать проект
             </motion.button>
           </motion.div>
         </div>
@@ -837,5 +838,3 @@ function App() {
 }
 
 export default App;
-
-// helloworldhelloworldpythonr
