@@ -854,7 +854,7 @@ function App() {
           >
             <div className="contact-info">
               <p>📧 your.email@example.com</p>
-              <p>📱 +7 (999) 999-99-99</p>
+              <p>📱 +993 (64) 00 - 53 - 74</p>
               <p>📍 Москва, Россия</p>
             </div>
             <div className="social-links">
