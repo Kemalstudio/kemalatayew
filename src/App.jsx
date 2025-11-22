@@ -87,7 +87,7 @@ const HorizontalScrollSection = () => {
       title: "ОЗУ 'Вектор'",
       description: "Высокочастотная память для максимальной производительности.",
       color: "#10b981",
-      image: "/images/ram.png" // Пример пут
+      image: "/images/ram.png" // Пример пу
     },
     {
       title: "Корпус 'Цитадель'",
