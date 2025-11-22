@@ -80,8 +80,8 @@ const SmoothParallaxStars = () => {
   );
 };
 
-// Компонент горизонтальной прокрутки для проектов
-const ProjectsScrollSection = () => {
+// Компонент горизонтальной прокрутки
+const HorizontalScrollSection = () => {
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -114,55 +114,62 @@ const ProjectsScrollSection = () => {
     clamp: false
   });
 
-  // Данные проектов для портфолио
-  const projects = [
+  const scrollItems = [
     {
-      title: "Веб-приложение E-commerce",
-      description: "Полнофункциональный интернет-магазин с системой оплаты и админ-панелью",
+      title: "Процессор 'Квант'",
+      description: "Непревзойденная мощность для самых требовательных задач.",
       color: "#ff6c00",
-      image: "/images/project1.jpg",
-      technologies: ["React", "Node.js", "MongoDB", "Stripe API"],
-      link: "#"
+      image: "/images/processor.png",
+      specs: ["8 ядер", "5.2 ГГц", "128 МБ кэш"]
     },
     {
-      title: "Мобильное приложение",
-      description: "Кроссплатформенное приложение для управления задачами с облачной синхронизацией",
+      title: "Видеокарта 'Фотон'",
+      description: "Фотореалистичная графика нового поколения.",
       color: "#00c6ff",
-      image: "/images/project2.jpg",
-      technologies: ["React Native", "Firebase", "Redux", "TypeScript"],
-      link: "#"
+      image: "/images/videocard.png",
+      specs: ["24 ГБ GDDR6X", "RTX ускорение", "4K 240FPS"]
     },
     {
-      title: "Дашборд аналитики",
-      description: "Интерактивная панель управления с графиками и реальными метриками",
+      title: "Материнская плата 'Генезис'",
+      description: "Надежная основа для вашей идеальной сборки.",
       color: "#e91e63",
-      image: "/images/project3.jpg",
-      technologies: ["Vue.js", "D3.js", "Express", "PostgreSQL"],
-      link: "#"
+      image: "/images/motherboard.png",
+      specs: ["PCIe 5.0", "4 слота M.2", "Wi-Fi 6E"]
     },
     {
-      title: "Социальная платформа",
-      description: "Социальная сеть с функциями обмена контентом и мессенджером",
+      title: "SSD 'Импульс'",
+      description: "Молниеносная скорость загрузки игр и приложений.",
       color: "#a855f7",
-      image: "/images/project4.jpg",
-      technologies: ["Next.js", "GraphQL", "WebSocket", "Redis"],
-      link: "#"
+      image: "/images/ssd.png",
+      specs: ["7 ГБ/с чтение", "6.5 ГБ/с запись", "2 ТБ память"]
     },
     {
-      title: "Портал образования",
-      description: "Онлайн-платформа для дистанционного обучения с видеолекциями",
+      title: "ОЗУ 'Вектор'",
+      description: "Высокочастотная память для максимальной производительности.",
       color: "#10b981",
-      image: "/images/project5.jpg",
-      technologies: ["Angular", "NestJS", "MySQL", "AWS S3"],
-      link: "#"
+      image: "/images/ram.png",
+      specs: ["DDR5 6400 МГц", "CL32 тайминги", "RGB подсветка"]
     },
     {
-      title: "Арт-портфолио",
-      description: "Интерактивная галерея для художника с 3D просмотром работ",
+      title: "Корпус 'Цитадель'",
+      description: "Футуристичный дизайн и продуманное охлаждение.",
       color: "#f59e0b",
-      image: "/images/project6.jpg",
-      technologies: ["Three.js", "React", "Framer Motion", "GSAP"],
-      link: "#"
+      image: "/images/case.png",
+      specs: ["Температурное стекло", "4 вентилятора", "USB-C фронтальный"]
+    },
+    {
+      title: "Блок питания 'Титан'",
+      description: "Стабильное питание для вашей системы.",
+      color: "#6366f1",
+      image: "/images/psu.png",
+      specs: ["1200W 80+ Platinum", "Полная модульность", "12-летняя гарантия"]
+    },
+    {
+      title: "Охлаждение 'Арктика'",
+      description: "Эффективное охлаждение для разгона.",
+      color: "#06b6d4",
+      image: "/images/cooler.png",
+      specs: ["360mm радиатор", "6 тепловых трубок", "ARGB синхронизация"]
     }
   ];
 
@@ -177,7 +184,7 @@ const ProjectsScrollSection = () => {
           transition={{ duration: 1.2, ease: "easeOut" }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          МОИ ПРОЕКТЫ
+          ИЗУЧИТЕ НАШ АРСЕНАЛ
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 30 }}
@@ -185,7 +192,7 @@ const ProjectsScrollSection = () => {
           transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          Исследуйте мои работы - от веб-приложений до мобильных решений
+          Погрузитесь в мир наших технологий с помощью интерактивной прокрутки
         </motion.p>
       </div>
 
@@ -194,7 +201,7 @@ const ProjectsScrollSection = () => {
           className="horizontal-scroll-content"
           style={{ x: smoothX }}
         >
-          {projects.map((project, index) => (
+          {scrollItems.map((item, index) => (
             <motion.div
               key={index}
               className="horizontal-card"
@@ -213,11 +220,11 @@ const ProjectsScrollSection = () => {
                 transition: { duration: 0.5, ease: "easeOut" } 
               }}
             >
-              <div className="card-inner" style={{ '--glow-color': project.color }}>
+              <div className="card-inner" style={{ '--glow-color': item.color }}>
                 <div className="card-glare"></div>
                 
                 <motion.div 
-                  className="project-index"
+                  className="product-index"
                   initial={{ opacity: 0, scale: 0 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.15 + 0.5, duration: 0.8 }}
@@ -231,9 +238,9 @@ const ProjectsScrollSection = () => {
                   transition={{ duration: 0.6, ease: "easeOut" }}
                 >
                   <motion.img 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="project-image" 
+                    src={item.image} 
+                    alt={item.title} 
+                    className="product-image" 
                     whileHover={{ rotateY: 15, scale: 1.1 }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                   />
@@ -257,51 +264,50 @@ const ProjectsScrollSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.15 + 0.3 }}
                   >
-                    {project.title}
+                    {item.title}
                   </motion.h3>
                   <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.15 + 0.4 }}
                   >
-                    {project.description}
+                    {item.description}
                   </motion.p>
                   
-                  <motion.ul className="tech-list">
-                    {project.technologies.map((tech, techIndex) => (
+                  <motion.ul className="specs-list">
+                    {item.specs.map((spec, specIndex) => (
                       <motion.li 
-                        key={techIndex}
+                        key={specIndex}
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ 
-                          delay: index * 0.15 + 0.5 + techIndex * 0.1,
+                          delay: index * 0.15 + 0.5 + specIndex * 0.1,
                           duration: 0.6 
                         }}
                       >
-                        {tech}
+                        {spec}
                       </motion.li>
                     ))}
                   </motion.ul>
                   
                   <motion.button 
-                    className="project-button"
+                    className="product-button"
                     whileHover={{ 
                       scale: 1.05,
-                      backgroundColor: project.color,
+                      backgroundColor: item.color,
                       y: -2
                     }}
                     whileTap={{ scale: 0.95 }}
-                    style={{ borderColor: project.color }}
+                    style={{ borderColor: item.color }}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.15 + 0.8 }}
-                    onClick={() => window.open(project.link, '_blank')}
                   >
                     <motion.span
                       animate={{ x: [0, 5, 0] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
-                      Смотреть проект ›
+                      Узнать больше ›
                     </motion.span>
                   </motion.button>
                 </div>
@@ -336,7 +342,7 @@ const ProjectsScrollSection = () => {
             ease: "easeInOut" 
           }}
         >
-          {isVisible ? "🌀 ПРОКРУЧИВАЙТЕ ДАЛЬШЕ" : "⌛ НАЧНИТЕ ПРОКРУТКУ"}
+          {isVisible ? "🌀 СИСТЕМА АКТИВИРОВАНА" : "⌛ НАЧНИТЕ ПРОКРУТКУ"}
         </motion.div>
       </motion.div>
 
@@ -377,8 +383,8 @@ const ProjectsScrollSection = () => {
   );
 };
 
-// Секция с навыками
-const SkillsSection = () => {
+// Секция с интерактивными возможностями
+const InteractiveFeaturesSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -388,30 +394,30 @@ const SkillsSection = () => {
   const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 0.8]);
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
 
-  const skills = [
+  const features = [
     {
-      icon: "⚛️",
-      title: "Frontend Разработка",
-      description: "Создание современных пользовательских интерфейсов с React, Vue и Angular",
-      technologies: ["React", "Vue.js", "TypeScript", "Tailwind CSS"]
+      icon: "🚀",
+      title: "Максимальная производительность",
+      description: "Оптимизированная архитектура для игр и профессиональных приложений",
+      gradient: "from-purple-500 to-pink-500"
+    },
+    {
+      icon: "❄️",
+      title: "Эффективное охлаждение",
+      description: "Инновационная система охлаждения с минимальным уровнем шума",
+      gradient: "from-cyan-500 to-blue-500"
+    },
+    {
+      icon: "⚡",
+      title: "Энергоэффективность",
+      description: "Передовые технологии энергосбережения без компромиссов в мощности",
+      gradient: "from-green-500 to-emerald-500"
     },
     {
       icon: "🔧",
-      title: "Backend Разработка",
-      description: "Разработка серверной части приложений и REST API",
-      technologies: ["Node.js", "Python", "PostgreSQL", "MongoDB"]
-    },
-    {
-      icon: "📱",
-      title: "Мобильная Разработка",
-      description: "Создание кроссплатформенных мобильных приложений",
-      technologies: ["React Native", "Flutter", "iOS", "Android"]
-    },
-    {
-      icon: "🎨",
-      title: "UI/UX Дизайн",
-      description: "Проектирование пользовательских интерфейсов и пользовательского опыта",
-      technologies: ["Figma", "Adobe XD", "Prototyping", "User Research"]
+      title: "Простота установки",
+      description: "Интуитивно понятный монтаж и настройка для любого пользователя",
+      gradient: "from-orange-500 to-red-500"
     }
   ];
 
@@ -447,7 +453,7 @@ const SkillsSection = () => {
               color: "transparent"
             }}
           >
-            МОИ НАВЫКИ
+            ИННОВАЦИОННЫЕ ВОЗМОЖНОСТИ
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -455,12 +461,12 @@ const SkillsSection = () => {
             transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
             viewport={{ once: true, margin: "-100px" }}
           >
-            Полный спектр технологий и инструментов для создания цифровых продуктов
+            Откройте для себя технологии будущего уже сегодня
           </motion.p>
         </motion.div>
 
         <div className="features-grid-interactive">
-          {skills.map((skill, index) => (
+          {features.map((feature, index) => (
             <motion.div
               key={index}
               className="interactive-card"
@@ -491,26 +497,11 @@ const SkillsSection = () => {
                   ease: "easeInOut"
                 }}
               >
-                {skill.icon}
+                {feature.icon}
               </motion.div>
               
-              <h3>{skill.title}</h3>
-              <p>{skill.description}</p>
-              
-              <div className="tech-tags">
-                {skill.technologies.map((tech, techIndex) => (
-                  <motion.span 
-                    key={techIndex}
-                    className="tech-tag"
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.2 + techIndex * 0.1 }}
-                    whileHover={{ scale: 1.1 }}
-                  >
-                    {tech}
-                  </motion.span>
-                ))}
-              </div>
+              <h3>{feature.title}</h3>
+              <p>{feature.description}</p>
               
               <motion.div 
                 className="card-glow"
@@ -534,8 +525,8 @@ const SkillsSection = () => {
   );
 };
 
-// Секция опыта работы
-const ExperienceSection = () => {
+// Секция статистики
+const StatsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -545,11 +536,11 @@ const ExperienceSection = () => {
   const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 0.8]);
   const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
 
-  const experiences = [
-    { number: "5+", label: "Лет опыта", suffix: "" },
-    { number: "50+", label: "Завершенных проектов", suffix: "" },
-    { number: "30+", label: "Довольных клиентов", suffix: "" },
-    { number: "15", label: "Технологий освоено", suffix: "+" }
+  const stats = [
+    { number: "99.9%", label: "Надежность системы", suffix: "" },
+    { number: "2.5x", label: "Выше производительность", suffix: "" },
+    { number: "45", label: "Дней бесперебойной работы", suffix: "" },
+    { number: "10", label: "Лет гарантии", suffix: "+" }
   ];
 
   return (
@@ -567,7 +558,7 @@ const ExperienceSection = () => {
           transition={{ duration: 1.2 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          {experiences.map((exp, index) => (
+          {stats.map((stat, index) => (
             <motion.div
               key={index}
               className="stat-item"
@@ -596,8 +587,8 @@ const ExperienceSection = () => {
                   delay: index * 0.5
                 }}
               >
-                {exp.number}
-                <span className="stat-suffix">{exp.suffix}</span>
+                {stat.number}
+                <span className="stat-suffix">{stat.suffix}</span>
               </motion.div>
               <motion.div 
                 className="stat-label"
@@ -605,51 +596,51 @@ const ExperienceSection = () => {
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: index * 0.15 + 0.3 }}
               >
-                {exp.label}
+                {stat.label}
               </motion.div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
 };
 
 function App() {
-  const aboutMe = [
+  const features = [
     { 
-      title: "Веб-разработка", 
-      description: "Создание современных адаптивных веб-приложений с использованием последних технологий",
-      icon: "💻"
-    },
-    { 
-      title: "UI/UX Дизайн", 
-      description: "Проектирование интуитивных интерфейсов с фокусом на пользовательский опыт",
-      icon: "🎨"
-    },
-    { 
-      title: "Мобильная разработка", 
-      description: "Разработка кроссплатформенных мобильных приложений для iOS и Android",
-      icon: "📱"
-    },
-    { 
-      title: "Оптимизация", 
-      description: "Повышение производительности и скорости загрузки веб-приложений",
+      title: "Простой API", 
+      description: "Интуитивный API, который легко освоить.",
       icon: "⚡"
     },
     { 
-      title: "Тестирование", 
-      description: "Гарантия качества через автоматизированное и ручное тестирование",
-      icon: "🔍"
+      title: "Трансформации", 
+      description: "Независимая анимация x, y, вращения и других свойств.",
+      icon: "🔄"
     },
     { 
-      title: "Консалтинг", 
-      description: "Техническое консультирование и архитектурные решения для проектов",
-      icon: "🚀"
+      title: "Анимация прокрутки", 
+      description: "Плавная, аппаратно-ускоренная анимация при скролле.",
+      icon: "📜"
+    },
+    { 
+      title: "Анимация выхода", 
+      description: "Легкая анимация элементов при их исчезновении со страницы.",
+      icon: "👋"
+    },
+    { 
+      title: "Жесты", 
+      description: "Нативная поддержка жестов наведения, нажатия и перетаскивания.",
+      icon: "👆"
+    },
+    { 
+      title: "Анимация макета", 
+      description: "Анимация переходов между различными состояниями макета.",
+      icon: "🎭"
     },
   ];
 
-  const tickerItems = aboutMe.map(item => item.title);
+  const tickerItems = features.map(feature => feature.title);
 
   return (
     <div className="app">
@@ -663,7 +654,7 @@ function App() {
             animate={{ opacity: 1, y: 0, skewX: 0 }}
             transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            ПРИВЕТ, Я <span className="highlight">ВЕБ-РАЗРАБОТЧИК</span>
+            ТЕХНОЛОГИИ <span className="highlight">БУДУЩЕГО</span>
           </motion.h1>
           
           <motion.p
@@ -671,7 +662,7 @@ function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            Создаю современные цифровые продукты с фокусом на пользовательский опыт и производительность
+            Представляем новое поколение высокопроизводительных решений для геймеров и профессионалов
           </motion.p>
 
           <motion.div
@@ -686,7 +677,7 @@ function App() {
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              Связаться со мной
+              Начать сборку
             </motion.button>
             <motion.button 
               className="btn-secondary"
@@ -694,7 +685,7 @@ function App() {
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              Скачать резюме
+              Смотреть обзор
             </motion.button>
           </motion.div>
         </div>
@@ -707,7 +698,7 @@ function App() {
               }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              ОСНОВНЫЕ НАПРАВЛЕНИЯ
+              КЛЮЧЕВЫЕ ОСОБЕННОСТИ
             </motion.span>
           </div>
           <VerticalTicker items={tickerItems} speed={50} />
@@ -729,16 +720,16 @@ function App() {
         <div className="hero-vignette"></div>
       </section>
 
-      {/* Секция с проектами */}
-      <ProjectsScrollSection />
+      {/* Основная горизонтальная секция */}
+      <HorizontalScrollSection />
 
-      {/* Секция с навыками */}
-      <SkillsSection />
+      {/* Секция с интерактивными возможностями */}
+      <InteractiveFeaturesSection />
 
-      {/* Секция с опытом */}
-      <ExperienceSection />
+      {/* Секция со статистикой */}
+      <StatsSection />
 
-      {/* Секция "Обо мне" */}
+      {/* Сетка характеристик */}
       <section className="features-grid">
         <div className="container">
           <motion.div
@@ -748,12 +739,12 @@ function App() {
             transition={{ duration: 1.2, ease: "easeOut" }}
             viewport={{ once: true, margin: "-100px" }}
           >
-            <h2>Чем я занимаюсь</h2>
-            <p>Полный цикл разработки - от идеи до запуска продукта</p>
+            <h2>Технические характеристики</h2>
+            <p>Полный обзор всех возможностей наших технологий</p>
           </motion.div>
 
           <div className="features-grid-content">
-            {aboutMe.map((item, index) => (
+            {features.map((feature, index) => (
               <motion.div
                 key={index}
                 className="feature-card"
@@ -772,10 +763,10 @@ function App() {
                 }}
               >
                 <div className="feature-card-glow"></div>
-                <div className="feature-icon">{item.icon}</div>
+                <div className="feature-icon">{feature.icon}</div>
                 <div className="feature-card-content">
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
+                  <h3>{feature.title}</h3>
+                  <p>{feature.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -783,18 +774,14 @@ function App() {
         </div>
       </section>
       
-      {/* Бегущая строка с технологиями */}
+      {/* Бегущая строка */}
       <section className="continuous-ticker-section">
         <motion.div
           className="continuous-ticker"
           animate={{ x: ['0%', '-100%'] }}
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
         >
-          {[
-            "React", "Vue.js", "TypeScript", "Node.js", "Python", 
-            "MongoDB", "PostgreSQL", "AWS", "Docker", "Figma",
-            "React Native", "GraphQL", "Next.js", "Tailwind CSS", "Git"
-          ].map((tech, index) => (
+          {[...tickerItems, ...tickerItems, ...tickerItems].map((item, index) => (
             <motion.div 
               key={index} 
               className="ticker-word" 
@@ -805,7 +792,7 @@ function App() {
               }} 
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              {tech}
+              {item}
               <motion.span 
                 className="dot"
                 animate={{ scale: [1, 1.5, 1] }}
@@ -833,35 +820,16 @@ function App() {
             whileInView={{ y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h3>ГОТОВЫ К СОТРУДНИЧЕСТВУ?</h3>
-            <p>Давайте создадим что-то удивительное вместе. Свяжитесь со мной для обсуждения вашего проекта</p>
+            <h3>ГОТОВЫ К ИННОВАЦИЯМ?</h3>
+            <p>Присоединяйтесь к будущему технологий сегодня</p>
             <motion.button
               className="btn-primary"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              onClick={() => window.location.href = 'mailto:your.email@example.com'}
             >
-              Начать проект
+              Связаться с нами
             </motion.button>
-          </motion.div>
-          
-          <motion.div 
-            className="footer-info"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <div className="contact-info">
-              <p>📧 your.em</p>
-              <p>📱 +993 (64) 00 - 53 - 74</p>
-              <p>📍 Ашхабад, Туркменистан</p>
-            </div>
-            <div className="social-links">
-              <motion.a whileHover={{ scale: 1.2 }}>GitHub</motion.a>
-              <motion.a whileHover={{ scale: 1.2 }}>LinkedIn</motion.a>
-              <motion.a whileHover={{ scale: 1.2 }}>Telegram</motion.a>
-            </div>
           </motion.div>
         </div>
       </motion.footer>
