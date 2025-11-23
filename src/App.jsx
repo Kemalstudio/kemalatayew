@@ -73,8 +73,6 @@ const Magnetic = ({ children }) => {
   return React.cloneElement(children, { ref });
 };
 
-
-// Компонент вертикального тикера (без изменений)
 const VerticalTicker = React.memo(({ items, speed = 50 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
