@@ -1024,6 +1024,9 @@ function App() {
                   duration: 0.8, 
                   delay: index * 0.1, 
                   ease: [0.25, 0.46, 0.45, 0.94]
+                  // (position - 1) * 360 deg / quantity
+                  // 360 deg / features.length
+                  // (1 - 1) * ()
                 }}
                 viewport={{ once: true, amount: 0.3, margin: "-50px" }}
                 whileHover={{ 
