@@ -86,9 +86,9 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  will-change: transform; /* Оптимизация для GSAP */
 }
 
 .btn-primary {
@@ -143,7 +143,7 @@ body {
 }
 
 .ticker-item {
-  height: 100px;
+  height: calc(100% / 7); /* 6 items + 1 clone */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -209,8 +209,9 @@ body {
   width: 450px;
   height: 600px;
   flex-shrink: 0;
-  perspective: 1000px;
+  perspective: 1200px;
   cursor: pointer;
+  position: relative;
 }
 
 .card-inner {
@@ -223,23 +224,26 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 40px;
   overflow: hidden;
-  transition: all 0.5s ease;
+  transition: box-shadow 0.5s ease;
 }
-
+/* ЭФФЕКТ СВЕЧЕНИЯ, СЛЕДУЮЩИЙ ЗА КУРСОРОМ */
 .card-inner::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--glow-color), transparent);
-  animation: glowLine 3s ease-in-out infinite;
+  top: var(--mouse-y);
+  left: var(--mouse-x);
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  pointer-events: none; /* чтобы не мешал другим событиям */
+  filter: blur(30px);
 }
 
-@keyframes glowLine {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
+.horizontal-card:hover .card-inner::before {
+  opacity: 0.4;
 }
 
 .card-glare {
@@ -355,6 +359,11 @@ body {
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
+}
+
+.project-button:hover {
+  background-color: var(--glow-color);
+  transform: translateY(-2px);
 }
 
 /* Прогресс бар */
@@ -681,6 +690,7 @@ body {
     radial-gradient(2px 2px at 160px 30px, #eee, transparent);
   background-repeat: repeat;
   background-size: 200px 200px;
+  will-change: transform;
 }
 
 .stars-1 {
@@ -762,21 +772,11 @@ body {
   border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
 }
 
+
 /* ================================================================== */
-/* ИЗМЕНЕНИЯ И ДОБАВЛЕНИЯ ДЛЯ СЛАЙДЕРА */
+/* СТИЛИ ДЛЯ НОВОЙ 3D ГАЛЕРЕИ НА GSAP */
 /* ================================================================== */
 
-/* Анимация вращения */
-@keyframes rotate {
-  0% {
-    transform: perspective(1000px) rotateY(0deg);
-  }
-  100% {
-    transform: perspective(1000px) rotateY(360deg);
-  }
-}
-
-/* Секция слайдера остаётся прежней */
 .crazy-3d-slider-section {
   padding: 150px 0;
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
@@ -784,63 +784,54 @@ body {
   overflow: hidden;
 }
 
-.slider-3d-container {
-  position: relative;
-  width: 250px; /* Увеличим немного для видимости */
-  height: 250px; /* Увеличим немного для видимости */
-  margin: 0 auto; /* Центрируем контейнер */
-  perspective: 1200px;
-}
-
-/* .slider-3d-scene - это теперь наш вращающийся элемент */
-.slider-3d-scene {
-  position: relative;
+.slider-3d-viewport-gsap {
   width: 100%;
-  height: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 2000px;
+  cursor: grab;
+}
+
+.slider-3d-scene-gsap {
+  position: relative;
+  width: 250px; /* Ширина элемента */
+  height: 320px; /* Высота элемента */
   transform-style: preserve-3d;
-  /* Применяем анимацию вращения */
-  animation: rotate 30s linear infinite;
+  will-change: transform;
 }
 
-/* При наведении на сцену - ставим анимацию на паузу */
-.slider-3d-scene:hover {
-  animation-play-state: paused;
-}
-
-
-/* Старые стили для .slider-3d-item больше не нужны, заменяем их */
-/* Это стили для нового элемента <span>, который держит картинку */
-.slider-3d-scene span {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transform-origin: center;
-  transform-style: preserve-3d;
-  /* Расставляем картинки по кругу. У нас 8 картинок, 360/8 = 45 градусов на каждую */
-  transform: rotateY(calc(var(--i) * 45deg)) translateZ(400px);
-}
-
-.slider-3d-scene span img {
+.slider-3d-item-gsap {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   border-radius: 15px;
-  object-fit: cover;
-  transition: 0.5s;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  background-color: #111;
+  /* Динамическое позиционирование с помощью CSS переменных */
+  transform: rotateY(calc(var(--i) * 360deg / var(--total))) translateZ(400px);
+  transition: transform 0.5s, box-shadow 0.5s;
 }
 
-/* Удаляем ненужные стили, так как этих элементов больше нет в JSX */
-.slider-controls,
-.slider-indicators,
-.current-slide-info,
-.image-info,
-.slider-3d-item,
-.image-glow-effect {
-  display: none;
+.slider-3d-viewport-gsap:hover .slider-3d-item-gsap {
+  box-shadow: 0 10px 40px rgba(255, 108, 0, 0.2);
+}
+
+.slider-3d-item-gsap:hover {
+  transform: rotateY(calc(var(--i) * 360deg / var(--total))) translateZ(420px) scale(1.05);
+  box-shadow: 0 15px 50px rgba(255, 108, 0, 0.4);
+}
+
+.slider-3d-item-gsap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-box-reflect: below 1px linear-gradient(transparent, transparent, #0004);
 }
 
 /* Фоновые элементы секции слайдера (без изменений) */
@@ -851,7 +842,7 @@ body {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: -1; /* Поместим их под слайдер */
+  z-index: -1;
 }
 
 .bg-orb {
@@ -885,12 +876,11 @@ body {
   background: linear-gradient(45deg, #a855f7, #ec4899);
 }
 
-/* Адаптивность (без изменений, кроме удаления лишних правил для слайдера) */
+/* Адаптивность */
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2.8rem;
   }
-
   .ticker-section {
     position: relative;
     right: auto;
@@ -899,47 +889,32 @@ body {
     margin-top: 80px;
     flex-direction: column;
   }
-
   .ticker-label {
     writing-mode: horizontal-tb;
     margin-bottom: 30px;
   }
-
   .ticker-container {
     width: 300px;
     height: 300px;
   }
-
   .horizontal-card {
     width: 320px;
     height: 500px;
   }
-
   .services-grid-content {
     grid-template-columns: 1fr;
   }
-
   .hero-buttons {
     flex-direction: column;
     align-items: center;
   }
-
   .scroll-progress-bar {
     width: 300px;
   }
-
   .scroll-section-header h2 {
     font-size: 2.5rem;
   }
-}
-
-/* Улучшение производительности (без  */
-.horizontal-scroll-content,
-.stars-layer,
-.bg-grid,
-.floating-shapes,
-.slider-3d-scene,
-.slider-3d-item {
-  will-change: transform;
-  transform: translateZ(0);
+  .slider-3d-item-gsap {
+    transform: rotateY(calc(var(--i) * 360deg / var(--total))) translateZ(280px);
+  }
 }
