@@ -95,7 +95,7 @@ const Crazy3DImageSlider = () => {
   return (
     <section className="crazy-3d-slider-section">
       <div className="container">
-        {/* Заголовок секции остался без изме */}
+        {/* Заголовок секции остался без изм */}
         <motion.div
           className="section-header"
           initial={{ opacity: 0, y: 50 }}
