@@ -12,9 +12,10 @@ import { gsap } from 'gsap';
 import './App.css';
 
 // ==================================================================
-// УЛУЧШЕНИЯ И ОПТИМИЗАЦ
+// УЛУЧШЕНИЯ И ОПТИМИЗАЦИЯ
 // ==================================================================
 
+// Компонент для плавного скроллинга (Lenis)
 const SmoothScroll = ({ children }) => {
   useEffect(() => {
     const lenis = new Lenis({
@@ -38,6 +39,7 @@ const SmoothScroll = ({ children }) => {
   return <>{children}</>;
 };
 
+// Компонент для "магнитного" эффекта с помощью GSAP
 const Magnetic = ({ children }) => {
   const ref = useRef(null);
 
@@ -65,13 +67,14 @@ const Magnetic = ({ children }) => {
     return () => {
       ref.current.removeEventListener("mousemove", mouseMove);
       ref.current.removeEventListener("mouseleave", mouseLeave);
-      // ref.current.addEventListener("mouseleave", mouseLeave)
     };
   }, []);
 
   return React.cloneElement(children, { ref });
 };
 
+
+// Компонент вертикального тикера (без изменений)
 const VerticalTicker = React.memo(({ items, speed = 50 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -107,6 +110,8 @@ const VerticalTicker = React.memo(({ items, speed = 50 }) => {
   );
 });
 
+
+// Улучшенный параллакс звезд (без изменений)
 const SmoothParallaxStars = () => {
     const { scrollYProgress } = useScroll();
 
@@ -143,6 +148,7 @@ const Crazy3DImageSlider = () => {
 
   useLayoutEffect(() => {
     const scene = sceneRef.current;
+    // Создаем таймлайн GSAP для бесконечного вращения
     timeline.current = gsap.timeline({ repeat: -1 });
     timeline.current.to(scene, {
       rotationY: 360,
@@ -202,8 +208,8 @@ const Crazy3DImageSlider = () => {
           transition={{ duration: 1.2, ease: "easeOut" }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <h2>Мои завершённые проекты</h2>
-          <p>Здесь представлены мои полностью готовые и рабочие проекты.</p>
+          <h2>CRAZY 3D ГАЛЕРЕЯ</h2>
+          <p>Интерактивная 3D галерея с эффектом вращения на 360°</p>
         </motion.div>
 
         <div
