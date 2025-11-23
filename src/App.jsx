@@ -88,7 +88,7 @@ const Crazy3DImageSlider = () => {
     { src: "/images/atam.jpg" },
     { src: "/images/atam.jpg" },
     { src: "/images/atam.jpg" },
-    { src: "/images/atam.jpg" }, // Добавим больш
+    { src: "/images/atam.jpg" }, // Добавим боль
     { src: "/images/atam.jpg" },
   ];
 
