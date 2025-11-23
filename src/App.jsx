@@ -706,6 +706,7 @@ const SkillsSection = () => {
           <motion.h2
             animate={{ 
               backgroundPosition: ['0%', '100%', '0%'],
+              backgroundAttachment: "fixed" // fixed
             }}
             transition={{ 
               duration: 4, 
