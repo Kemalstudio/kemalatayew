@@ -202,8 +202,8 @@ const Crazy3DImageSlider = () => {
           transition={{ duration: 1.2, ease: "easeOut" }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <h2>Готовый сайты</h2>
-          <p>Интерактивная 3D галерея с эффектом вращения на 360°</p>
+          <h2>Мои завершённые проекты</h2>
+          <p>Здесь представлены мои полностью готовые и рабочие проекты.</p>
         </motion.div>
 
         <div
