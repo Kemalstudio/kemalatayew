@@ -188,8 +188,9 @@ const Crazy3DImageSlider = () => {
     const x = (clientX - left) / width - 0.5;
     const y = (clientY - top) / height - 0.5;
 
+    // Наклоняем сцену в зависимости от положения курсора
     gsap.to(sceneRef.current, {
-      rotationX: -y * 20, // Угол
+      rotationX: -y * 20, // Угол на
       rotationY: gsap.getProperty(sceneRef.current, "rotationY") - (x * 20), // Добавляем наклон к текущему вращению
       rotationZ: -x * y * 10,
       duration: 0.5,
