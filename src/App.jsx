@@ -80,6 +80,273 @@ const SmoothParallaxStars = () => {
   );
 };
 
+// Компонент Crazy 3D Image Slider
+const Crazy3DImageSlider = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [direction, setDirection] = useState(0); // 0: next, 1: prev
+
+  const images = [
+    {
+      src: "/images/slider1.jpg",
+      title: "React Applications",
+      description: "Современные веб-приложения"
+    },
+    {
+      src: "/images/slider2.jpg", 
+      title: "Mobile Development",
+      description: "Кроссплатформенные мобильные приложения"
+    },
+    {
+      src: "/images/slider3.jpg",
+      title: "UI/UX Design",
+      description: "Интуитивные пользовательские интерфейсы"
+    },
+    {
+      src: "/images/slider4.jpg",
+      title: "Backend Solutions",
+      description: "Мощные серверные решения"
+    },
+    {
+      src: "/images/slider5.jpg",
+      title: "Database Architecture",
+      description: "Оптимизированные базы данных"
+    },
+    {
+      src: "/images/slider6.jpg",
+      title: "Cloud Deployment",
+      description: "Облачные решения и хостинг"
+    }
+  ];
+
+  const nextSlide = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setDirection(0);
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+    setTimeout(() => setIsAnimating(false), 1500);
+  };
+
+  const prevSlide = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setDirection(1);
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    setTimeout(() => setIsAnimating(false), 1500);
+  };
+
+  const goToSlide = (index) => {
+    if (isAnimating || index === currentIndex) return;
+    setIsAnimating(true);
+    setDirection(index > currentIndex ? 0 : 1);
+    setCurrentIndex(index);
+    setTimeout(() => setIsAnimating(false), 1500);
+  };
+
+  // Вычисляем позиции для всех изображений в 3D пространстве
+  const getImagePosition = (index) => {
+    const total = images.length;
+    const angle = (360 / total) * (index - currentIndex);
+    const radius = 400; // Радиус круга
+    
+    // Для плавного вращения учитываем направление
+    const offset = isAnimating ? (direction === 0 ? -360 : 360) : 0;
+    const currentAngle = angle + offset;
+    
+    const x = Math.sin((currentAngle * Math.PI) / 180) * radius;
+    const z = -Math.cos((currentAngle * Math.PI) / 180) * radius;
+    const rotationY = -currentAngle;
+    
+    return {
+      transform: `translate3d(${x}px, 0px, ${z}px) rotateY(${rotationY}deg)`,
+      opacity: Math.abs(z) > 350 ? 0 : 1 - Math.abs(z) / 500,
+      zIndex: Math.round(100 - Math.abs(z))
+    };
+  };
+
+  return (
+    <section className="crazy-3d-slider-section">
+      <div className="container">
+        <motion.div
+          className="section-header"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <h2>CRAZY 3D ГАЛЕРЕЯ</h2>
+          <p>Интерактивная 3D галерея с эффектом вращения на 360°</p>
+        </motion.div>
+
+        <div className="slider-3d-container">
+          <div className="slider-3d-viewport">
+            <div className="slider-3d-scene">
+              {images.map((image, index) => (
+                <motion.div
+                  key={index}
+                  className={`slider-3d-item ${index === currentIndex ? 'active' : ''}`}
+                  style={getImagePosition(index)}
+                  initial={false}
+                  animate={{
+                    scale: index === currentIndex ? 1.1 : 0.8,
+                    filter: index === currentIndex ? 'brightness(1)' : 'brightness(0.7)'
+                  }}
+                  transition={{ 
+                    duration: 1.5,
+                    ease: [0.25, 0.46, 0.45, 0.94]
+                  }}
+                  whileHover={{ 
+                    scale: index === currentIndex ? 1.15 : 0.9,
+                    transition: { duration: 0.3 }
+                  }}
+                >
+                  <div className="image-container">
+                    <motion.img 
+                      src={image.src} 
+                      alt={image.title}
+                      className="slider-image"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                    <div className="image-glow-effect"></div>
+                  </div>
+                  
+                  <motion.div 
+                    className="image-info"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ 
+                      opacity: index === currentIndex ? 1 : 0,
+                      y: index === currentIndex ? 0 : 20
+                    }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    <h3>{image.title}</h3>
+                    <p>{image.description}</p>
+                  </motion.div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Элементы управления */}
+          <div className="slider-controls">
+            <motion.button 
+              className="slider-btn prev-btn"
+              onClick={prevSlide}
+              whileHover={{ scale: 1.1, backgroundColor: "#ff6c00" }}
+              whileTap={{ scale: 0.9 }}
+              disabled={isAnimating}
+            >
+              <motion.span
+                animate={{ x: [-2, 2, -2] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                ‹
+              </motion.span>
+            </motion.button>
+            
+            <motion.button 
+              className="slider-btn next-btn"
+              onClick={nextSlide}
+              whileHover={{ scale: 1.1, backgroundColor: "#00c6ff" }}
+              whileTap={{ scale: 0.9 }}
+              disabled={isAnimating}
+            >
+              <motion.span
+                animate={{ x: [2, -2, 2] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                ›
+              </motion.span>
+            </motion.button>
+          </div>
+
+          {/* Индикаторы */}
+          <div className="slider-indicators">
+            {images.map((_, index) => (
+              <motion.button
+                key={index}
+                className={`indicator ${index === currentIndex ? 'active' : ''}`}
+                onClick={() => goToSlide(index)}
+                whileHover={{ scale: 1.3 }}
+                whileTap={{ scale: 0.8 }}
+                animate={{
+                  backgroundColor: index === currentIndex ? "#ff6c00" : "rgba(255,255,255,0.2)",
+                  scale: index === currentIndex ? 1.2 : 1
+                }}
+                transition={{ duration: 0.3 }}
+              />
+            ))}
+          </div>
+
+          {/* Информация о текущем слайде */}
+          <motion.div 
+            className="current-slide-info"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            <motion.div 
+              className="slide-counter"
+              key={currentIndex}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              {String(currentIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Фоновые элементы */}
+        <div className="slider-background-elements">
+          <motion.div 
+            className="bg-orb orb-1"
+            animate={{
+              y: [0, -40, 0],
+              x: [0, 20, 0],
+              rotate: [0, 180, 360]
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div 
+            className="bg-orb orb-2"
+            animate={{
+              y: [0, 30, 0],
+              x: [0, -25, 0],
+              rotate: [0, -180, -360]
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1
+            }}
+          />
+          <motion.div 
+            className="bg-orb orb-3"
+            animate={{
+              y: [0, -25, 0],
+              x: [0, 15, 0],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 2
+            }}
+          />
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // Компонент горизонтальной прокрутки
 const HorizontalScrollSection = () => {
   const containerRef = useRef(null);
@@ -728,6 +995,9 @@ function App() {
 
       {/* Секция со статистикой */}
       <StatsSection />
+
+      {/* Crazy 3D Image Slider */}
+      <Crazy3DImageSlider />
 
       {/* Сетка услуг */}
       <section className="services-grid">
