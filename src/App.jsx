@@ -65,6 +65,7 @@ const Magnetic = ({ children }) => {
     return () => {
       ref.current.removeEventListener("mousemove", mouseMove);
       ref.current.removeEventListener("mouseleave", mouseLeave);
+      // ref.current.addEventListener("mouseleave", mouseLeave)
     };
   }, []);
 
