@@ -148,7 +148,6 @@ const Crazy3DImageSlider = () => {
 
   useLayoutEffect(() => {
     const scene = sceneRef.current;
-    // Создаем таймлайн GSAP для бесконечного вращения
     timeline.current = gsap.timeline({ repeat: -1 });
     timeline.current.to(scene, {
       rotationY: 360,
