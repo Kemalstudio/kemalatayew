@@ -39,7 +39,6 @@ const SmoothScroll = ({ children }) => {
   return <>{children}</>;
 };
 
-// Компонент для "магнитного" эффекта с помощью GSAP
 const Magnetic = ({ children }) => {
   const ref = useRef(null);
 
