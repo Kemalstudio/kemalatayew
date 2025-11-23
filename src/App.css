@@ -762,7 +762,21 @@ body {
   border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
 }
 
-/* Crazy 3D Image Slider Section */
+/* ================================================================== */
+/* ИЗМЕНЕНИЯ И ДОБАВЛЕНИЯ ДЛЯ СЛАЙДЕРА */
+/* ================================================================== */
+
+/* Анимация вращения */
+@keyframes rotate {
+  0% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(1000px) rotateY(360deg);
+  }
+}
+
+/* Секция слайдера остаётся прежней */
 .crazy-3d-slider-section {
   padding: 150px 0;
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
@@ -772,243 +786,64 @@ body {
 
 .slider-3d-container {
   position: relative;
-  height: 700px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 250px; /* Увеличим немного для видимости */
+  height: 250px; /* Увеличим немного для видимости */
+  margin: 0 auto; /* Центрируем контейнер */
   perspective: 1200px;
 }
 
-.slider-3d-viewport {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-}
-
+/* .slider-3d-scene - это теперь наш вращающийся элемент */
 .slider-3d-scene {
   position: relative;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transition: transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Применяем анимацию вращения */
+  animation: rotate 30s linear infinite;
 }
 
-.slider-3d-item {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 300px;
-  height: 400px;
-  margin: -200px 0 0 -150px;
-  transform-style: preserve-3d;
-  transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  cursor: pointer;
+/* При наведении на сцену - ставим анимацию на паузу */
+.slider-3d-scene:hover {
+  animation-play-state: paused;
 }
 
-.slider-3d-item .image-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow:
-    0 25px 50px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
-  transform-style: preserve-3d;
-  transition: all 0.5s ease;
-}
 
-.slider-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px;
-  filter: brightness(0.9);
-  transition: filter 0.5s ease;
-}
-
-.image-glow-effect {
+/* Старые стили для .slider-3d-item больше не нужны, заменяем их */
+/* Это стили для нового элемента <span>, который держит картинку */
+.slider-3d-scene span {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(255, 108, 0, 0.1),
-    rgba(0, 198, 255, 0.1),
-    transparent
-  );
-  border-radius: 20px;
-  opacity: 0;
-  transition: opacity 0.5s ease;
+  transform-origin: center;
+  transform-style: preserve-3d;
+  /* Расставляем картинки по кругу. У нас 8 картинок, 360/8 = 45 градусов на каждую */
+  transform: rotateY(calc(var(--i) * 45deg)) translateZ(400px);
 }
 
-.slider-3d-item.active .image-glow-effect {
-  opacity: 1;
-  animation: glowPulse 3s ease-in-out infinite;
-}
-
-@keyframes glowPulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.7; }
-}
-
-.slider-3d-item.active .slider-image {
-  filter: brightness(1);
-}
-
-.image-info {
+.slider-3d-scene span img {
   position: absolute;
-  bottom: -80px;
+  top: 0;
   left: 0;
-  right: 0;
-  text-align: center;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
+  width: 100%;
+  height: 100%;
   border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transform: translateZ(50px);
+  object-fit: cover;
+  transition: 0.5s;
 }
 
-.image-info h3 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-  background: linear-gradient(45deg, #ffffff, #ff6c00);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Удаляем ненужные стили, так как этих элементов больше нет в JSX */
+.slider-controls,
+.slider-indicators,
+.current-slide-info,
+.image-info,
+.slider-3d-item,
+.image-glow-effect {
+  display: none;
 }
 
-.image-info p {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.4;
-}
-
-/* Элементы управления */
-.slider-controls {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 40px;
-  z-index: 10;
-  transform: translateY(-50%);
-}
-
-.slider-btn {
-  width: 60px;
-  height: 60px;
-  border: none;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  color: white;
-  font-size: 2rem;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.slider-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-.slider-btn:hover::before {
-  left: 100%;
-}
-
-.slider-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Индикаторы */
-.slider-indicators {
-  position: absolute;
-  bottom: 40px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  z-index: 10;
-}
-
-.indicator {
-  width: 12px;
-  height: 12px;
-  border: none;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.indicator::after {
-  content: '';
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  border-radius: 50%;
-  border: 1px solid transparent;
-  transition: all 0.3s ease;
-}
-
-.indicator.active::after {
-  border-color: #ff6c00;
-  animation: indicatorPulse 2s infinite;
-}
-
-@keyframes indicatorPulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.2); opacity: 0.7; }
-}
-
-/* Информация о текущем слайде */
-.current-slide-info {
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  z-index: 10;
-}
-
-.slide-counter {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #ff6c00;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 10px 20px;
-  border-radius: 25px;
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(255, 108, 0, 0.1);
-}
-
-/* Фоновые элементы */
+/* Фоновые элементы секции слайдера (без изменений) */
 .slider-background-elements {
   position: absolute;
   top: 0;
@@ -1016,7 +851,7 @@ body {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
+  z-index: -1; /* Поместим их под слайдер */
 }
 
 .bg-orb {
@@ -1050,7 +885,7 @@ body {
   background: linear-gradient(45deg, #a855f7, #ec4899);
 }
 
-/* Адаптивность */
+/* Адаптивность (без изменений, кроме удаления лишних правил для слайдера) */
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2.8rem;
@@ -1096,78 +931,9 @@ body {
   .scroll-section-header h2 {
     font-size: 2.5rem;
   }
-
-  .slider-3d-container {
-    height: 500px;
-    perspective: 800px;
-  }
-
-  .slider-3d-item {
-    width: 200px;
-    height: 280px;
-    margin: -140px 0 0 -100px;
-  }
-
-  .slider-controls {
-    padding: 0 20px;
-  }
-
-  .slider-btn {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-  }
-
-  .image-info {
-    bottom: -100px;
-    padding: 15px;
-  }
-
-  .image-info h3 {
-    font-size: 1.1rem;
-  }
-
-  .image-info p {
-    font-size: 0.8rem;
-  }
-
-  .current-slide-info {
-    top: 20px;
-    right: 20px;
-  }
-
-  .orb-1, .orb-2, .orb-3 {
-    display: none;
-  }
 }
 
-/* Эффекты при наведении для всего слайдера */
-.slider-3d-scene:hover .slider-3d-item:not(.active) {
-  filter: brightness(1.1);
-}
-
-/* Анимация появления */
-@keyframes slideIn3D {
-  from {
-    opacity: 0;
-    transform: translateZ(-500px) rotateY(90deg);
-  }
-  to {
-    opacity: 1;
-    transform: translateZ(0) rotateY(0);
-  }
-}
-
-.slider-3d-item {
-  animation: slideIn3D 1s ease-out;
-}
-
-/* Плавные переходы для всех элементов */
-* {
-  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
-}
-
-/* Улучшение производительности */
+/* Улучшение производительности (без изменений) */
 .horizontal-scroll-content,
 .stars-layer,
 .bg-grid,
