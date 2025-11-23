@@ -110,8 +110,6 @@ const VerticalTicker = React.memo(({ items, speed = 50 }) => {
   );
 });
 
-
-// Улучшенный параллакс звезд (без изменений)
 const SmoothParallaxStars = () => {
     const { scrollYProgress } = useScroll();
 
