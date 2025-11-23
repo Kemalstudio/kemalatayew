@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from 'framer-motion';
 import './App.css';
 
-// Компонент вертикального тикера
+// Компонент вертикального тикера (БЕЗ ИЗМЕНЕНИЙ)
 const VerticalTicker = ({ items, speed = 50 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -44,7 +44,7 @@ const VerticalTicker = ({ items, speed = 50 }) => {
   );
 };
 
-// Параллакс звезды
+// Параллакс звезды (БЕЗ ИЗМЕНЕНИЙ)
 const SmoothParallaxStars = () => {
   const { scrollYProgress } = useScroll();
 
@@ -80,108 +80,22 @@ const SmoothParallaxStars = () => {
   );
 };
 
-// Компонент Crazy 3D Image Slider
 const Crazy3DImageSlider = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [direction, setDirection] = useState(0); // 0: next, 1: prev
-  const [isPaused, setIsPaused] = useState(false); // Состояние для паузы при наведении
-
   const images = [
-    {
-      src: "/images/slider1.jpg",
-      title: "React Applications",
-      description: "Современные веб-приложения"
-    },
-    {
-      src: "/images/slider2.jpg",
-      title: "Mobile Development",
-      description: "Кроссплатформенные мобильные приложения"
-    },
-    {
-      src: "/images/slider3.jpg",
-      title: "UI/UX Design",
-      description: "Интуитивные пользовательские интерфейсы"
-    },
-    {
-      src: "/images/slider4.jpg",
-      title: "Backend Solutions",
-      description: "Мощные серверные решения"
-    },
-    {
-      src: "/images/slider5.jpg",
-      title: "Database Architecture",
-      description: "Оптимизированные базы данных"
-    },
-    {
-      src: "/images/slider6.jpg",
-      title: "Cloud Deployment",
-      description: "Облачные решения и хостинг"
-    }
+    { src: "/images/atam.jpg" },
+    { src: "/images/atam.jpg" },
+    { src: "/images/atam.jpg" },
+    { src: "/images/atam.jpg" },
+    { src: "/images/atam.jpg" },
+    { src: "/images/atam.jpg" },
+    { src: "/images/atam.jpg" }, // Добавим больше картинок для лучшего эффекта
+    { src: "/images/atam.jpg" },
   ];
-
-  const nextSlide = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setDirection(0);
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-    setTimeout(() => setIsAnimating(false), 1500);
-  };
-
-  const prevSlide = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setDirection(1);
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-    setTimeout(() => setIsAnimating(false), 1500);
-  };
-
-  const goToSlide = (index) => {
-    if (isAnimating || index === currentIndex) return;
-    setIsAnimating(true);
-    setDirection(index > currentIndex ? 0 : 1);
-    setCurrentIndex(index);
-    setTimeout(() => setIsAnimating(false), 1500);
-  };
-
-  // useEffect для автоматического вращения
-  useEffect(() => {
-    if (isPaused || isAnimating) {
-      return;
-    }
-
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 4000); // Интервал 4 секунды
-
-    return () => clearInterval(interval);
-  }, [isAnimating, isPaused, currentIndex]);
-
-
-  // Вычисляем позиции для всех изображений в 3D пространстве
-  const getImagePosition = (index) => {
-    const total = images.length;
-    const angle = (360 / total) * (index - currentIndex);
-    const radius = 400; // Радиус круга
-
-    // Для плавного вращения учитываем направление
-    const offset = isAnimating ? (direction === 0 ? -360 : 360) : 0;
-    const currentAngle = angle + offset;
-
-    const x = Math.sin((currentAngle * Math.PI) / 180) * radius;
-    const z = -Math.cos((currentAngle * Math.PI) / 180) * radius;
-    const rotationY = -currentAngle;
-
-    return {
-      transform: `translate3d(${x}px, 0px, ${z}px) rotateY(${rotationY}deg)`,
-      opacity: Math.abs(z) > 350 ? 0 : 1 - Math.abs(z) / 500,
-      zIndex: Math.round(100 - Math.abs(z))
-    };
-  };
 
   return (
     <section className="crazy-3d-slider-section">
       <div className="container">
+        {/* Заголовок секции остался без изменений */}
         <motion.div
           className="section-header"
           initial={{ opacity: 0, y: 50 }}
@@ -193,180 +107,47 @@ const Crazy3DImageSlider = () => {
           <p>Интерактивная 3D галерея с эффектом вращения на 360°</p>
         </motion.div>
 
-        <div
-          className="slider-3d-container"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          <div className="slider-3d-viewport">
-            <div className="slider-3d-scene">
-              {images.map((image, index) => (
-                <motion.div
-                  key={index}
-                  className={`slider-3d-item ${index === currentIndex ? 'active' : ''}`}
-                  style={getImagePosition(index)}
-                  initial={false}
-                  animate={{
-                    scale: index === currentIndex ? 1.1 : 0.8,
-                    filter: index === currentIndex ? 'brightness(1)' : 'brightness(0.7)'
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    ease: [0.25, 0.46, 0.45, 0.94]
-                  }}
-                  whileHover={{
-                    scale: index === currentIndex ? 1.15 : 0.9,
-                    transition: { duration: 0.3 }
-                  }}
-                >
-                  <div className="image-container">
-                    <motion.img
-                      src={image.src}
-                      alt={image.title}
-                      className="slider-image"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.5 }}
-                    />
-                    <div className="image-glow-effect"></div>
-                  </div>
-
-                  <motion.div
-                    className="image-info"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{
-                      opacity: index === currentIndex ? 1 : 0,
-                      y: index === currentIndex ? 0 : 20
-                    }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                  >
-                    <h3>{image.title}</h3>
-                    <p>{image.description}</p>
-                  </motion.div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Элементы управления */}
-          <div className="slider-controls">
-            <motion.button
-              className="slider-btn prev-btn"
-              onClick={prevSlide}
-              whileHover={{ scale: 1.1, backgroundColor: "#ff6c00" }}
-              whileTap={{ scale: 0.9 }}
-              disabled={isAnimating}
-            >
-              <motion.span
-                animate={{ x: [-2, 2, -2] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                ‹
-              </motion.span>
-            </motion.button>
-
-            <motion.button
-              className="slider-btn next-btn"
-              onClick={nextSlide}
-              whileHover={{ scale: 1.1, backgroundColor: "#00c6ff" }}
-              whileTap={{ scale: 0.9 }}
-              disabled={isAnimating}
-            >
-              <motion.span
-                animate={{ x: [2, -2, 2] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                ›
-              </motion.span>
-            </motion.button>
-          </div>
-
-          {/* Индикаторы */}
-          <div className="slider-indicators">
-            {images.map((_, index) => (
-              <motion.button
-                key={index}
-                className={`indicator ${index === currentIndex ? 'active' : ''}`}
-                onClick={() => goToSlide(index)}
-                whileHover={{ scale: 1.3 }}
-                whileTap={{ scale: 0.8 }}
-                animate={{
-                  backgroundColor: index === currentIndex ? "#ff6c00" : "rgba(255,255,255,0.2)",
-                  scale: index === currentIndex ? 1.2 : 1
-                }}
-                transition={{ duration: 0.3 }}
-              />
+        {/* Контейнер слайдера теперь управляется только CSS */}
+        <div className="slider-3d-container">
+          <div className="slider-3d-scene">
+            {/* Вместо motion.div используем простой span для чистоты */}
+            {/* и передаем порядковый номер в CSS через переменную --i */}
+            {images.map((image, index) => (
+              <span key={index} style={{ '--i': index + 1 }}>
+                <img src={image.src} alt={`slide ${index + 1}`} />
+              </span>
             ))}
           </div>
-
-          {/* Информация о текущем слайде */}
-          <motion.div
-            className="current-slide-info"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <motion.div
-              className="slide-counter"
-              key={currentIndex}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              {String(currentIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
-            </motion.div>
-          </motion.div>
         </div>
 
-        {/* Фоновые элементы */}
+        {/* Фоновые элементы остались без изменений */}
         <div className="slider-background-elements">
           <motion.div
             className="bg-orb orb-1"
-            animate={{
-              y: [0, -40, 0],
-              x: [0, 20, 0],
-              rotate: [0, 180, 360]
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
+            animate={{ y: [0, -40, 0], x: [0, 20, 0], rotate: [0, 180, 360] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div
             className="bg-orb orb-2"
-            animate={{
-              y: [0, 30, 0],
-              x: [0, -25, 0],
-              rotate: [0, -180, -360]
-            }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
-            }}
+            animate={{ y: [0, 30, 0], x: [0, -25, 0], rotate: [0, -180, -360] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           />
           <motion.div
             className="bg-orb orb-3"
-            animate={{
-              y: [0, -25, 0],
-              x: [0, 15, 0],
-              scale: [1, 1.2, 1]
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2
-            }}
+            animate={{ y: [0, -25, 0], x: [0, 15, 0], scale: [1, 1.2, 1] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
           />
         </div>
       </div>
     </section>
   );
 };
+// ==================================================================
+// КОНЕЦ ИЗМЕНЕНИЙ
+// ==================================================================
 
-// Компонент горизонтальной прокрутки
+
+// Компонент горизонтальной прокрутки (БЕЗ ИЗМЕНЕНИЙ)
 const HorizontalScrollSection = () => {
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -405,56 +186,56 @@ const HorizontalScrollSection = () => {
       title: "E-Commerce Platform",
       description: "Полнофункциональная платформа электронной коммерции с React и Node.js",
       color: "#ff6c00",
-      image: "/images/ecommerce.png",
+      image: "/images/atam.jpg",
       tech: ["React", "Node.js", "MongoDB", "Stripe API"]
     },
     {
       title: "Task Management App",
       description: "Приложение для управления задачами с реальным временем обновления",
       color: "#00c6ff",
-      image: "/images/taskapp.png",
+      image: "/images/atam.jpg",
       tech: ["React Native", "Firebase", "Redux", "Push Notifications"]
     },
     {
       title: "Social Media Dashboard",
       description: "Панель управления социальными сетями с аналитикой в реальном времени",
       color: "#e91e63",
-      image: "/images/dashboard.png",
+      image: "/images/atam.jpg",
       tech: ["Vue.js", "Express", "PostgreSQL", "Chart.js"]
     },
     {
       title: "Weather Forecast App",
       description: "Приложение прогноза погоды с красивым UI и офлайн-режимом",
       color: "#a855f7",
-      image: "/images/weather.png",
+      image: "/images/atam.jpg",
       tech: ["React", "Weather API", "PWA", "Local Storage"]
     },
     {
       title: "Fitness Tracker",
       description: "Трекер фитнеса с мониторингом активности и целей",
       color: "#10b981",
-      image: "/images/fitness.png",
+      image: "/images/atam.jpg",
       tech: ["React Native", "Health APIs", "GraphQL", "Apple HealthKit"]
     },
     {
       title: "Portfolio Website",
       description: "Анимированное портфолио с современным дизайном и интерактивностью",
       color: "#f59e0b",
-      image: "/images/portfolio.png",
+      image: "/images/atam.jpg",
       tech: ["React", "Framer Motion", "Three.js", "GSAP"]
     },
     {
       title: "Chat Application",
       description: "Приложение реального времени чата с комнатами и файловым обменом",
       color: "#6366f1",
-      image: "/images/chat.png",
+      image: "/images/atam.jpg",
       tech: ["Socket.io", "React", "Node.js", "File Upload"]
     },
     {
       title: "Learning Platform",
       description: "Образовательная платформа с курсами и системой прогресса",
       color: "#06b6d4",
-      image: "/images/learning.png",
+      image: "/images/atam.jpg",
       tech: ["Next.js", "Prisma", "MySQL", "Video Streaming"]
     }
   ];
@@ -669,7 +450,7 @@ const HorizontalScrollSection = () => {
   );
 };
 
-// Секция с навыками
+// Секция с навыками (БЕЗ ИЗМЕНЕНИЙ)
 const SkillsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -811,7 +592,7 @@ const SkillsSection = () => {
   );
 };
 
-// Секция статистики
+// Секция статистики (БЕЗ ИЗМЕНЕНИЙ)
 const StatsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -892,6 +673,7 @@ const StatsSection = () => {
   );
 };
 
+// Основной компонент App (БЕЗ ИЗМЕНЕНИЙ)
 function App() {
   const features = [
     {
@@ -930,10 +712,8 @@ function App() {
 
   return (
     <div className="app">
-      {/* Hero секция */}
       <section className="hero">
         <SmoothParallaxStars />
-
         <div className="hero-content">
           <motion.h1
             initial={{ opacity: 0, y: 80, skewX: -10 }}
@@ -942,7 +722,6 @@ function App() {
           >
             JUNIOR <span className="highlight">FULL STACK</span> DEVELOPER
           </motion.h1>
-
           <motion.p
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -950,7 +729,6 @@ function App() {
           >
             Создаю современные веб и мобильные приложения с фокусом на пользовательский опыт и производительность
           </motion.p>
-
           <motion.div
             className="hero-buttons"
             initial={{ opacity: 0, y: 30 }}
@@ -975,7 +753,6 @@ function App() {
             </motion.button>
           </motion.div>
         </div>
-
         <div className="ticker-section">
           <div className="ticker-label">
             <motion.span
@@ -989,7 +766,6 @@ function App() {
           </div>
           <VerticalTicker items={tickerItems} speed={50} />
         </div>
-
         <motion.div
           className="hero-floating-elements"
           animate={{
@@ -1002,23 +778,12 @@ function App() {
             ease: "easeInOut"
           }}
         />
-
         <div className="hero-vignette"></div>
       </section>
-
-      {/* Основная горизонтальная секция с проекта */}
       <HorizontalScrollSection />
-
-      {/* Секция с навыками */}
       <SkillsSection />
-
-      {/* Секция со статистикой */}
       <StatsSection />
-
-      {/* Crazy 3D Image Slider */}
-      <Crazy3DImageSlider />
-
-      {/* Сетка услуг */}
+      <Crazy3DImageSlider /> {/* Вот наш измененный компонент */}
       <section className="services-grid">
         <div className="container">
           <motion.div
@@ -1031,7 +796,6 @@ function App() {
             <h2>Мои Услуги</h2>
             <p>Полный цикл разработки от идеи до запуска</p>
           </motion.div>
-
           <div className="services-grid-content">
             {features.map((service, index) => (
               <motion.div
@@ -1062,8 +826,6 @@ function App() {
           </div>
         </div>
       </section>
-
-      {/* Бегущая строка */}
       <section className="continuous-ticker-section">
         <motion.div
           className="continuous-ticker"
@@ -1093,8 +855,6 @@ function App() {
           ))}
         </motion.div>
       </section>
-
-      {/* Футер */}
       <motion.footer
         className="footer"
         initial={{ opacity: 0 }}
