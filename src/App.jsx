@@ -174,7 +174,7 @@ const Crazy3DImageSlider = () => {
     if (sceneRef.current?.timeline) {
       gsap.to(sceneRef.current.timeline, { timeScale: 1, duration: 0.5 });
     }
-    // Возврат в исходное состояние с проверкой
+    // Возврат в исходное состояние с проверко
     if (sceneRef.current) {
       gsap.to(sceneRef.current, {
         rotationX: 0,
