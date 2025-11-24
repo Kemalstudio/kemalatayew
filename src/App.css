@@ -876,7 +876,7 @@ body {
   background: linear-gradient(45deg, #a855f7, #ec4899);
 }
 
-/* Адапт */
+/* Адап */
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2.8rem;
