@@ -11,10 +11,6 @@ import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
 import './App.css';
 
-// ==================================================================
-// ИСПРАВЛЕННЫЕ КОМПОНЕНТЫ (FIXED)
-// ==================================================================
-
 // 1. FIX: Исправлена очистка requestAnimationFrame
 const SmoothScroll = ({ children }) => {
   useEffect(() => {
