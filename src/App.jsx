@@ -12,10 +12,10 @@ import { gsap } from 'gsap';
 import './App.css';
 
 // ==================================================================
-// УЛУЧШЕНИЯ И ОПТИМИЗАЦИЯ
+// ИСПРАВЛЕННЫЕ КОМПОНЕНТЫ (FIXED)
 // ==================================================================
 
-// Компонент для плавного скроллинга (Lenis)
+// 1. FIX: Исправлена очистка requestAnimationFrame
 const SmoothScroll = ({ children }) => {
   useEffect(() => {
     const lenis = new Lenis({
@@ -24,14 +24,18 @@ const SmoothScroll = ({ children }) => {
       smoothTouch: true,
     });
 
+    let rafId;
+
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
+      // ВАЖНО: Останавливаем цикл и убиваем экземпляр
+      cancelAnimationFrame(rafId);
       lenis.destroy();
     };
   }, []);
@@ -39,17 +43,20 @@ const SmoothScroll = ({ children }) => {
   return <>{children}</>;
 };
 
-// Компонент для "магнитного" эффекта с помощью GSAP
+// 2. FIX: Безопасная работа с ref и очистка событий
 const Magnetic = ({ children }) => {
   const ref = useRef(null);
 
   useEffect(() => {
-    const xTo = gsap.quickTo(ref.current, "x", { duration: 1, ease: "elastic.out(1, 0.3)" });
-    const yTo = gsap.quickTo(ref.current, "y", { duration: 1, ease: "elastic.out(1, 0.3)" });
+    const element = ref.current; // Сохраняем ссылку на элемент внутри эффекта
+    if (!element) return;
+
+    const xTo = gsap.quickTo(element, "x", { duration: 1, ease: "elastic.out(1, 0.3)" });
+    const yTo = gsap.quickTo(element, "y", { duration: 1, ease: "elastic.out(1, 0.3)" });
 
     const mouseMove = (e) => {
       const { clientX, clientY } = e;
-      const { height, width, left, top } = ref.current.getBoundingClientRect();
+      const { height, width, left, top } = element.getBoundingClientRect();
       const x = clientX - (left + width / 2);
       const y = clientY - (top + height / 2);
       xTo(x * 0.4);
@@ -61,18 +68,17 @@ const Magnetic = ({ children }) => {
       yTo(0);
     };
 
-    ref.current.addEventListener("mousemove", mouseMove);
-    ref.current.addEventListener("mouseleave", mouseLeave);
+    element.addEventListener("mousemove", mouseMove);
+    element.addEventListener("mouseleave", mouseLeave);
 
     return () => {
-      ref.current.removeEventListener("mousemove", mouseMove);
-      ref.current.removeEventListener("mouseleave", mouseLeave);
+      element.removeEventListener("mousemove", mouseMove);
+      element.removeEventListener("mouseleave", mouseLeave);
     };
   }, []);
 
   return React.cloneElement(children, { ref });
 };
-
 
 // Компонент вертикального тикера (без изменений)
 const VerticalTicker = React.memo(({ items, speed = 50 }) => {
@@ -110,11 +116,8 @@ const VerticalTicker = React.memo(({ items, speed = 50 }) => {
   );
 });
 
-
-// Улучшенный параллакс звезд (без изменений)
 const SmoothParallaxStars = () => {
     const { scrollYProgress } = useScroll();
-
     const smoothY1 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 200]), { stiffness: 100, damping: 30, restDelta: 0.001 });
     const smoothY2 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 400]), { stiffness: 100, damping: 30, restDelta: 0.001 });
     const smoothY3 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 600]), { stiffness: 100, damping: 30, restDelta: 0.001 });
@@ -132,9 +135,7 @@ const SmoothParallaxStars = () => {
     );
 };
 
-// ==================================================================
-// НОВАЯ 3D ГАЛЕРЕЯ НА GSAP
-// ==================================================================
+// 3. FIX: Использование gsap.context для корректной очистки в React
 const Crazy3DImageSlider = () => {
   const images = useMemo(() => [
     { src: "/images/atam.jpg" }, { src: "/images/atam.jpg" },
@@ -144,54 +145,58 @@ const Crazy3DImageSlider = () => {
   ], []);
 
   const sceneRef = useRef(null);
-  const timeline = useRef(null);
+  const containerRef = useRef(null);
 
   useLayoutEffect(() => {
-    const scene = sceneRef.current;
-    // Создаем таймлайн GSAP для бесконечного вращения
-    timeline.current = gsap.timeline({ repeat: -1 });
-    timeline.current.to(scene, {
-      rotationY: 360,
-      duration: 30,
-      ease: "none"
-    });
+    // Использование gsap.context автоматически очищает все анимации внутри скоупа
+    let ctx = gsap.context(() => {
+      const timeline = gsap.timeline({ repeat: -1 });
+      timeline.to(sceneRef.current, {
+        rotationY: 360,
+        duration: 30,
+        ease: "none"
+      });
+      
+      // Сохраняем ссылку на таймлайн в объект сцены или переменную, если нужно управление
+      sceneRef.current.timeline = timeline;
+    }, containerRef);
 
-    return () => {
-      // Очищаем анимацию при размонтировании компонента
-      if (timeline.current) {
-        timeline.current.kill();
-      }
-    };
+    return () => ctx.revert(); // Полная очистка GSAP при размонтировании
   }, []);
 
   const handleMouseEnter = () => {
-    // При наведении замедляем и останавливаем анимацию
-    gsap.to(timeline.current, { timeScale: 0.1, duration: 0.5 });
+    if (sceneRef.current?.timeline) {
+      gsap.to(sceneRef.current.timeline, { timeScale: 0.1, duration: 0.5 });
+    }
   };
 
   const handleMouseLeave = () => {
-    // При уходе курсора плавно возобновляем
-    gsap.to(timeline.current, { timeScale: 1, duration: 0.5 });
-    // Возвращаем наклон в исходное положение
-    gsap.to(sceneRef.current, {
-      rotationX: 0,
-      rotationY: gsap.getProperty(sceneRef.current, "rotationY"), // сохраняем текущий угол вращения
-      rotationZ: 0,
-      duration: 1,
-      ease: "elastic.out(1, 0.5)"
-    });
+    if (sceneRef.current?.timeline) {
+      gsap.to(sceneRef.current.timeline, { timeScale: 1, duration: 0.5 });
+    }
+    // Возврат в исходное состояние с проверкой
+    if (sceneRef.current) {
+      gsap.to(sceneRef.current, {
+        rotationX: 0,
+        rotationY: gsap.getProperty(sceneRef.current, "rotationY"),
+        rotationZ: 0,
+        duration: 1,
+        ease: "elastic.out(1, 0.5)"
+      });
+    }
   };
 
   const handleMouseMove = (e) => {
+    if (!sceneRef.current) return;
+    
     const { currentTarget, clientX, clientY } = e;
     const { width, height, left, top } = currentTarget.getBoundingClientRect();
     const x = (clientX - left) / width - 0.5;
     const y = (clientY - top) / height - 0.5;
 
-    // Наклоняем сцену в зависимости от положения курсора
     gsap.to(sceneRef.current, {
-      rotationX: -y * 20, // Угол наклона по Y
-      rotationY: gsap.getProperty(sceneRef.current, "rotationY") - (x * 20), // Добавляем наклон к текущему вращению
+      rotationX: -y * 20,
+      rotationY: gsap.getProperty(sceneRef.current, "rotationY") - (x * 20),
       rotationZ: -x * y * 10,
       duration: 0.5,
       ease: "power1.out"
@@ -199,7 +204,7 @@ const Crazy3DImageSlider = () => {
   };
 
   return (
-    <section className="crazy-3d-slider-section">
+    <section className="crazy-3d-slider-section" ref={containerRef}>
       <div className="container">
         <motion.div
           className="section-header"
@@ -235,29 +240,16 @@ const Crazy3DImageSlider = () => {
         </div>
 
         <div className="slider-background-elements">
-          <motion.div
-            className="bg-orb orb-1"
-            animate={{ y: [0, -40, 0], x: [0, 20, 0], rotate: [0, 180, 360] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="bg-orb orb-2"
-            animate={{ y: [0, 30, 0], x: [0, -25, 0], rotate: [0, -180, -360] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
-          <motion.div
-            className="bg-orb orb-3"
-            animate={{ y: [0, -25, 0], x: [0, 15, 0], scale: [1, 1.2, 1] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          />
+          <motion.div className="bg-orb orb-1" animate={{ y: [0, -40, 0], x: [0, 20, 0], rotate: [0, 180, 360] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
+          <motion.div className="bg-orb orb-2" animate={{ y: [0, 30, 0], x: [0, -25, 0], rotate: [0, -180, -360] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
+          <motion.div className="bg-orb orb-3" animate={{ y: [0, -25, 0], x: [0, 15, 0], scale: [1, 1.2, 1] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }} />
         </div>
       </div>
     </section>
   );
 };
 
-
-// УЛУЧШЕННАЯ КАРТОЧКА ПРОЕКТА
+// Карточка проекта
 const ProjectCard = ({ project, index }) => {
   const cardRef = useRef(null);
   const x = useMotionValue(0);
@@ -267,6 +259,7 @@ const ProjectCard = ({ project, index }) => {
   const rotateY = useTransform(x, [-100, 100], [-15, 15]);
 
   const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     x.set(e.clientX - rect.left - rect.width / 2);
     y.set(e.clientY - rect.top - rect.height / 2);
@@ -278,6 +271,7 @@ const ProjectCard = ({ project, index }) => {
   };
 
   const handleGlow = (e) => {
+    if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     cardRef.current.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
     cardRef.current.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
@@ -300,7 +294,7 @@ const ProjectCard = ({ project, index }) => {
         style={{ '--glow-color': project.color, rotateX, rotateY, transformStyle: "preserve-3d" }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       >
-        <div style={{ transform: "translateZ(50px)" }}> {/* Сдвигаем контент вперед для 3D эффекта */}
+        <div style={{ transform: "translateZ(50px)" }}>
           <div className="card-glare"></div>
           <motion.div className="project-index">
             {String(index + 1).padStart(2, '0')}
@@ -326,7 +320,6 @@ const ProjectCard = ({ project, index }) => {
     </motion.div>
   );
 };
-
 
 // Компонент горизонтальной прокрутки
 const HorizontalScrollSection = () => {
@@ -435,7 +428,6 @@ const SkillsSection = () => {
     </section>
   );
 };
-
 
 // Секция статистики
 const StatsSection = () => {
