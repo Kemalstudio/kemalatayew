@@ -321,7 +321,7 @@ const ProjectCard = ({ project, index }) => {
   );
 };
 
-// Компонент горизонтальной прокрут
+// Компонент горизонтальной прокру
 const HorizontalScrollSection = () => {
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
