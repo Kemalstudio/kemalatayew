@@ -813,7 +813,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   background-color: #111;
-  /* Динамическое позиционирование с помощью CSS переменных */
+  /* Динамическое позиционирование с помощью CSS переменны */
   transform: rotateY(calc(var(--i) * 360deg / var(--total))) translateZ(400px);
   transition: transform 0.5s, box-shadow 0.5s;
 }
