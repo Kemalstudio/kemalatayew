@@ -472,7 +472,7 @@ const StatsSection = () => {
   );
 };
 
-// Основной компонент Ap
+// Основной компонент 
 function App() {
   const features = useMemo(() => [
     { title: "React Development", description: "Современные React приложения с hooks и контекстом", icon: "⚛️" },
