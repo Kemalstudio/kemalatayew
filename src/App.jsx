@@ -429,7 +429,7 @@ const SkillsSection = () => {
   );
 };
 
-// Секция статистики
+// Секция статистик
 const StatsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
