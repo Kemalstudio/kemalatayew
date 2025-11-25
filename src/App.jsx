@@ -29,7 +29,7 @@ const SmoothScroll = ({ children }) => {
     rafId = requestAnimationFrame(raf);
 
     return () => {
-      // ВАЖНО: Останавливаем цикл и убиваем экз
+      // ВАЖНО: Останавливаем цикл и убиваем эк
       cancelAnimationFrame(rafId);
       lenis.destroy();
     };
