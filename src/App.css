@@ -88,7 +88,7 @@ body {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  will-change: transform; /* Оптимизация для GSA */
+  will-change: transform; /* Оптимизация для GS */
 }
 
 .btn-primary {
