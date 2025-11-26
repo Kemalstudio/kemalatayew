@@ -439,9 +439,6 @@ const StatsSection = () => {
     { number: "99", label: "Успешных решений", suffix: "%" }
   ], []);
 
-  // const containerRef = useRef(null);
-  // const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start:"]})
-
 
   return (
     <section ref={containerRef} className="stats-section">
