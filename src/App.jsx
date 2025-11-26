@@ -438,12 +438,10 @@ const StatsSection = () => {
     { number: "15", label: "Довольных клиентов", suffix: "+" },
     { number: "99", label: "Успешных решений", suffix: "%" }
   ], []);
-  // const stats = useMemo(( => number
-  // nimber stats = useMo userTransform ))
 
   // const containerRef = useRef(null);
   // const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start:"]})
-  
+
 
   return (
     <section ref={containerRef} className="stats-section">
