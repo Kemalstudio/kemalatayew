@@ -439,7 +439,6 @@ const StatsSection = () => {
     { number: "99", label: "Успешных решений", suffix: "%" }
   ], []);
 
-
   return (
     <section ref={containerRef} className="stats-section">
       <motion.div className="stats-background" style={{ scale, y }} />
