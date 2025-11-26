@@ -237,7 +237,6 @@ const Crazy3DImageSlider = () => {
   );
 };
 
-// Карточка проекта (ОРИГИНАЛЬНЫЙ ДИЗАЙН)
 const ProjectCard = ({ project, index }) => {
   const cardRef = useRef(null);
   const x = useMotionValue(0);
@@ -251,7 +250,6 @@ const ProjectCard = ({ project, index }) => {
     const rect = cardRef.current.getBoundingClientRect();
     x.set(e.clientX - rect.left - rect.width / 2);
     y.set(e.clientY - rect.top - rect.height / 2);
-    // Для CSS glow
     cardRef.current.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
     cardRef.current.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
   };
@@ -268,7 +266,6 @@ const ProjectCard = ({ project, index }) => {
       className="horizontal-card"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      // Убираем анимацию появления тут, чтобы она не конфликтовала со скроллом
       whileHover={{ scale: 1.02 }} 
     >
       <motion.div
@@ -303,25 +300,19 @@ const ProjectCard = ({ project, index }) => {
   );
 };
 
-// ==================================================================
-// ИСПРАВЛЕННАЯ СЕКЦИЯ ГОРИЗОНТАЛЬНОГО СКРОЛЛА (STICKY)
-// ==================================================================
 const HorizontalScrollSection = () => {
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  // Используем useScroll для контейнера
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"] // Секция начинается, когда ее верх касается верха окна
+    offset: ["start start", "end end"]
   });
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     setIsVisible(latest > 0.1 && latest < 0.9);
   });
 
-  // Превращаем вертикальный прогресс (0-1) в горизонтальный сдвиг
-  // Настраиваем так, чтобы сдвиг начинался от 0% и шел до -85% (чтобы показать все карточки)
   const x = useTransform(scrollYProgress, [0, 1], ['0%', '-85%']);
   const smoothX = useSpring(x, { stiffness: 60, damping: 20, mass: 0.8 });
   
@@ -342,9 +333,7 @@ const HorizontalScrollSection = () => {
   return (
     <section ref={containerRef} className="horizontal-scroll-wrapper">
       <SmoothParallaxStars />
-      
       <div className="horizontal-scroll-sticky-view">
-        
         <div className="scroll-section-header">
           <motion.h2 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: "easeOut" }}>
             МОИ ПРОЕКТЫ
@@ -376,12 +365,14 @@ const HorizontalScrollSection = () => {
           <motion.div className="floating-shapes shape-1" animate={{ y: [0, -40, 0], rotate: [0, 10, 0], scale: [1, 1.1, 1] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
           <motion.div className="floating-shapes shape-2" animate={{ y: [0, 30, 0], rotate: [0, -15, 0], scale: [1, 1.05, 1] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
         </div>
-        
       </div>
     </section>
   );
 };
 
+// ==================================================================
+// ОБНОВЛЕННАЯ СЕКЦИЯ НАВЫКОВ (АНИМАЦИЯ ПРИ КАЖДОМ СКРОЛЛЕ)
+// ==================================================================
 const SkillsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
@@ -394,27 +385,91 @@ const SkillsSection = () => {
     { icon: "🛠️", title: "Tools & Technologies", description: "Git, Docker, AWS, CI/CD, Testing, Agile Methodology" }
   ], []);
 
+  // Анимационные варианты для карточек
+  const cardVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 100, 
+      scale: 0.8, 
+      rotateX: 45,
+    },
+    visible: (index) => ({
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotateX: 0,
+      transition: {
+        type: "spring",
+        stiffness: 70,
+        damping: 12,
+        mass: 1,
+        delay: index * 0.15, // Задержка для каскадного эффекта
+        duration: 0.8
+      }
+    })
+  };
+
   return (
     <section ref={containerRef} className="skills-section">
       <motion.div className="skills-background" style={{ scale, y }} />
       <div className="container">
-        <motion.div className="section-header" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: "easeOut" }} viewport={{ once: true, margin: "-100px" }}>
-          <motion.h2 animate={{ backgroundPosition: ['0%', '100%', '0%'] }} transition={{ duration: 4, repeat: Infinity, ease: "linear" }} style={{ background: "linear-gradient(90deg, #ff6c00, #00c6ff, #a855f7, #ff6c00)", backgroundSize: "300% auto", backgroundClip: "text", WebkitBackgroundClip: "text", color: "transparent" }}>
+        {/* Заголовок теперь анимируется каждый раз при прокрутке (once: false) */}
+        <motion.div 
+          className="section-header" 
+          initial={{ opacity: 0, y: 50, rotateX: -20 }} 
+          whileInView={{ opacity: 1, y: 0, rotateX: 0 }} 
+          transition={{ duration: 1, ease: "easeOut" }} 
+          viewport={{ once: false, margin: "-50px" }} // <-- Ключевое изменение: once: false
+        >
+          <motion.h2 
+            animate={{ backgroundPosition: ['0%', '100%', '0%'] }} 
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }} 
+            style={{ background: "linear-gradient(90deg, #ff6c00, #00c6ff, #a855f7, #ff6c00)", backgroundSize: "300% auto", backgroundClip: "text", WebkitBackgroundClip: "text", color: "transparent" }}
+          >
             МОИ НАВЫКИ
           </motion.h2>
-          <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }} viewport={{ once: true, margin: "-100px" }}>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }} 
+            viewport={{ once: false }}
+          >
             Технологии и инструменты, которые я использую для создания цифровых решений
           </motion.p>
         </motion.div>
+
         <div className="skills-grid">
           {skills.map((skill, index) => (
-            <motion.div key={index} className="skill-card" initial={{ opacity: 0, y: 60, scale: 0.9 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 1.2, delay: index * 0.2, ease: [0.25, 0.46, 0.45, 0.94] }} viewport={{ once: true, amount: 0.5, margin: "-100px" }} whileHover={{ scale: 1.05, y: -15, transition: { duration: 0.5, ease: "easeOut" } }}>
-              <motion.div className="skill-icon" animate={{ rotate: [0, 10, -5, 0], scale: [1, 1.1, 1.05, 1] }} transition={{ duration: 4, repeat: Infinity, delay: index * 0.5, ease: "easeInOut" }}>
+            <motion.div 
+              key={index} 
+              className="skill-card"
+              custom={index}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.2 }} // <-- Анимация при каждом появлении
+              variants={cardVariants}
+              whileHover={{ 
+                scale: 1.05, 
+                y: -15, 
+                rotateX: 5,
+                boxShadow: "0 20px 40px rgba(255,108,0,0.2)",
+                transition: { duration: 0.3, ease: "easeOut" } 
+              }}
+            >
+              <motion.div 
+                className="skill-icon" 
+                animate={{ rotate: [0, 10, -5, 0], scale: [1, 1.1, 1.05, 1] }} 
+                transition={{ duration: 4, repeat: Infinity, delay: index * 0.5, ease: "easeInOut" }}
+              >
                 {skill.icon}
               </motion.div>
               <h3>{skill.title}</h3>
               <p>{skill.description}</p>
-              <motion.div className="skill-glow" animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.3, 1], rotate: [0, 180, 360] }} transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: index * 0.3 }} />
+              <motion.div 
+                className="skill-glow" 
+                animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.3, 1], rotate: [0, 180, 360] }} 
+                transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: index * 0.3 }} 
+              />
             </motion.div>
           ))}
         </div>
