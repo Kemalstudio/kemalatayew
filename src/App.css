@@ -512,7 +512,7 @@ body {
   font-size: 1rem;
 }
 
-/* Секция навыков */
+/* Секция навыков (ОБНОВЛЕННАЯ С 3D ПЕРСПЕКТИВОЙ) */
 .skills-section {
   padding: 150px 0;
   position: relative;
@@ -533,6 +533,8 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 40px;
+  /* Добавлена перспектива для крутой 3D анимации */
+  perspective: 1000px; 
 }
 
 .skill-card {
@@ -546,6 +548,8 @@ body {
   overflow: hidden;
   transition: all 0.5s ease;
   cursor: pointer;
+  /* Для плавной трансформации */
+  transform-style: preserve-3d;
 }
 
 .skill-icon {
