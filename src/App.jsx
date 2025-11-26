@@ -340,7 +340,6 @@ const HorizontalScrollSection = () => {
   ], []);
 
   return (
-    // Контейнер высотой 400vh (или больше) для создания "длины" скролла
     <section ref={containerRef} className="horizontal-scroll-wrapper">
       <SmoothParallaxStars />
       
