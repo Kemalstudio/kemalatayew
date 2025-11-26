@@ -738,7 +738,7 @@ body {
   background-position: 200px 200px;
 }
 
-/* Анимированные элементы */
+/* Анимированные элемент */
 .hero-floating-elements {
   position: absolute;
   top: 0;
@@ -763,7 +763,6 @@ body {
   z-index: 1;
 }
 
-/* Специальные эффекты */
 .bg-grid {
   position: absolute;
   top: 0;
