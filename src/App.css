@@ -23,7 +23,7 @@ body {
   padding: 0 20px;
 }
 
-/* Hero */
+/* Hero секция */
 .hero {
   height: 100vh;
   display: flex;
@@ -88,7 +88,7 @@ body {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  will-change: transform; 
+  will-change: transform; /* Оптимизация для GSAP */
 }
 
 .btn-primary {
@@ -156,18 +156,36 @@ body {
   cursor: pointer;
 }
 
-/* Горизонтальная прокрутка */
+/* ==================================================================
+   ГОРИЗОНТАЛЬНАЯ ПРОКРУТКА (ИСПРАВЛЕННАЯ - STICKY)
+   ================================================================== */
+
+/* Общий контейнер секции - задает высоту скролла (4 экрана) */
 .horizontal-scroll-wrapper {
   position: relative;
-  min-height: 300vh;
+  height: 400vh; /* Высота для создания места под скролл */
   background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
-  overflow: hidden;
+  /* Убираем overflow: hidden отсюда, чтобы sticky работал корректно */
+}
+
+/* "Липкий" контейнер, который держит контент на экране */
+.horizontal-scroll-sticky-view {
+  position: sticky;
+  top: 0;
+  height: 100vh; /* Занимает весь экран */
+  width: 100%;
+  overflow: hidden; /* Скрываем то, что вылезает за пределы экрана */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .scroll-section-header {
   text-align: center;
-  padding: 150px 20px 100px;
-  position: relative;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
   z-index: 2;
 }
 
@@ -189,22 +207,26 @@ body {
   line-height: 1.6;
 }
 
+/* Контейнер для ленты карточек */
 .horizontal-scroll-container {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  width: 100%;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  /* padding-top компенсирует position:absolute хедера */
+  padding-top: 80px; 
 }
 
+/* Сама лента с карточками */
 .horizontal-scroll-content {
   display: flex;
-  gap: 40px;
-  padding: 0 10%;
+  gap: 60px; /* Отступ между карточками */
+  padding-left: 10vw; /* Начальный отступ слева */
+  padding-right: 10vw;
+  width: max-content; /* Ширина по содержимому */
   will-change: transform;
 }
 
+/* ОРИГИНАЛЬНЫЙ ДИЗАЙН КАРТОЧКИ */
 .horizontal-card {
   width: 450px;
   height: 600px;
@@ -238,7 +260,7 @@ body {
   transform: translate(-50%, -50%);
   opacity: 0;
   transition: opacity 0.3s ease-out;
-  pointer-events: none; /* чтобы не мешал другим событиям */
+  pointer-events: none;
   filter: blur(30px);
 }
 
@@ -368,12 +390,13 @@ body {
 
 /* Прогресс бар */
 .scroll-progress-container {
-  position: fixed;
+  position: absolute; /* Важно для sticky */
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
   text-align: center;
+  width: 100%;
 }
 
 .scroll-progress-bar {
@@ -384,6 +407,8 @@ body {
   overflow: hidden;
   margin-bottom: 15px;
   backdrop-filter: blur(10px);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .scroll-progress-fill {
