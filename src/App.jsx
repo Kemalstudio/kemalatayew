@@ -12,8 +12,9 @@ import { gsap } from 'gsap';
 import './App.css';
 
 // ==================================================================
-// 1. SMOOTH SCROLL (LENIS)
+// КОМПОНЕНТЫ (БЕЗ ИЗМЕНЕНИЙ)
 // ==================================================================
+
 const SmoothScroll = ({ children }) => {
   useEffect(() => {
     const lenis = new Lenis({
@@ -38,9 +39,6 @@ const SmoothScroll = ({ children }) => {
   return <>{children}</>;
 };
 
-// ==================================================================
-// 2. MAGNETIC BUTTON
-// ==================================================================
 const Magnetic = ({ children }) => {
   const ref = useRef(null);
 
@@ -77,9 +75,6 @@ const Magnetic = ({ children }) => {
   return React.cloneElement(children, { ref });
 };
 
-// ==================================================================
-// 3. VERTICAL TICKER
-// ==================================================================
 const VerticalTicker = React.memo(({ items, speed = 50 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -87,7 +82,6 @@ const VerticalTicker = React.memo(({ items, speed = 50 }) => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % items.length);
     }, speed * 100);
-
     return () => clearInterval(interval);
   }, [items.length, speed]);
 
@@ -115,9 +109,6 @@ const VerticalTicker = React.memo(({ items, speed = 50 }) => {
   );
 });
 
-// ==================================================================
-// 4. STARS BACKGROUND
-// ==================================================================
 const SmoothParallaxStars = () => {
     const { scrollYProgress } = useScroll();
     const smoothY1 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 200]), { stiffness: 100, damping: 30, restDelta: 0.001 });
@@ -137,9 +128,6 @@ const SmoothParallaxStars = () => {
     );
 };
 
-// ==================================================================
-// 5. CRAZY 3D SLIDER
-// ==================================================================
 const Crazy3DImageSlider = () => {
   const images = useMemo(() => [
     { src: "/images/atam.jpg" }, { src: "/images/atam.jpg" },
@@ -188,6 +176,7 @@ const Crazy3DImageSlider = () => {
 
   const handleMouseMove = (e) => {
     if (!sceneRef.current) return;
+    
     const { currentTarget, clientX, clientY } = e;
     const { width, height, left, top } = currentTarget.getBoundingClientRect();
     const x = (clientX - left) / width - 0.5;
@@ -248,9 +237,7 @@ const Crazy3DImageSlider = () => {
   );
 };
 
-// ==================================================================
-// 6. PROJECT CARD
-// ==================================================================
+// Карточка проекта (ОРИГИНАЛЬНЫЙ ДИЗАЙН)
 const ProjectCard = ({ project, index }) => {
   const cardRef = useRef(null);
   const x = useMotionValue(0);
@@ -264,12 +251,14 @@ const ProjectCard = ({ project, index }) => {
     const rect = cardRef.current.getBoundingClientRect();
     x.set(e.clientX - rect.left - rect.width / 2);
     y.set(e.clientY - rect.top - rect.height / 2);
+    // Для CSS glow
     cardRef.current.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
     cardRef.current.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
   };
 
   const handleMouseLeave = () => {
-    x.set(0); y.set(0);
+    x.set(0);
+    y.set(0);
   };
 
   return (
@@ -279,7 +268,8 @@ const ProjectCard = ({ project, index }) => {
       className="horizontal-card"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      whileHover={{ scale: 1.02 }}
+      // Убираем анимацию появления тут, чтобы она не конфликтовала со скроллом
+      whileHover={{ scale: 1.02 }} 
     >
       <motion.div
         className="card-inner"
@@ -314,21 +304,24 @@ const ProjectCard = ({ project, index }) => {
 };
 
 // ==================================================================
-// 7. HORIZONTAL SCROLL SECTION (STICKY)
+// ИСПРАВЛЕННАЯ СЕКЦИЯ ГОРИЗОНТАЛЬНОГО СКРОЛЛА (STICKY)
 // ==================================================================
 const HorizontalScrollSection = () => {
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
+  // Используем useScroll для контейнера
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"]
+    offset: ["start start", "end end"] // Секция начинается, когда ее верх касается верха окна
   });
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     setIsVisible(latest > 0.1 && latest < 0.9);
   });
 
+  // Превращаем вертикальный прогресс (0-1) в горизонтальный сдвиг
+  // Настраиваем так, чтобы сдвиг начинался от 0% и шел до -85% (чтобы показать все карточки)
   const x = useTransform(scrollYProgress, [0, 1], ['0%', '-85%']);
   const smoothX = useSpring(x, { stiffness: 60, damping: 20, mass: 0.8 });
   
@@ -347,17 +340,22 @@ const HorizontalScrollSection = () => {
   ], []);
 
   return (
+    // Контейнер высотой 400vh (или больше) для создания "длины" скролла
     <section ref={containerRef} className="horizontal-scroll-wrapper">
       <SmoothParallaxStars />
+      
+      {/* Липкий контейнер, который держит контент на экране */}
       <div className="horizontal-scroll-sticky-view">
+        
         <div className="scroll-section-header">
-          <motion.h2 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2 }}>
+          <motion.h2 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: "easeOut" }}>
             МОИ ПРОЕКТЫ
           </motion.h2>
-          <motion.p initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.3 }}>
+          <motion.p initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}>
             Исследуйте мои работы через интерактивную прокрутку
           </motion.p>
         </div>
+
         <div className="horizontal-scroll-container">
           <motion.div className="horizontal-scroll-content" style={{ x: smoothX }}>
             {portfolioProjects.map((project, index) => (
@@ -365,135 +363,63 @@ const HorizontalScrollSection = () => {
             ))}
           </motion.div>
         </div>
+
         <motion.div className="scroll-progress-container" style={{ opacity }}>
           <div className="scroll-progress-bar">
             <motion.div className="scroll-progress-fill" style={{ scaleX: scrollYProgress, background: "linear-gradient(90deg, #ff6c00, #00c6ff, #a855f7)" }} />
           </div>
-          <motion.div className="scroll-hint" animate={{ y: [-2, 2, -2], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity }}>
+          <motion.div className="scroll-hint" animate={{ y: [-2, 2, -2], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
             {isVisible ? "🌀 ПРОЕКТЫ ЗАГРУЖЕНЫ" : "⌛ SCROLL DOWN"}
           </motion.div>
         </motion.div>
+
         <div className="background-elements">
           <motion.div className="bg-grid" style={{ y: backgroundY }} />
-          <motion.div className="floating-shapes shape-1" animate={{ y: [0, -40, 0], rotate: [0, 10, 0] }} transition={{ duration: 8, repeat: Infinity }} />
-          <motion.div className="floating-shapes shape-2" animate={{ y: [0, 30, 0], rotate: [0, -15, 0] }} transition={{ duration: 6, repeat: Infinity, delay: 1 }} />
+          <motion.div className="floating-shapes shape-1" animate={{ y: [0, -40, 0], rotate: [0, 10, 0], scale: [1, 1.1, 1] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
+          <motion.div className="floating-shapes shape-2" animate={{ y: [0, 30, 0], rotate: [0, -15, 0], scale: [1, 1.05, 1] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
         </div>
+        
       </div>
     </section>
   );
 };
 
-// ==================================================================
-// 8. НОВАЯ СЕКЦИЯ НАВЫКОВ (Zoom-In / Zoom-Out)
-// ==================================================================
-
-// Компонент карточки навыка с эффектом Zoom
-const ZoomSkillCard = ({ skill, index, range, scrollYProgress }) => {
-  // range = [start, end]
-  // Навык появляется, увеличивается, а потом уменьшается
-  
-  // 1. Появление (Opacity)
-  const opacity = useTransform(
-    scrollYProgress,
-    [range[0], range[0] + 0.05, range[1] - 0.05, range[1]],
-    [0, 1, 1, 0]
-  );
-
-  // 2. Zoom Effect (Scale)
-  // 0.5 (start) -> 1.0 (small square) -> 2.0 (deep zoom) -> 0.5 (exit)
-  const scale = useTransform(
-    scrollYProgress,
-    [range[0], range[0] + 0.1, range[1] - 0.1, range[1]],
-    [0.5, 1, 1.3, 0.5] // 1 - нормальный размер, 1.3 - увеличенный ("углубленно")
-  );
-
-  // 3. Размытие (Blur)
-  const blur = useTransform(
-    scrollYProgress,
-    [range[0], range[0] + 0.1, range[1] - 0.1, range[1]],
-    [10, 0, 0, 10]
-  );
-
-  return (
-    <motion.div 
-      className="skill-zoom-card"
-      style={{ 
-        opacity, 
-        scale, 
-        filter: useTransform(blur, v => `blur(${v}px)`),
-        zIndex: index
-      }}
-    >
-      <div className="skill-zoom-content">
-        <div className="skill-zoom-icon">{skill.icon}</div>
-        <h2>{skill.title}</h2>
-        <p>{skill.description}</p>
-        <div className="skill-zoom-tags">
-          {skill.details.map((tag, i) => <span key={i}>{tag}</span>)}
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
+// Секция с навыками
 const SkillsSection = () => {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end end"]
-  });
-
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 0.8]);
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
   const skills = useMemo(() => [
-    { 
-      icon: "⚛️", 
-      title: "Frontend", 
-      description: "Разработка интерфейсов",
-      details: ["React", "Vue", "TS", "Tailwind"]
-    },
-    { 
-      icon: "🔧", 
-      title: "Backend", 
-      description: "Серверная логика",
-      details: ["Node.js", "Python", "SQL", "API"]
-    },
-    { 
-      icon: "📱", 
-      title: "Mobile", 
-      description: "iOS и Android",
-      details: ["React Native", "Expo", "Swift"]
-    },
-    { 
-      icon: "🛠️", 
-      title: "DevOps", 
-      description: "Инфраструктура",
-      details: ["Docker", "AWS", "Git", "CI/CD"]
-    }
+    { icon: "⚛️", title: "Frontend Development", description: "React, Vue.js, TypeScript, Modern CSS, Responsive Design" },
+    { icon: "🔧", title: "Backend Development", description: "Node.js, Express, Python, REST APIs, Database Design" },
+    { icon: "📱", title: "Mobile Development", description: "React Native, iOS & Android, Cross-platform Solutions" },
+    { icon: "🛠️", title: "Tools & Technologies", description: "Git, Docker, AWS, CI/CD, Testing, Agile Methodology" }
   ], []);
 
   return (
-    <section ref={targetRef} className="skills-zoom-track">
-      <div className="skills-zoom-sticky">
-        <div className="skills-zoom-header">
-           <h3>МОИ НАВЫКИ</h3>
-           <p>Scroll to explore</p>
-        </div>
-        
-        <div className="skills-cards-container">
-          {skills.map((skill, index) => {
-            const step = 1 / skills.length;
-            const start = index * step;
-            const end = start + step;
-            
-            return (
-              <ZoomSkillCard 
-                key={index} 
-                index={index}
-                skill={skill} 
-                range={[start, end]} 
-                scrollYProgress={scrollYProgress} 
-              />
-            );
-          })}
+    <section ref={containerRef} className="skills-section">
+      <motion.div className="skills-background" style={{ scale, y }} />
+      <div className="container">
+        <motion.div className="section-header" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: "easeOut" }} viewport={{ once: true, margin: "-100px" }}>
+          <motion.h2 animate={{ backgroundPosition: ['0%', '100%', '0%'] }} transition={{ duration: 4, repeat: Infinity, ease: "linear" }} style={{ background: "linear-gradient(90deg, #ff6c00, #00c6ff, #a855f7, #ff6c00)", backgroundSize: "300% auto", backgroundClip: "text", WebkitBackgroundClip: "text", color: "transparent" }}>
+            МОИ НАВЫКИ
+          </motion.h2>
+          <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }} viewport={{ once: true, margin: "-100px" }}>
+            Технологии и инструменты, которые я использую для создания цифровых решений
+          </motion.p>
+        </motion.div>
+        <div className="skills-grid">
+          {skills.map((skill, index) => (
+            <motion.div key={index} className="skill-card" initial={{ opacity: 0, y: 60, scale: 0.9 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 1.2, delay: index * 0.2, ease: [0.25, 0.46, 0.45, 0.94] }} viewport={{ once: true, amount: 0.5, margin: "-100px" }} whileHover={{ scale: 1.05, y: -15, transition: { duration: 0.5, ease: "easeOut" } }}>
+              <motion.div className="skill-icon" animate={{ rotate: [0, 10, -5, 0], scale: [1, 1.1, 1.05, 1] }} transition={{ duration: 4, repeat: Infinity, delay: index * 0.5, ease: "easeInOut" }}>
+                {skill.icon}
+              </motion.div>
+              <h3>{skill.title}</h3>
+              <p>{skill.description}</p>
+              <motion.div className="skill-glow" animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.3, 1], rotate: [0, 180, 360] }} transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: index * 0.3 }} />
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -517,9 +443,9 @@ const StatsSection = () => {
     <section ref={containerRef} className="stats-section">
       <motion.div className="stats-background" style={{ scale, y }} />
       <div className="container">
-        <motion.div className="stats-grid" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1.2 }} viewport={{ once: true }}>
+        <motion.div className="stats-grid" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1.2 }} viewport={{ once: true, margin: "-100px" }}>
           {stats.map((stat, index) => (
-            <motion.div key={index} className="stat-item" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: index * 0.15 }}>
+            <motion.div key={index} className="stat-item" initial={{ opacity: 0, y: 30, scale: 0.9 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.8, delay: index * 0.15, ease: "easeOut" }} viewport={{ once: true }}>
               <motion.div className="stat-number" animate={{ scale: [1, 1.1, 1], textShadow: ["0 0 0px rgba(255,108,0,0)", "0 0 20px rgba(255,108,0,0.5)", "0 0 0px rgba(255,108,0,0)"] }} transition={{ duration: 3, repeat: Infinity, delay: index * 0.5 }}>
                 {stat.number}
                 <span className="stat-suffix">{stat.suffix}</span>
@@ -538,10 +464,15 @@ const StatsSection = () => {
 // Основной компонент App
 function App() {
   const features = useMemo(() => [
-    { title: "React Development" }, { title: "Responsive Design" }, { title: "API Integration" },
-    { title: "Database Design" }, { title: "Mobile Apps" }, { title: "UI/UX Design" },
+    { title: "React Development", description: "Современные React приложения с hooks и контекстом", icon: "⚛️" },
+    { title: "Responsive Design", description: "Адаптивный дизайн для всех устройств и экранов", icon: "📱" },
+    { title: "API Integration", description: "Интеграция с REST API и сторонними сервисами", icon: "🔌" },
+    { title: "Database Design", description: "Проектирование и оптимизация баз данных", icon: "🗃️" },
+    { title: "Mobile Apps", description: "Кроссплатформенные мобильные приложения", icon: "📲" },
+    { title: "UI/UX Design", description: "Создание интуитивных пользовательских интерфейсов", icon: "🎨" },
   ], []);
-  const tickerItems = useMemo(() => features.map(f => f.title), [features]);
+
+  const tickerItems = useMemo(() => features.map(feature => feature.title), [features]);
 
   return (
     <SmoothScroll>
@@ -549,48 +480,85 @@ function App() {
         <section className="hero">
           <SmoothParallaxStars />
           <div className="hero-content">
-            <motion.h1 initial={{ opacity: 0, y: 80 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5 }}>
+            <motion.h1 initial={{ opacity: 0, y: 80, skewX: -10 }} animate={{ opacity: 1, y: 0, skewX: 0 }} transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}>
               JUNIOR <span className="highlight">FULL STACK</span> DEVELOPER
             </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 1.2 }}>
-              Создаю современные веб и мобильные приложения
+            <motion.p initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}>
+              Создаю современные веб и мобильные приложения с фокусом на пользовательский опыт и производительность
             </motion.p>
-            <div className="hero-buttons">
-              <Magnetic><button className="btn-primary">Связаться со мной</button></Magnetic>
-              <Magnetic><button className="btn-secondary">Скачать резюме</button></Magnetic>
-            </div>
+            <motion.div className="hero-buttons" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1, ease: "easeOut" }}>
+              <Magnetic>
+                <motion.button className="btn-primary" whileTap={{ scale: 0.95 }} transition={{ duration: 0.3, ease: "easeOut" }}>
+                  Связаться со мной
+                </motion.button>
+              </Magnetic>
+              <Magnetic>
+                <motion.button className="btn-secondary" whileTap={{ scale: 0.95 }} transition={{ duration: 0.3, ease: "easeOut" }}>
+                  Скачать резюме
+                </motion.button>
+              </Magnetic>
+            </motion.div>
           </div>
           <div className="ticker-section">
-            <div className="ticker-label">ТЕХНОЛОГИИ</div>
+            <div className="ticker-label">
+              <motion.span animate={{ color: ["#ff6c00", "#00c6ff", "#a855f7", "#ff6c00"] }} transition={{ duration: 3, repeat: Infinity }}>
+                ТЕХНОЛОГИИ
+              </motion.span>
+            </div>
             <VerticalTicker items={tickerItems} speed={50} />
           </div>
+          <motion.div className="hero-floating-elements" animate={{ y: [0, -30, 0], rotate: [0, 8, 0] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }} />
           <div className="hero-vignette"></div>
         </section>
         
         <HorizontalScrollSection />
-        
-        {/* ОБНОВЛЕННАЯ СЕКЦИЯ НАВЫКОВ */}
         <SkillsSection />
-        
         <StatsSection />
         <Crazy3DImageSlider />
         
+        <section className="services-grid">
+          <div className="container">
+            <motion.div className="section-header" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: "easeOut" }} viewport={{ once: true, margin: "-100px" }}>
+              <h2>Мои Услуги</h2>
+              <p>Полный цикл разработки от идеи до запуска</p>
+            </motion.div>
+            <div className="services-grid-content">
+              {features.map((service, index) => (
+                <motion.div key={index} className="service-card" initial={{ opacity: 0, y: 60, scale: 0.9 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.8, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }} viewport={{ once: true, amount: 0.3, margin: "-50px" }} whileHover={{ scale: 1.03, y: -8, transition: { duration: 0.4, ease: "easeOut" } }}>
+                  <div className="service-card-glow"></div>
+                  <div className="service-icon">{service.icon}</div>
+                  <div className="service-card-content">
+                    <h3>{service.title}</h3>
+                    <p>{service.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
         <section className="continuous-ticker-section">
           <motion.div className="continuous-ticker" animate={{ x: ['0%', '-100%'] }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }}>
             {[...tickerItems, ...tickerItems, ...tickerItems].map((item, index) => (
-              <motion.div key={index} className="ticker-word">
-                {item} <span className="dot">•</span>
+              <motion.div key={index} className="ticker-word" whileHover={{ scale: 1.15, color: "#ff6c00", y: -8 }} transition={{ duration: 0.4, ease: "easeOut" }}>
+                {item}
+                <motion.span className="dot" animate={{ scale: [1, 1.5, 1] }} transition={{ duration: 1, repeat: Infinity, delay: index * 0.1 }}>
+                  •
+                </motion.span>
               </motion.div>
             ))}
           </motion.div>
         </section>
-        <motion.footer className="footer" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1.2 }}>
+        <motion.footer className="footer" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1.2, ease: "easeOut" }} viewport={{ once: true, margin: "-100px" }}>
           <div className="container">
-            <div className="footer-content">
+            <motion.div className="footer-content" initial={{ y: 40 }} whileInView={{ y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}>
               <h3>ГОТОВЫ К СОТРУДНИЧЕСТВУ?</h3>
               <p>Давайте создадим что-то удивительное вместе</p>
-              <Magnetic><button className="btn-primary">Начать проект</button></Magnetic>
-            </div>
+              <Magnetic>
+                <motion.button className="btn-primary" whileTap={{ scale: 0.95 }} transition={{ duration: 0.3, ease: "easeOut" }}>
+                  Начать проект
+                </motion.button>
+              </Magnetic>
+            </motion.div>
           </div>
         </motion.footer>
       </div>
