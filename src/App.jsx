@@ -37,7 +37,7 @@ const SmoothScroll = ({ children }) => {
   return <>{children}</>;
 };
 
-// 2. FIX: Безопасная работа с ref и очистка событий
+// 2. FIX: Безопасная работа с ref и очистка событи
 const Magnetic = ({ children }) => {
   const ref = useRef(null);
 
