@@ -859,7 +859,7 @@ body {
   -webkit-box-reflect: below 1px linear-gradient(transparent, transparent, #0004);
 }
 
-/* Фоновые элементы секции слайдера (без изменений */
+/* Фоновые элементы секции слайдера (без изменений) */
 .slider-background-elements {
   position: absolute;
   top: 0;
