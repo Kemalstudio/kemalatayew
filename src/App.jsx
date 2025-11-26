@@ -344,7 +344,6 @@ const HorizontalScrollSection = () => {
     <section ref={containerRef} className="horizontal-scroll-wrapper">
       <SmoothParallaxStars />
       
-      {/* Липкий контейнер, который держит контент на экране */}
       <div className="horizontal-scroll-sticky-view">
         
         <div className="scroll-section-header">
