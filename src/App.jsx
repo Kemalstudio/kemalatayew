@@ -11,6 +11,10 @@ import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
 import './App.css';
 
+// ==================================================================
+// КОМПОНЕНТЫ (БЕЗ ИЗМЕНЕНИЙ)
+// ==================================================================
+
 const SmoothScroll = ({ children }) => {
   useEffect(() => {
     const lenis = new Lenis({
@@ -20,12 +24,10 @@ const SmoothScroll = ({ children }) => {
     });
 
     let rafId;
-
     function raf(time) {
       lenis.raf(time);
       rafId = requestAnimationFrame(raf);
     }
-
     rafId = requestAnimationFrame(raf);
 
     return () => {
@@ -41,7 +43,7 @@ const Magnetic = ({ children }) => {
   const ref = useRef(null);
 
   useEffect(() => {
-    const element = ref.current; // Сохраняем ссылку на элемент внутри эффекта
+    const element = ref.current;
     if (!element) return;
 
     const xTo = gsap.quickTo(element, "x", { duration: 1, ease: "elastic.out(1, 0.3)" });
@@ -73,7 +75,6 @@ const Magnetic = ({ children }) => {
   return React.cloneElement(children, { ref });
 };
 
-// Компонент вертикального тикера (без изменений)
 const VerticalTicker = React.memo(({ items, speed = 50 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -81,7 +82,6 @@ const VerticalTicker = React.memo(({ items, speed = 50 }) => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % items.length);
     }, speed * 100);
-
     return () => clearInterval(interval);
   }, [items.length, speed]);
 
@@ -128,7 +128,6 @@ const SmoothParallaxStars = () => {
     );
 };
 
-// 3. FIX: Использование gsap.context для корректной очистки в React
 const Crazy3DImageSlider = () => {
   const images = useMemo(() => [
     { src: "/images/atam.jpg" }, { src: "/images/atam.jpg" },
@@ -141,7 +140,6 @@ const Crazy3DImageSlider = () => {
   const containerRef = useRef(null);
 
   useLayoutEffect(() => {
-    // Использование gsap.context автоматически очищает все анимации внутри скоупа
     let ctx = gsap.context(() => {
       const timeline = gsap.timeline({ repeat: -1 });
       timeline.to(sceneRef.current, {
@@ -149,12 +147,10 @@ const Crazy3DImageSlider = () => {
         duration: 30,
         ease: "none"
       });
-      
-      // Сохраняем ссылку на таймлайн в объект сцены или переменную, если нужно управление
       sceneRef.current.timeline = timeline;
     }, containerRef);
 
-    return () => ctx.revert(); // Полная очистка GSAP при размонтировании
+    return () => ctx.revert();
   }, []);
 
   const handleMouseEnter = () => {
@@ -241,7 +237,7 @@ const Crazy3DImageSlider = () => {
   );
 };
 
-// Карточка проекта
+// Карточка проекта (ОРИГИНАЛЬНЫЙ ДИЗАЙН)
 const ProjectCard = ({ project, index }) => {
   const cardRef = useRef(null);
   const x = useMotionValue(0);
@@ -255,6 +251,9 @@ const ProjectCard = ({ project, index }) => {
     const rect = cardRef.current.getBoundingClientRect();
     x.set(e.clientX - rect.left - rect.width / 2);
     y.set(e.clientY - rect.top - rect.height / 2);
+    // Для CSS glow
+    cardRef.current.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+    cardRef.current.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
   };
 
   const handleMouseLeave = () => {
@@ -262,24 +261,15 @@ const ProjectCard = ({ project, index }) => {
     y.set(0);
   };
 
-  const handleGlow = (e) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    cardRef.current.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-    cardRef.current.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-  };
-
   return (
     <motion.div
       ref={cardRef}
       key={index}
       className="horizontal-card"
-      onMouseMove={(e) => { handleMouseMove(e); handleGlow(e); }}
+      onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, y: 100, scale: 0.9 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 1.2, delay: index * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
-      viewport={{ once: true, margin: "-150px" }}
+      // Убираем анимацию появления тут, чтобы она не конфликтовала со скроллом
+      whileHover={{ scale: 1.02 }} 
     >
       <motion.div
         className="card-inner"
@@ -313,25 +303,30 @@ const ProjectCard = ({ project, index }) => {
   );
 };
 
-// Компонент горизонтальной прок
+// ==================================================================
+// ИСПРАВЛЕННАЯ СЕКЦИЯ ГОРИЗОНТАЛЬНОГО СКРОЛЛА (STICKY)
+// ==================================================================
 const HorizontalScrollSection = () => {
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
+  // Используем useScroll для контейнера
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"]
+    offset: ["start start", "end end"] // Секция начинается, когда ее верх касается верха окна
   });
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     setIsVisible(latest > 0.1 && latest < 0.9);
   });
 
-  const xTransform = useTransform(scrollYProgress, [0, 1], ['5%', '-125%']);
-  const smoothX = useSpring(xTransform, { stiffness: 80, damping: 30, mass: 0.8 });
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '80%']);
+  // Превращаем вертикальный прогресс (0-1) в горизонтальный сдвиг
+  // Настраиваем так, чтобы сдвиг начинался от 0% и шел до -85% (чтобы показать все карточки)
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-85%']);
+  const smoothX = useSpring(x, { stiffness: 60, damping: 20, mass: 0.8 });
+  
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.9]);
 
   const portfolioProjects = useMemo(() => [
     { title: "E-Commerce Platform", description: "Полнофункциональная платформа электронной коммерции с React и Node.js", color: "#ff6c00", image: "/images/atam.jpg", tech: ["React", "Node.js", "MongoDB", "Stripe API"] },
@@ -345,40 +340,51 @@ const HorizontalScrollSection = () => {
   ], []);
 
   return (
+    // Контейнер высотой 400vh (или больше) для создания "длины" скролла
     <section ref={containerRef} className="horizontal-scroll-wrapper">
       <SmoothParallaxStars />
-      <div className="scroll-section-header">
-        <motion.h2 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: "easeOut" }} viewport={{ once: true, margin: "-100px" }}>
-          МОИ ПРОЕКТЫ
-        </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }} viewport={{ once: true, margin: "-100px" }}>
-          Исследуйте мои работы через интерактивную прокрутку
-        </motion.p>
-      </div>
-      <div className="horizontal-scroll-container">
-        <motion.div className="horizontal-scroll-content" style={{ x: smoothX }}>
-          {portfolioProjects.map((project, index) => (
-            <ProjectCard project={project} index={index} key={index} />
-          ))}
-        </motion.div>
-      </div>
-      <motion.div className="scroll-progress-container" style={{ opacity }}>
-        <div className="scroll-progress-bar">
-          <motion.div className="scroll-progress-fill" style={{ scaleX: scrollYProgress, background: "linear-gradient(90deg, #ff6c00, #00c6ff, #a855f7)" }} />
+      
+      {/* Липкий контейнер, который держит контент на экране */}
+      <div className="horizontal-scroll-sticky-view">
+        
+        <div className="scroll-section-header">
+          <motion.h2 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: "easeOut" }}>
+            МОИ ПРОЕКТЫ
+          </motion.h2>
+          <motion.p initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}>
+            Исследуйте мои работы через интерактивную прокрутку
+          </motion.p>
         </div>
-        <motion.div className="scroll-hint" animate={{ y: [-2, 2, -2], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
-          {isVisible ? "🌀 ПРОЕКТЫ ЗАГРУЖЕНЫ" : "⌛ НАЧНИТЕ ПРОКРУТКУ"}
+
+        <div className="horizontal-scroll-container">
+          <motion.div className="horizontal-scroll-content" style={{ x: smoothX }}>
+            {portfolioProjects.map((project, index) => (
+              <ProjectCard project={project} index={index} key={index} />
+            ))}
+          </motion.div>
+        </div>
+
+        <motion.div className="scroll-progress-container" style={{ opacity }}>
+          <div className="scroll-progress-bar">
+            <motion.div className="scroll-progress-fill" style={{ scaleX: scrollYProgress, background: "linear-gradient(90deg, #ff6c00, #00c6ff, #a855f7)" }} />
+          </div>
+          <motion.div className="scroll-hint" animate={{ y: [-2, 2, -2], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
+            {isVisible ? "🌀 ПРОЕКТЫ ЗАГРУЖЕНЫ" : "⌛ SCROLL DOWN"}
+          </motion.div>
         </motion.div>
-      </motion.div>
-      <div className="background-elements">
-        <motion.div className="bg-grid" style={{ y: backgroundY, scale }} />
-        <motion.div className="floating-shapes shape-1" animate={{ y: [0, -40, 0], rotate: [0, 10, 0], scale: [1, 1.1, 1] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
-        <motion.div className="floating-shapes shape-2" animate={{ y: [0, 30, 0], rotate: [0, -15, 0], scale: [1, 1.05, 1] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
+
+        <div className="background-elements">
+          <motion.div className="bg-grid" style={{ y: backgroundY }} />
+          <motion.div className="floating-shapes shape-1" animate={{ y: [0, -40, 0], rotate: [0, 10, 0], scale: [1, 1.1, 1] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
+          <motion.div className="floating-shapes shape-2" animate={{ y: [0, 30, 0], rotate: [0, -15, 0], scale: [1, 1.05, 1] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
+        </div>
+        
       </div>
     </section>
   );
 };
 
+// Секция с навыками
 const SkillsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
@@ -420,7 +426,7 @@ const SkillsSection = () => {
   );
 };
 
-// Секция статист
+// Секция статистики
 const StatsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
@@ -455,6 +461,7 @@ const StatsSection = () => {
   );
 };
 
+// Основной компонент App
 function App() {
   const features = useMemo(() => [
     { title: "React Development", description: "Современные React приложения с hooks и контекстом", icon: "⚛️" },
