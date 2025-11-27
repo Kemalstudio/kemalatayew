@@ -164,7 +164,6 @@ body {
   position: relative;
   height: 400vh; /* Высота для создания места под скролл */
   background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
-  /* Убираем overflow: hidden отсюда, чтобы sticky работал корректно */
 }
 
 /* "Липкий" контейнер, который держит контент на экране */
