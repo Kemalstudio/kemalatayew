@@ -12,7 +12,7 @@ import { gsap } from 'gsap';
 import './App.css';
 
 // ==================================================================
-// КОМПОНЕНТЫ (БЕЗ ИЗМЕНЕНИЙ)
+// КОМПОНЕНТЫ
 // ==================================================================
 
 const SmoothScroll = ({ children }) => {
@@ -128,109 +128,74 @@ const SmoothParallaxStars = () => {
     );
 };
 
+// ==================================================================
+// НОВЫЙ КОМПОНЕНТ 3D ГАЛЕРЕИ (SCROLL CONTROLLED)
+// ==================================================================
 const Crazy3DImageSlider = () => {
+  // Ровно 6 карточек, как вы просили
   const images = useMemo(() => [
-    { src: "/images/atam.jpg" }, { src: "/images/atam.jpg" },
-    { src: "/images/atam.jpg" }, { src: "/images/atam.jpg" },
-    { src: "/images/atam.jpg" }, { src: "/images/atam.jpg" },
-    { src: "/images/atam.jpg" }, { src: "/images/atam.jpg" },
+    { src: "/images/atam.jpg", id: 1 },
+    { src: "/images/atam.jpg", id: 2 },
+    { src: "/images/atam.jpg", id: 3 },
+    { src: "/images/atam.jpg", id: 4 },
+    { src: "/images/atam.jpg", id: 5 },
+    { src: "/images/atam.jpg", id: 6 },
   ], []);
 
-  const sceneRef = useRef(null);
   const containerRef = useRef(null);
 
-  useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
-      const timeline = gsap.timeline({ repeat: -1 });
-      timeline.to(sceneRef.current, {
-        rotationY: 360,
-        duration: 30,
-        ease: "none"
-      });
-      sceneRef.current.timeline = timeline;
-    }, containerRef);
+  // Следим за скроллом внутри контейнера
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-    return () => ctx.revert();
-  }, []);
-
-  const handleMouseEnter = () => {
-    if (sceneRef.current?.timeline) {
-      gsap.to(sceneRef.current.timeline, { timeScale: 0.1, duration: 0.5 });
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (sceneRef.current?.timeline) {
-      gsap.to(sceneRef.current.timeline, { timeScale: 1, duration: 0.5 });
-    }
-    if (sceneRef.current) {
-      gsap.to(sceneRef.current, {
-        rotationX: 0,
-        rotationY: gsap.getProperty(sceneRef.current, "rotationY"),
-        rotationZ: 0,
-        duration: 1,
-        ease: "elastic.out(1, 0.5)"
-      });
-    }
-  };
-
-  const handleMouseMove = (e) => {
-    if (!sceneRef.current) return;
-    
-    const { currentTarget, clientX, clientY } = e;
-    const { width, height, left, top } = currentTarget.getBoundingClientRect();
-    const x = (clientX - left) / width - 0.5;
-    const y = (clientY - top) / height - 0.5;
-
-    gsap.to(sceneRef.current, {
-      rotationX: -y * 20,
-      rotationY: gsap.getProperty(sceneRef.current, "rotationY") - (x * 20),
-      rotationZ: -x * y * 10,
-      duration: 0.5,
-      ease: "power1.out"
-    });
-  };
+  // Вращаем на 360 градусов по мере скролла
+  const rotateY = useTransform(scrollYProgress, [0, 1], [0, -360]);
+  const smoothRotateY = useSpring(rotateY, { stiffness: 50, damping: 15 });
 
   return (
-    <section className="crazy-3d-slider-section" ref={containerRef}>
-      <div className="container">
+    <section ref={containerRef} className="crazy-3d-scroll-wrapper">
+      <div className="crazy-3d-sticky-view">
         <motion.div
           className="section-header"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          viewport={{ once: true, margin: "-100px" }}
         >
           <h2>CRAZY 3D ГАЛЕРЕЯ</h2>
-          <p>Интерактивная 3D галерея с эффектом вращения на 360°</p>
+          <p>Скролльте вниз, чтобы вращать реальность</p>
         </motion.div>
 
-        <div
-          className="slider-3d-viewport-gsap"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onMouseMove={handleMouseMove}
-        >
-          <div className="slider-3d-scene-gsap" ref={sceneRef}>
+        <div className="scene-3d-container">
+          <motion.div 
+            className="carousel-3d-ring"
+            style={{ rotateY: smoothRotateY }}
+          >
             {images.map((image, index) => (
               <div
                 key={index}
-                className="slider-3d-item-gsap"
+                className="card-3d-item"
                 style={{
                   '--i': index,
                   '--total': images.length,
                 }}
               >
-                <img src={image.src} alt={`slide ${index + 1}`} />
+                <div className="card-3d-content">
+                  <img src={image.src} alt={`Slide ${index + 1}`} />
+                  <div className="card-3d-overlay">
+                     <span>0{index + 1}</span>
+                  </div>
+                </div>
               </div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
+        {/* Те же фоновые элементы для сохранения дизайна */}
         <div className="slider-background-elements">
           <motion.div className="bg-orb orb-1" animate={{ y: [0, -40, 0], x: [0, 20, 0], rotate: [0, 180, 360] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
           <motion.div className="bg-orb orb-2" animate={{ y: [0, 30, 0], x: [0, -25, 0], rotate: [0, -180, -360] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
-          <motion.div className="bg-orb orb-3" animate={{ y: [0, -25, 0], x: [0, 15, 0], scale: [1, 1.2, 1] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }} />
         </div>
       </div>
     </section>
@@ -370,9 +335,6 @@ const HorizontalScrollSection = () => {
   );
 };
 
-// ==================================================================
-// ОБНОВЛЕННАЯ СЕКЦИЯ НАВЫКОВ (АНИМАЦИЯ ПРИ КАЖДОМ СКРОЛЛЕ)
-// ==================================================================
 const SkillsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
@@ -385,7 +347,6 @@ const SkillsSection = () => {
     { icon: "🛠️", title: "Tools & Technologies", description: "Git, Docker, AWS, CI/CD, Testing, Agile Methodology" }
   ], []);
 
-  // Анимационные варианты для карточек
   const cardVariants = {
     hidden: { 
       opacity: 0, 
@@ -403,7 +364,7 @@ const SkillsSection = () => {
         stiffness: 70,
         damping: 12,
         mass: 1,
-        delay: index * 0.15, // Задержка для каскадного эффекта
+        delay: index * 0.15, 
         duration: 0.8
       }
     })
@@ -413,13 +374,12 @@ const SkillsSection = () => {
     <section ref={containerRef} className="skills-section">
       <motion.div className="skills-background" style={{ scale, y }} />
       <div className="container">
-        {/* Заголовок теперь анимируется каждый раз при прокрутке (once: fal */}
         <motion.div 
           className="section-header" 
           initial={{ opacity: 0, y: 50, rotateX: -20 }} 
           whileInView={{ opacity: 1, y: 0, rotateX: 0 }} 
           transition={{ duration: 1, ease: "easeOut" }} 
-          viewport={{ once: false, margin: "-50px" }} // <-- Ключевое изменение: once: false
+          viewport={{ once: false, margin: "-50px" }}
         >
           <motion.h2 
             animate={{ backgroundPosition: ['0%', '100%', '0%'] }} 
@@ -446,7 +406,7 @@ const SkillsSection = () => {
               custom={index}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }} // <-- Анимация при каждом появлении
+              viewport={{ once: false, amount: 0.2 }} 
               variants={cardVariants}
               whileHover={{ 
                 scale: 1.05, 
@@ -512,7 +472,6 @@ const StatsSection = () => {
   );
 };
 
-// Основной ко
 function App() {
   const features = useMemo(() => [
     { title: "React Development", description: "Современные React приложения с hooks и контекстом", icon: "⚛️" },
@@ -565,6 +524,8 @@ function App() {
         <HorizontalScrollSection />
         <SkillsSection />
         <StatsSection />
+        
+        {/* ОБНОВЛЕННАЯ СЕКЦИЯ */}
         <Crazy3DImageSlider />
         
         <section className="services-grid">
