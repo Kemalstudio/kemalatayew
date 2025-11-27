@@ -512,7 +512,7 @@ const StatsSection = () => {
   );
 };
 
-// Осно
+// Осн
 function App() {
   const features = useMemo(() => [
     { title: "React Development", description: "Современные React приложения с hooks и контекстом", icon: "⚛️" },
