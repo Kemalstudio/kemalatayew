@@ -88,7 +88,7 @@ body {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  will-change: transform; /* Оптимизация для GSAP */
+  will-change: transform;
 }
 
 .btn-primary {
@@ -143,7 +143,7 @@ body {
 }
 
 .ticker-item {
-  height: calc(100% / 7); /* 6 items + 1 clone */
+  height: calc(100% / 7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,17 +158,16 @@ body {
 
 .horizontal-scroll-wrapper {
   position: relative;
-  height: 400vh; /* Высота для создания места по */
+  height: 400vh;
   background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
 }
 
-/* "Липкий" контейнер, который держит контент на  */
 .horizontal-scroll-sticky-view {
   position: sticky;
   top: 0;
-  height: 100vh; /* Занимает весь экран */
+  height: 100vh;
   width: 100%;
-  overflow: hidden; /* Скрываем то, что вылезает за пределы экрана */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -201,26 +200,23 @@ body {
   line-height: 1.6;
 }
 
-/* Контейнер для ленты карточек */
 .horizontal-scroll-container {
   width: 100%;
   display: flex;
   align-items: center;
-  /* padding-top компенсирует position:absolute хедера */
   padding-top: 80px; 
 }
 
-/* Сама лента с карточками */
 .horizontal-scroll-content {
   display: flex;
-  gap: 60px; /* Отступ между карточками */
-  padding-left: 10vw; /* Начальный отступ слева */
+  gap: 60px;
+  padding-left: 10vw;
   padding-right: 10vw;
-  width: max-content; /* Ширина по содержимому */
+  width: max-content;
   will-change: transform;
 }
 
-/* ОРИГИНАЛЬНЫЙ ДИЗАЙН КАРТОЧКИ */
+/* ОРИГИНАЛЬНЫЙ ДИЗАЙН КАРТОЧКИ С 3D */
 .horizontal-card {
   width: 450px;
   height: 600px;
@@ -241,8 +237,9 @@ body {
   padding: 40px;
   overflow: hidden;
   transition: box-shadow 0.5s ease;
+  transform-style: preserve-3d;
 }
-/* ЭФФЕКТ СВЕЧЕНИЯ, СЛЕДУЮЩИЙ ЗА КУРСОРОМ */
+
 .card-inner::before {
   content: '';
   position: absolute;
@@ -270,6 +267,7 @@ body {
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
   transition: left 0.8s ease;
+  pointer-events: none;
 }
 
 .horizontal-card:hover .card-glare {
@@ -296,6 +294,7 @@ body {
   align-items: center;
   justify-content: center;
   margin-bottom: 30px;
+  transform-style: preserve-3d; /* Важно для 3D */
 }
 
 .project-image {
@@ -384,7 +383,7 @@ body {
 
 /* Прогресс бар */
 .scroll-progress-container {
-  position: absolute; /* Важно для sticky */
+  position: absolute;
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
@@ -506,7 +505,7 @@ body {
   font-size: 1rem;
 }
 
-/* Секция навыков (ОБНОВЛЕННАЯ С 3D ПЕРСПЕКТИВОЙ) */
+/* Секция навыков */
 .skills-section {
   padding: 150px 0;
   position: relative;
@@ -527,7 +526,6 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 40px;
-  /* Добавлена перспектива для крутой 3D анимации */
   perspective: 1000px; 
 }
 
@@ -542,7 +540,6 @@ body {
   overflow: hidden;
   transition: all 0.5s ease;
   cursor: pointer;
-  /* Для плавной трансформации */
   transform-style: preserve-3d;
 }
 
@@ -812,8 +809,8 @@ body {
 
 .slider-3d-scene-gsap {
   position: relative;
-  width: 250px; /* Ширина элемента */
-  height: 320px; /* Высота элемента */
+  width: 250px;
+  height: 320px;
   transform-style: preserve-3d;
   will-change: transform;
 }
@@ -829,7 +826,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   background-color: #111;
-  /* Динамическое позиционирование с помощью CSS переменных */
   transform: rotateY(calc(var(--i) * 360deg / var(--total))) translateZ(400px);
   transition: transform 0.5s, box-shadow 0.5s;
 }
@@ -850,7 +846,6 @@ body {
   -webkit-box-reflect: below 1px linear-gradient(transparent, transparent, #0004);
 }
 
-/* Фоновые элементы секции слайдера (без изменений) */
 .slider-background-elements {
   position: absolute;
   top: 0;
@@ -892,7 +887,7 @@ body {
   background: linear-gradient(45deg, #a855f7, #ec4899);
 }
 
-/* Адап */
+/* Адаптив */
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2.8rem;
