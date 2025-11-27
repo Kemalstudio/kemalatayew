@@ -157,20 +157,24 @@ body {
 }
 
 /* ==================================================================
-   ГОРИЗОНТАЛЬНАЯ ПРОКРУТКА
+   ГОРИЗОНТАЛЬНАЯ ПРОКРУТКА (ИСПРАВЛЕННАЯ - STICKY)
    ================================================================== */
+
+/* Общий контейнер секции - задает высоту скролла (4 экрана) */
 .horizontal-scroll-wrapper {
   position: relative;
-  height: 400vh;
+  height: 400vh; /* Высота для создания места под скролл */
   background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  /* Убираем overflow: hidden отсюда, чтобы sticky работал корректно */
 }
 
+/* "Липкий" контейнер, который держит контент на экране */
 .horizontal-scroll-sticky-view {
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: 100vh; /* Занимает весь экран */
   width: 100%;
-  overflow: hidden;
+  overflow: hidden; /* Скрываем то, что вылезает за пределы экрана */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -203,22 +207,26 @@ body {
   line-height: 1.6;
 }
 
+/* Контейнер для ленты карточек */
 .horizontal-scroll-container {
   width: 100%;
   display: flex;
   align-items: center;
+  /* padding-top компенсирует position:absolute хедера */
   padding-top: 80px; 
 }
 
+/* Сама лента с карточками */
 .horizontal-scroll-content {
   display: flex;
-  gap: 60px;
-  padding-left: 10vw;
+  gap: 60px; /* Отступ между карточками */
+  padding-left: 10vw; /* Начальный отступ слева */
   padding-right: 10vw;
-  width: max-content;
+  width: max-content; /* Ширина по содержимому */
   will-change: transform;
 }
 
+/* ОРИГИНАЛЬНЫЙ ДИЗАЙН КАРТОЧКИ */
 .horizontal-card {
   width: 450px;
   height: 600px;
@@ -240,7 +248,7 @@ body {
   overflow: hidden;
   transition: box-shadow 0.5s ease;
 }
-
+/* ЭФФЕКТ СВЕЧЕНИЯ, СЛЕДУЮЩИЙ ЗА КУРСОРОМ */
 .card-inner::before {
   content: '';
   position: absolute;
@@ -380,8 +388,9 @@ body {
   transform: translateY(-2px);
 }
 
+/* Прогресс бар */
 .scroll-progress-container {
-  position: absolute;
+  position: absolute; /* Важно для sticky */
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
@@ -503,7 +512,7 @@ body {
   font-size: 1rem;
 }
 
-/* Секция навыков */
+/* Секция навыков (ОБНОВЛЕННАЯ С 3D ПЕРСПЕКТИВОЙ) */
 .skills-section {
   padding: 150px 0;
   position: relative;
@@ -524,6 +533,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 40px;
+  /* Добавлена перспектива для крутой 3D анимации */
   perspective: 1000px; 
 }
 
@@ -538,6 +548,7 @@ body {
   overflow: hidden;
   transition: all 0.5s ease;
   cursor: pointer;
+  /* Для плавной трансформации */
   transform-style: preserve-3d;
 }
 
@@ -788,104 +799,64 @@ body {
   border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
 }
 
-/* ==================================================================
-   СЕКЦИЯ 3D CRAZY ГАЛЕРЕЯ (Обновленная со скроллом)
-   ================================================================== */
-.crazy-3d-scroll-wrapper {
-  /* Большая высота для создания пространства для скролла */
-  height: 400vh;
-  position: relative;
+.crazy-3d-slider-section {
+  padding: 150px 0;
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
-  z-index: 5;
-}
-
-.crazy-3d-sticky-view {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  perspective: 2500px; /* Глубокая перспектива */
-}
-
-.scene-3d-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
-  /* Для сохранения 3D контекста */
-  transform-style: preserve-3d;
+  overflow: hidden;
 }
 
-.carousel-3d-ring {
-  width: 400px; /* Ширина карточки */
-  height: 600px; /* Высота карточки */
-  position: absolute;
-  transform-style: preserve-3d;
-  /* Вращение задается через JS */
+.slider-3d-viewport-gsap {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 2000px;
+  cursor: grab;
 }
 
-/* Стили карточек в 3D кольце */
-.card-3d-item {
+.slider-3d-scene-gsap {
+  position: relative;
+  width: 250px; /* Ширина элемента */
+  height: 320px; /* Высота элемента */
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.slider-3d-item-gsap {
   position: absolute;
   top: 0;
   left: 0;
-  width: 400px; /* Фиксированная ширина */
-  height: 600px; /* Фиксированная высота */
-  /* Формула размещения: 6 элементов = 60 градусов */
-  /* translateZ = 600px чтобы раздвинуть их далеко */
-  transform: rotateY(calc(var(--i) * 60deg)) translateZ(600px);
-  backface-visibility: hidden; /* Скрываем заднюю сторону */
-  border-radius: 20px;
-  overflow: hidden;
-  /* Используем те же стили границ и теней, что и в дизайне */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-  background: #111;
-  transition: box-shadow 0.3s ease;
-}
-
-/* Контент внутри карточки */
-.card-3d-content {
-  position: relative;
   width: 100%;
   height: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  background-color: #111;
+  /* Динамическое позиционирование с помощью CSS переменных */
+  transform: rotateY(calc(var(--i) * 360deg / var(--total))) translateZ(400px);
+  transition: transform 0.5s, box-shadow 0.5s;
 }
 
-.card-3d-content img {
+.slider-3d-viewport-gsap:hover .slider-3d-item-gsap {
+  box-shadow: 0 10px 40px rgba(255, 108, 0, 0.2);
+}
+
+.slider-3d-item-gsap:hover {
+  transform: rotateY(calc(var(--i) * 360deg / var(--total))) translateZ(420px) scale(1.05);
+  box-shadow: 0 15px 50px rgba(255, 108, 0, 0.4);
+}
+
+.slider-3d-item-gsap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  -webkit-box-reflect: below 1px linear-gradient(transparent, transparent, #0004);
 }
 
-.card-3d-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 30px;
-}
-
-.card-3d-overlay span {
-  font-size: 4rem;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.1);
-  line-height: 1;
-}
-
-/* Фоновые элементы секции слайдера */
+/* Фоновые элементы секции слайдера (без изменений) */
 .slider-background-elements {
   position: absolute;
   top: 0;
@@ -919,7 +890,15 @@ body {
   background: linear-gradient(45deg, #00c6ff, #0072ff);
 }
 
-/* Адаптив */
+.orb-3 {
+  top: 60%;
+  left: 20%;
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(45deg, #a855f7, #ec4899);
+}
+
+/* Адап */
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2.8rem;
@@ -957,16 +936,7 @@ body {
   .scroll-section-header h2 {
     font-size: 2.5rem;
   }
-  
-  /* Адаптив для 3D галере */
-  .carousel-3d-ring {
-    width: 280px;
-    height: 420px;
-  }
-  .card-3d-item {
-    width: 280px;
-    height: 420px;
-    /* Уменьшаем радиус для мобильных */
-    transform: rotateY(calc(var(--i) * 60deg)) translateZ(320px);
+  .slider-3d-item-gsap {
+    transform: rotateY(calc(var(--i) * 360deg / var(--total))) translateZ(280px);
   }
 }
