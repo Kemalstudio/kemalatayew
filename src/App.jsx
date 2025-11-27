@@ -413,7 +413,6 @@ const SkillsSection = () => {
     <section ref={containerRef} className="skills-section">
       <motion.div className="skills-background" style={{ scale, y }} />
       <div className="container">
-        {/* Заголовок теперь анимируется каждый раз при прокрутке (once: fal */}
         <motion.div 
           className="section-header" 
           initial={{ opacity: 0, y: 50, rotateX: -20 }} 
