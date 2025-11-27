@@ -162,7 +162,7 @@ body {
   background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
 }
 
-/* "Липкий" контейнер, который держит контент на экра */
+/* "Липкий" контейнер, который держит контент на экр */
 .horizontal-scroll-sticky-view {
   position: sticky;
   top: 0;
