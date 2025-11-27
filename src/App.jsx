@@ -446,7 +446,7 @@ const SkillsSection = () => {
               custom={index}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }} // <-- Анимация при каждом появлении
+              viewport={{ once: false, amount: 0.2 }} 
               variants={cardVariants}
               whileHover={{ 
                 scale: 1.05, 
