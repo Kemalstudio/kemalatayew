@@ -12,7 +12,7 @@ import { gsap } from 'gsap';
 import './App.css';
 
 // ==================================================================
-// КОМПОНЕНТЫ (БЕЗ ИЗМЕНЕНИЙ)
+// КОМПОНЕНТЫ
 // ==================================================================
 
 const SmoothScroll = ({ children }) => {
@@ -237,17 +237,32 @@ const Crazy3DImageSlider = () => {
   );
 };
 
+// ==================================================================
+// ОБНОВЛЕННЫЙ PROJECT CARD С ЭФФЕКТОМ PARALLAX MOVE
+// ==================================================================
 const ProjectCard = ({ project, index }) => {
   const cardRef = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
+  // Трансформация наклона самой карточки (как было)
   const rotateX = useTransform(y, [-100, 100], [15, -15]);
   const rotateY = useTransform(x, [-100, 100], [-15, 15]);
+
+  // НОВЫЕ ТРАНСФОРМАЦИИ: Картинка и контент следуют за мышкой
+  // Диапазон [-150, 150] берется от центра карточки
+  // Вывод [-40, 40] означает смещение элементов на 40px
+  const itemX = useTransform(x, [-150, 150], [-40, 40]);
+  const itemY = useTransform(y, [-150, 150], [-40, 40]);
+  
+  // Дополнительный параллакс для фона или декора (двигается медленнее)
+  const decorX = useTransform(x, [-150, 150], [-20, 20]);
+  const decorY = useTransform(y, [-150, 150], [-20, 20]);
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
+    // Вычисляем координаты относительно центра карточки
     x.set(e.clientX - rect.left - rect.width / 2);
     y.set(e.clientY - rect.top - rect.height / 2);
     cardRef.current.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
@@ -266,24 +281,39 @@ const ProjectCard = ({ project, index }) => {
       className="horizontal-card"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      whileHover={{ scale: 1.02 }} 
+      whileHover={{ scale: 1.02, zIndex: 10 }} 
     >
       <motion.div
         className="card-inner"
-        style={{ '--glow-color': project.color, rotateX, rotateY, transformStyle: "preserve-3d" }}
+        style={{ 
+          '--glow-color': project.color, 
+          rotateX, 
+          rotateY, 
+          transformStyle: "preserve-3d" 
+        }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       >
-        <div style={{ transform: "translateZ(50px)" }}>
+        <div style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}>
           <div className="card-glare"></div>
-          <motion.div className="project-index">
+          
+          <motion.div 
+            className="project-index" 
+            style={{ x: decorX, y: decorY, z: 60 }}
+          >
             {String(index + 1).padStart(2, '0')}
           </motion.div>
-          <motion.div className="card-image-container">
+          
+          {/* Контейнер картинки теперь двигается за мышкой (itemX, itemY) */}
+          <motion.div 
+            className="card-image-container"
+            style={{ x: itemX, y: itemY, z: 80 }}
+          >
             <motion.img src={project.image} alt={project.title} className="project-image"/>
             <motion.div className="image-glow" />
           </motion.div>
-          <div className="card-text-content">
-            <h3>{project.title}</h3>
+
+          <div className="card-text-content" style={{ transform: "translateZ(40px)" }}>
+            <motion.h3 style={{ x: decorX, y: decorY }}>{project.title}</motion.h3>
             <p>{project.description}</p>
             <motion.ul className="tech-list">
               {project.tech.map((tech, techIndex) => (
@@ -370,9 +400,6 @@ const HorizontalScrollSection = () => {
   );
 };
 
-// ==================================================================
-// ОБНОВЛЕННАЯ СЕКЦИЯ НАВЫКОВ (АНИМАЦИЯ ПРИ КАЖДОМ СКРОЛЛЕ)
-// ==================================================================
 const SkillsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
@@ -385,7 +412,6 @@ const SkillsSection = () => {
     { icon: "🛠️", title: "Tools & Technologies", description: "Git, Docker, AWS, CI/CD, Testing, Agile Methodology" }
   ], []);
 
-  // Анимационные варианты для карточек
   const cardVariants = {
     hidden: { 
       opacity: 0, 
@@ -403,7 +429,7 @@ const SkillsSection = () => {
         stiffness: 70,
         damping: 12,
         mass: 1,
-        delay: index * 0.15, // Задержка для каскадного эффекта
+        delay: index * 0.15,
         duration: 0.8
       }
     })
@@ -413,13 +439,12 @@ const SkillsSection = () => {
     <section ref={containerRef} className="skills-section">
       <motion.div className="skills-background" style={{ scale, y }} />
       <div className="container">
-        {/* Заголовок теперь анимируется каждый раз при прокрутке (once: fal */}
         <motion.div 
           className="section-header" 
           initial={{ opacity: 0, y: 50, rotateX: -20 }} 
           whileInView={{ opacity: 1, y: 0, rotateX: 0 }} 
           transition={{ duration: 1, ease: "easeOut" }} 
-          viewport={{ once: false, margin: "-50px" }} // <-- Ключевое изменение: once: false
+          viewport={{ once: false, margin: "-50px" }}
         >
           <motion.h2 
             animate={{ backgroundPosition: ['0%', '100%', '0%'] }} 
@@ -446,7 +471,7 @@ const SkillsSection = () => {
               custom={index}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }} // <-- Анимация при каждом появлении
+              viewport={{ once: false, amount: 0.2 }}
               variants={cardVariants}
               whileHover={{ 
                 scale: 1.05, 
@@ -512,7 +537,6 @@ const StatsSection = () => {
   );
 };
 
-// Основно
 function App() {
   const features = useMemo(() => [
     { title: "React Development", description: "Современные React приложения с hooks и контекстом", icon: "⚛️" },
