@@ -402,7 +402,7 @@ const SkillsSection = () => {
         stiffness: 70,
         damping: 12,
         mass: 1,
-        delay: index * 0.15, // Задержка для каскадного эффекта
+        delay: index * 0.15, 
         duration: 0.8
       }
     })
