@@ -371,7 +371,7 @@ const HorizontalScrollSection = () => {
 };
 
 // ==================================================================
-// ОБНОВЛЕННАЯ СЕКЦИЯ НАВЫКОВ (АНИМАЦИЯ ПРИ КАЖДОМ СКРОЛЛЕ)
+// ОБНОВЛЕННАЯ СЕКЦИЯ НАВЫКОВ (АНИМАЦИЯ ПРИ КАЖДОМ)
 // ==================================================================
 const SkillsSection = () => {
   const containerRef = useRef(null);
@@ -385,7 +385,6 @@ const SkillsSection = () => {
     { icon: "🛠️", title: "Tools & Technologies", description: "Git, Docker, AWS, CI/CD, Testing, Agile Methodology" }
   ], []);
 
-  // Анимационные варианты для карточек
   const cardVariants = {
     hidden: { 
       opacity: 0, 
