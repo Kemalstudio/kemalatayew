@@ -372,7 +372,7 @@ const HorizontalScrollSection = () => {
 
 // ===========================================================
 // ОБНОВЛЕННАЯ
-// ===========================================================
+// ==========================================================
 const SkillsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
