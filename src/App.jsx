@@ -284,10 +284,6 @@ const Crazy3DImageSlider = () => {
   );
 };
 
-// ==================================================================
-// ОСТАЛЬНЫЕ КОМПОНЕНТЫ
-// ==================================================================
-
 const ProjectCard = ({ project, index }) => {
   const cardRef = useRef(null);
   const x = useMotionValue(0);
