@@ -961,8 +961,9 @@ body {
 
 .scene-3d {
     position: relative;
-    width: 320px;
-    height: 480px;
+    /* ИЗМЕНЕНО: Сделал карточки намного шире (ландшафтный формат) */
+    width: 700px; 
+    height: 420px;
     transform-style: preserve-3d;
     will-change: transform;
 }
@@ -973,7 +974,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    transform: rotateY(var(--rotate-angle)) translateZ(750px);
+    /* ИЗМЕНЕНО: Увеличил радиус (translateZ), чтобы широкие карточки помещались в круг */
+    transform: rotateY(var(--rotate-angle)) translateZ(1100px);
     transition: filter 0.5s ease, opacity 0.5s ease;
     -webkit-box-reflect: below 10px linear-gradient(transparent 60%, rgba(0,0,0,0.4));
 }
@@ -997,6 +999,8 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Добавил позиционирование, чтобы верх сайта всегда был виден */
+    object-position: top center; 
 }
 
 .slide-glass-effect {
@@ -1103,6 +1107,7 @@ body {
     pointer-events: none;
 }
 
+/* Адаптив */
 @media (max-width: 768px) {
     .hero h1 { font-size: 2.8rem; }
     .ticker-section {
@@ -1132,14 +1137,16 @@ body {
 
     /* Crazy 3D Mobile */
     .crazy-3d-wrapper {
-        height: 500vh; /* Чуть меньше скролла на мобильн */
+        height: 500vh; /* Чуть меньше скролла на мобильных */
     }
     .scene-3d {
-        width: 220px;
-        height: 340px;
+        /* На мобильном делаем ширину почти во весь экран, но меньше */
+        width: 85vw;
+        height: 55vw; /* Сохраняем соотношение сторон */
     }
     .slide-3d-item {
-        transform: rotateY(var(--rotate-angle)) translateZ(320px);
+        /* Уменьшаем радиус для мобильных, чтобы не вылезало за экран */
+        transform: rotateY(var(--rotate-angle)) translateZ(350px);
     }
     .crazy-header h2 {
         font-size: 2.5rem;
