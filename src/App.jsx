@@ -373,14 +373,14 @@ const HorizontalScrollSection = () => {
   const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
 
   const portfolioProjects = useMemo(() => [
-    { title: "E-Commerce Platform", description: "Полнофункциональная платформа электронной коммерции", color: "#ff6c00", image: "/images/aura-computer.png", tech: ["React", "Node.js", "MongoDB"] },
-    { title: "Task Management", description: "Приложение для управления задачами", color: "#00c6ff", image: "/images/aura-computer.png", tech: ["React Native", "Firebase", "Redux"] },
-    { title: "Social Dashboard", description: "Панель управления социальными сетями", color: "#e91e63", image: "/images/aura-computer.png", tech: ["Vue.js", "Express", "PostgreSQL"] },
-    { title: "Weather App", description: "Приложение прогноза погоды", color: "#a855f7", image: "/images/aura-computer.png", tech: ["React", "Weather API", "PWA"] },
-    { title: "Fitness Tracker", description: "Трекер фитнеса с мониторингом", color: "#10b981", image: "/images/aura-computer.png", tech: ["React Native", "GraphQL"] },
-    { title: "Portfolio Website", description: "Анимированное портфолио", color: "#f59e0b", image: "/images/aura-computer.png", tech: ["React", "Framer Motion", "Three.js"] },
-    { title: "Chat Application", description: "Приложение реального времени", color: "#6366f1", image: "/images/aura-computer.png", tech: ["Socket.io", "React", "Node.js"] },
-    { title: "Learning Platform", description: "Образовательная платформа", color: "#06b6d4", image: "/images/aura-computer.png", tech: ["Next.js", "Prisma", "MySQL"] }
+    { title: "E-Commerce Platform", description: "Полнофункциональная платформа электронной коммерции", color: "#ff6c00", image: "/images/atam.jpg", tech: ["React", "Node.js", "MongoDB"] },
+    { title: "Task Management", description: "Приложение для управления задачами", color: "#00c6ff", image: "/images/atam.jpg", tech: ["React Native", "Firebase", "Redux"] },
+    { title: "Social Dashboard", description: "Панель управления социальными сетями", color: "#e91e63", image: "/images/atam.jpg", tech: ["Vue.js", "Express", "PostgreSQL"] },
+    { title: "Weather App", description: "Приложение прогноза погоды", color: "#a855f7", image: "/images/atam.jpg", tech: ["React", "Weather API", "PWA"] },
+    { title: "Fitness Tracker", description: "Трекер фитнеса с мониторингом", color: "#10b981", image: "/images/atam.jpg", tech: ["React Native", "GraphQL"] },
+    { title: "Portfolio Website", description: "Анимированное портфолио", color: "#f59e0b", image: "/images/atam.jpg", tech: ["React", "Framer Motion", "Three.js"] },
+    { title: "Chat Application", description: "Приложение реального времени", color: "#6366f1", image: "/images/atam.jpg", tech: ["Socket.io", "React", "Node.js"] },
+    { title: "Learning Platform", description: "Образовательная платформа", color: "#06b6d4", image: "/images/atam.jpg", tech: ["Next.js", "Prisma", "MySQL"] }
   ], []);
 
   return (
