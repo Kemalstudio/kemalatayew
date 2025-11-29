@@ -889,7 +889,7 @@ body {
 /* Контейнер высотой 5 экранов. Пока юзер его скроллит, сменяется 3D сцена */
 .crazy-3d-wrapper {
     position: relative;
-    height: 600vh;
+    height: 600vh; /* Увеличили высоту для более долгой "фиксации" */
     background: #050505;
     z-index: 10;
 }
@@ -961,7 +961,7 @@ body {
 
 .scene-3d {
     position: relative;
-    /* Широкие карточки */
+    /* ИЗМЕНЕНО: Сделал карточки намного шире (ландшафтный формат) */
     width: 700px; 
     height: 420px;
     transform-style: preserve-3d;
@@ -974,6 +974,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    /* ИЗМЕНЕНО: Увеличил радиус (translateZ), чтобы широкие карточки помещались в круг */
     transform: rotateY(var(--rotate-angle)) translateZ(1100px);
     transition: filter 0.5s ease, opacity 0.5s ease;
     -webkit-box-reflect: below 10px linear-gradient(transparent 60%, rgba(0,0,0,0.4));
@@ -982,54 +983,23 @@ body {
 .slide-3d-item:not(.active) {
     filter: blur(5px) brightness(0.4) grayscale(0.8);
     opacity: 0.7;
-    pointer-events: none; /* Запрещаем скролл на неактивных */
 }
 
-/* 
-   ИЗМЕНЕНИЯ ДЛЯ СКРОЛЛА ВНУТРИ КАРТОЧКИ:
-   1. overflow-y: auto - разрешает скролл
-   2. overscroll-behavior: contain - предотвращает скролл страницы, когда скроллишь карточку
-*/
 .slide-content-wrapper {
     width: 100%;
     height: 100%;
     border-radius: 20px;
+    overflow: hidden;
     position: relative;
     background: #000;
     box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
-    
-    /* Свойства скролла */
-    overflow-y: auto; 
-    overscroll-behavior: contain;
-    
-    /* Скрываем стандартный скроллбар для красоты, но оставляем функционал */
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255,108,0,0.5) transparent;
 }
 
-/* Стилизация скроллбара для Webkit (Chrome, Safari) */
-.slide-content-wrapper::-webkit-scrollbar {
-    width: 6px;
-}
-.slide-content-wrapper::-webkit-scrollbar-track {
-    background: transparent;
-}
-.slide-content-wrapper::-webkit-scrollbar-thumb {
-    background-color: rgba(255,108,0,0.5);
-    border-radius: 10px;
-}
-
-/* 
-   ИЗОБРАЖЕНИЕ:
-   1. Высота auto, чтобы оно растянулось на всю длину сайта.
-   2. object-position top center, чтобы начало было сверху.
-*/
 .slide-content-wrapper img {
     width: 100%;
-    height: auto;
-    min-height: 100%;
-    display: block;
-    object-fit: contain;
+    height: 100%;
+    object-fit: cover;
+    /* Добавил позиционирование, чтобы верх сайта всегда был виден */
     object-position: top center; 
 }
 
@@ -1039,27 +1009,23 @@ body {
     background: linear-gradient(120deg, rgba(255,255,255,0.1) 0%, transparent 40%, rgba(255,255,255,0.05) 100%);
     z-index: 5;
     pointer-events: none;
-    /* Чтобы эффект не мешал скроллу, он фиксирован внутри overflow контейнера */
-    position: sticky;
 }
 
 .slide-overlay {
-    position: sticky; /* Чтобы оверлей оставался на месте при скролле */
+    position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     background: linear-gradient(to top, rgba(0,0,0,0.9), transparent 60%);
     z-index: 2;
-    pointer-events: none;
 }
 
 .slide-border-glow {
-    position: sticky; /* Чтобы рамка оставалась на месте */
+    position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     border: 2px solid transparent;
     border-radius: 20px;
     box-shadow: 0 0 30px transparent;
     transition: all 0.5s ease;
     z-index: 10;
-    pointer-events: none;
 }
 
 .slide-3d-item.active .slide-border-glow {
@@ -1076,7 +1042,6 @@ body {
     width: 90%;
     max-width: 500px;
     text-align: center;
-    pointer-events: none; /* Чтобы можно было кликать сквозь текст */
 }
 
 .info-content {
@@ -1142,7 +1107,7 @@ body {
     pointer-events: none;
 }
 
-/* Ад */
+/* Адаптив */
 @media (max-width: 768px) {
     .hero h1 { font-size: 2.8rem; }
     .ticker-section {
@@ -1172,13 +1137,15 @@ body {
 
     /* Crazy 3D Mobile */
     .crazy-3d-wrapper {
-        height: 500vh;
+        height: 500vh; /* Чуть меньше скролла на мобильных */
     }
     .scene-3d {
+        /* На мобильном делаем ширину почти во весь экран, но меньше */
         width: 85vw;
-        height: 55vw; 
+        height: 55vw; /* Сохраняем соотношение сторон */
     }
     .slide-3d-item {
+        /* Уменьшаем радиус для мобильных, чтобы не вылезало за экран */
         transform: rotateY(var(--rotate-angle)) translateZ(350px);
     }
     .crazy-header h2 {
