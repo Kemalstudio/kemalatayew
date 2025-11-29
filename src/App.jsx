@@ -227,16 +227,18 @@ const Crazy3DImageSlider = () => {
           >
             {slides.map((slide, index) => {
               const angle = (360 / slides.length) * index;
+              const isActive = index === activeIndex;
               return (
                 <div
                   key={index}
-                  className={`slide-3d-item ${index === activeIndex ? 'active' : ''}`}
+                  className={`slide-3d-item ${isActive ? 'active' : ''}`}
                   style={{ '--rotate-angle': `${angle}deg` }}
                 >
                   <div className="slide-content-wrapper">
                     <div className="slide-glass-effect"></div>
                     <img src={slide.src} alt={slide.title} />
-                    <div className="slide-overlay" />
+                    {/* Оверлей скрываем, если это активная карточка и мы хотим скроллить */}
+                    <div className="slide-overlay" style={{ pointerEvents: isActive ? 'none' : 'auto' }} />
                     <div className="slide-border-glow" style={{ borderColor: slide.color }}></div>
                   </div>
                 </div>
