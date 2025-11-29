@@ -6,8 +6,7 @@ import {
   useSpring,
   useMotionValue,
   useMotionValueEvent,
-  useVelocity,
-  useAnimationFrame,
+  useAnimation,
   AnimatePresence
 } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
@@ -132,224 +131,136 @@ const SmoothParallaxStars = () => {
 };
 
 // ==================================================================
-// SUPER CRAZY 3D SLIDER (УЛУЧШЕННАЯ ВЕРСИЯ)
+// ОБНОВЛЕННАЯ СЕКЦИЯ CRAZY 3D ГАЛЕРЕЯ
 // ==================================================================
 
 const Crazy3DImageSlider = () => {
+  // Данные карточек с уникальными описаниями
   const slides = useMemo(() => [
-    { src: "/images/atam.jpg", title: "QUANTUM CORE", subtitle: "Project Alpha", desc: "Система визуализации данных нового поколения с использованием WebGL." },
-    { src: "/images/atam.jpg", title: "NEON HORIZON", subtitle: "Cyberpunk UI", desc: "Интерфейс управления умным городом в стиле киберпанк." },
-    { src: "/images/atam.jpg", title: "AERO SPACE", subtitle: "Mars Mission", desc: "Интерактивная карта колонизации Марса с 3D рельефом." },
-    { src: "/images/atam.jpg", title: "ECO SYSTEM", subtitle: "Bio Tracker", desc: "Мониторинг глобальной экологии в реальном времени." },
-    { src: "/images/atam.jpg", title: "CRYPTO VAULT", subtitle: "Blockchain", desc: "Децентрализованное хранилище с биометрической защитой." },
-    { src: "/images/atam.jpg", title: "AI NEXUS", subtitle: "Neural Net", desc: "Визуализация обучения нейросети с голосовым ассистентом." },
-    { src: "/images/atam.jpg", title: "VIRTUAL REALITY", subtitle: "Metaverse", desc: "Платформа для создания виртуальных миров без кода." },
-    { src: "/images/atam.jpg", title: "SECURITY GRID", subtitle: "Firewall", desc: "Система кибербезопасности с предиктивным анализом угроз." },
+    { src: "/images/atam.jpg", title: "ATAM Project Alpha", desc: "Флагманский проект с использованием WebGL и передовой анимации." },
+    { src: "/images/atam.jpg", title: "Neon Genesis", desc: "Киберпанк интерфейс для управления умным городом." },
+    { src: "/images/atam.jpg", title: "Quantum Dashboard", desc: "Аналитическая панель для квантовых вычислений." },
+    { src: "/images/atam.jpg", title: "Cyber Security", desc: "Система защиты данных нового поколения." },
+    { src: "/images/atam.jpg", title: "AI Assistant", desc: "Виртуальный помощник с голосовым управлением." },
+    { src: "/images/atam.jpg", title: "Space Xplorer", desc: "Интерактивная карта марсианской колонии." },
+    { src: "/images/atam.jpg", title: "Eco Tracker", desc: "Мониторинг экологии в реальном времени." },
+    { src: "/images/atam.jpg", title: "Crypto Vault", desc: "Безопасное хранилище цифровых активов." },
   ], []);
 
   const containerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [rotation, setRotation] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
   
+  // Создаем длинный контейнер для скролла
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // Физика вращения
-  const scrollRotation = useTransform(scrollYProgress, [0, 1], [0, -360 * 2.5]);
-  const smoothRotation = useSpring(scrollRotation, { stiffness: 50, damping: 15, mass: 1 });
+  // Вращение, привязанное к скроллу (3 полных оборота за весь скролл)
+  const scrollRotation = useTransform(scrollYProgress, [0, 1], [0, -360 * 3]);
+  const rotationValue = useMotionValue(0);
   
-  // Эффект Warp Speed (звезды вытягиваются от скорости)
-  const scrollVelocity = useVelocity(scrollYProgress);
-  const starScale = useTransform(scrollVelocity, [-0.5, 0.5], [1, 15]);
-  const starOpacity = useTransform(scrollVelocity, [-0.5, 0, 0.5], [0.8, 0.2, 0.8]);
-
   // Авто-вращение
-  useAnimationFrame((t, delta) => {
-    const currentScrollRot = smoothRotation.get();
-    
-    // Если скролл остановился, добавляем медленное вращение
-    if (Math.abs(scrollVelocity.get()) < 0.001) {
-       setRotation(prev => prev - 0.03); // Медленное Idle вращение
-    } else {
-       setRotation(currentScrollRot);
-    }
-  });
+  const timeRef = useRef(0);
+  const autoRotateRef = useRef(null);
 
-  // Вычисление активного индекса
   useEffect(() => {
-    const anglePerSlide = 360 / slides.length;
-    const normalizedRotation = Math.abs(rotation) % 360;
-    const index = Math.round(normalizedRotation / anglePerSlide) % slides.length;
-    setActiveIndex(index);
-  }, [rotation, slides.length]);
+    // Функция авто-вращения
+    const animate = () => {
+      if (!isScrolling && !isHovering) {
+        timeRef.current -= 0.2; // Скорость авто-вращения
+        rotationValue.set(scrollRotation.get() + timeRef.current);
+      } else {
+        // Если скроллим, синхронизируемся со скроллом
+        rotationValue.set(scrollRotation.get() + timeRef.current);
+      }
+      
+      // Вычисляем активный индекс на основе текущего угла
+      const currentRotation = Math.abs(rotationValue.get()) % 360;
+      const anglePerSlide = 360 / slides.length;
+      // Корректируем индекс, чтобы активным был тот, что спереди
+      const index = Math.round(currentRotation / anglePerSlide) % slides.length;
+      setActiveIndex(index);
+
+      autoRotateRef.current = requestAnimationFrame(animate);
+    };
+    
+    autoRotateRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(autoRotateRef.current);
+  }, [isScrolling, isHovering, slides.length, scrollRotation, rotationValue]);
+
+  // Детектор скролла для паузы авто-вращения
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    setIsScrolling(true);
+    // Сбрасываем флаг скролла через небольшую задержку
+    clearTimeout(window.scrollTimeout);
+    window.scrollTimeout = setTimeout(() => setIsScrolling(false), 200);
+  });
 
   return (
     <section ref={containerRef} className="crazy-3d-wrapper">
       <div className="crazy-sticky-view">
-        
-        {/* Динамический фон со звездами */}
-        <div className="warp-stars">
-            {[...Array(20)].map((_, i) => (
-                <motion.div 
-                    key={i} 
-                    className="warp-star"
-                    style={{ 
-                        scaleY: starScale, 
-                        opacity: starOpacity,
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                        animationDelay: `${Math.random() * 2}s`
-                    }} 
-                />
-            ))}
-        </div>
-
         <motion.div 
           className="crazy-header"
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <div className="header-badge">3D GALLERY</div>
-          <h2>ПРОЕКТЫ</h2>
+          <h2>CRAZY 3D ГАЛЕРЕЯ</h2>
+          <p>Скролльте вниз, чтобы вращать карусель</p>
         </motion.div>
 
         <div className="scene-container">
-          <div className="scene-3d-stage">
+          <motion.div 
+            className="scene-3d"
+            style={{ rotateY: rotationValue }}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
             {slides.map((slide, index) => {
-              // Вычисляем угол для каждой карточки
-              const anglePerSlide = 360 / slides.length;
-              const cardAngle = index * anglePerSlide;
-              
-              // Абсолютный угол поворота карточки в мировом пространстве
-              const currentAngle = cardAngle + rotation;
-              
-              // Приводим угол к диапазону 0-360 для вычисления "близости" к камере
-              // 0 градусов - это "лицо" к камере (по нашей логике CSS)
-              let normalizedAngle = currentAngle % 360;
-              if (normalizedAngle < 0) normalizedAngle += 360;
-              
-              // Расстояние от "центра" (0 градусов). 
-              // Если 0 или 360 - карточка прямо перед нами.
-              let distFromFront = Math.min(normalizedAngle, 360 - normalizedAngle);
-              
-              // Вычисляем стили на основе расстояния
-              const isActive = distFromFront < 22; // Зона активности (градусы)
-              
-              // scale: чем ближе, тем больше (от 0.6 до 1.2)
-              const scale = 0.6 + (1 - (distFromFront / 180)) * 0.6;
-              
-              // opacity: чем дальше, тем прозрачнее
-              const opacity = 1 - (distFromFront / 180) * 0.8;
-              
-              // blur: чем дальше, тем размытее
-              const blur = (distFromFront / 180) * 15;
-
-              // Wave Effect: карточки двигаются вверх/вниз по синусоиде
-              const yOffset = Math.sin((currentAngle * Math.PI) / 180) * 50;
-
+              const isActive = index === activeIndex;
               return (
                 <div
                   key={index}
-                  className={`slide-3d-card ${isActive ? 'active' : ''}`}
+                  className={`slide-3d-item ${isActive ? 'active' : ''}`}
                   style={{
-                    transform: `
-                        rotateY(${cardAngle}deg) 
-                        translateZ(650px) 
-                        translateY(${yOffset}px)
-                    `,
-                    // Применяем вращение сцены к самому контейнеру сцены, 
-                    // но здесь мы используем React для управления индивидуальными параметрами
+                    transform: `rotateY(${index * (360 / slides.length)}deg) translateZ(600px)`,
                   }}
                 >
-                    {/* Контейнер для "отмены" вращения, чтобы контент смотрел на нас? 
-                        Нет, мы используем transform сцены. Здесь мы просто стилизуем контент. */}
-                    <div 
-                        className="card-visual"
-                        style={{
-                            opacity: opacity,
-                            transform: `scale(${scale})`,
-                            filter: `blur(${blur}px) brightness(${isActive ? 1.2 : 0.5})`,
-                            pointerEvents: isActive ? 'auto' : 'none'
-                        }}
-                    >
-                        <div className="glitch-wrapper">
-                            <img src={slide.src} alt={slide.title} />
-                            <div className="scanline"></div>
-                            <div className="card-border-glow"></div>
-                        </div>
-                        {isActive && <div className="active-particles"></div>}
-                    </div>
+                  <div className="slide-content">
+                    <img src={slide.src} alt={slide.title} />
+                    <div className="slide-overlay" />
+                  </div>
                 </div>
               );
             })}
-            
-            {/* Сама сцена вращается через rotation */}
-            <style jsx>{`
-                .scene-3d-stage {
-                    transform: rotateY(${rotation}deg);
-                }
-            `}</style>
-          </div>
+          </motion.div>
         </div>
 
-        {/* HUD Info Panel */}
-        <div className="hud-panel-wrapper">
+        {/* Описание активного слайда */}
+        <div className="active-slide-info">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -20, filter: "blur(10px)" }}
-              transition={{ duration: 0.4, ease: "circOut" }}
-              className="hud-panel"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.4 }}
+              className="info-content"
             >
-              <div className="hud-line-top"></div>
-              <div className="hud-content">
-                  <div className="hud-number">0{activeIndex + 1}</div>
-                  <div className="hud-text">
-                      <motion.h4 
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.1 }}
-                      >
-                          {slides[activeIndex].subtitle}
-                      </motion.h4>
-                      <motion.h3
-                        initial={{ clipPath: "polygon(0 0, 0 100%, 0 100%, 0 0)" }}
-                        animate={{ clipPath: "polygon(0 0, 0 100%, 100% 100%, 100% 0)" }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
-                      >
-                          {slides[activeIndex].title}
-                      </motion.h3>
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                      >
-                          {slides[activeIndex].desc}
-                      </motion.p>
-                  </div>
-                  <motion.button 
-                    className="hud-btn"
-                    whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 108, 0, 0.2)" }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                      EXPLORE
-                  </motion.button>
-              </div>
-              <div className="hud-decor">
-                  <span className="decor-dot"></span>
-                  <span className="decor-line"></span>
-                  <span className="decor-dot"></span>
-              </div>
+              <h3>{slides[activeIndex].title}</h3>
+              <p>{slides[activeIndex].desc}</p>
+              <div className="info-decor-line"></div>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        <div className="floor-grid"></div>
+        <div className="crazy-bg-elements">
+          <div className="c-orb c-orb-1" />
+          <div className="c-orb c-orb-2" />
+        </div>
       </div>
     </section>
   );
