@@ -1105,7 +1105,7 @@ body {
     height: 400px;
   }
   .slide-3d-item {
-    /* На мобильных уменьшаем радиус перевод */
+    /* На мобильных уменьшаем радиус перево */
     transform: rotateY(calc(var(--i) * 360deg / var(--total))) translateZ(300px);
   }
   .info-content h3 {
