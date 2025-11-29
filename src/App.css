@@ -1142,7 +1142,7 @@ body {
     pointer-events: none;
 }
 
-/* Ада */
+/* Ад */
 @media (max-width: 768px) {
     .hero h1 { font-size: 2.8rem; }
     .ticker-section {
