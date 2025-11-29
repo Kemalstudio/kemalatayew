@@ -284,6 +284,10 @@ const Crazy3DImageSlider = () => {
   );
 };
 
+// ==================================================================
+// ОСТАЛЬНЫЕ КОМПОНЕНТЫ
+// ==================================================================
+
 const ProjectCard = ({ project, index }) => {
   const cardRef = useRef(null);
   const x = useMotionValue(0);
@@ -367,7 +371,7 @@ const HorizontalScrollSection = () => {
   const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
 
   const portfolioProjects = useMemo(() => [
-    { title: "Aura Computers", description: "", color: "#ff6c00", image: "/images/atam.jpg", tech: ["React", "Node.js", "MongoDB"] },
+    { title: "E-Commerce Platform", description: "Полнофункциональная платформа электронной коммерции", color: "#ff6c00", image: "/images/atam.jpg", tech: ["React", "Node.js", "MongoDB"] },
     { title: "Task Management", description: "Приложение для управления задачами", color: "#00c6ff", image: "/images/atam.jpg", tech: ["React Native", "Firebase", "Redux"] },
     { title: "Social Dashboard", description: "Панель управления социальными сетями", color: "#e91e63", image: "/images/atam.jpg", tech: ["Vue.js", "Express", "PostgreSQL"] },
     { title: "Weather App", description: "Приложение прогноза погоды", color: "#a855f7", image: "/images/atam.jpg", tech: ["React", "Weather API", "PWA"] },
