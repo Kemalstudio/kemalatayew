@@ -1142,7 +1142,7 @@ body {
     .scene-3d {
         /* На мобильном делаем ширину почти во весь экран, но меньше */
         width: 85vw;
-        height: 55vw; /* Сохраняем соотношение сторон */
+        height: 55vw; 
     }
     .slide-3d-item {
         transform: rotateY(var(--rotate-angle)) translateZ(350px);
