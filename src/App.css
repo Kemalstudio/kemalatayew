@@ -1145,7 +1145,6 @@ body {
         height: 55vw; /* Сохраняем соотношение сторон */
     }
     .slide-3d-item {
-        /* Уменьшаем радиус для мобильных, чтобы не вылезало за экран */
         transform: rotateY(var(--rotate-angle)) translateZ(350px);
     }
     .crazy-header h2 {
