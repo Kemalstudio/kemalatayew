@@ -164,14 +164,14 @@ const CrazyParticles = () => {
 
 const Crazy3DImageSlider = () => {
   const slides = useMemo(() => [
-    { src: "/images/atam.jpg", title: "ATAM Alpha", desc: "Флагманский WebGL проект", color: "#ff6c00" },
-    { src: "/images/atam.jpg", title: "Neon City", desc: "Управление умным городом", color: "#00c6ff" },
-    { src: "/images/atam.jpg", title: "Quantum Core", desc: "Аналитика вычислений", color: "#a855f7" },
-    { src: "/images/atam.jpg", title: "Cyber Shield", desc: "Система защиты данных", color: "#e91e63" },
-    { src: "/images/atam.jpg", title: "AI Nexus", desc: "Голосовой ассистент", color: "#10b981" },
-    { src: "/images/atam.jpg", title: "Mars Colony", desc: "Интерактивная карта", color: "#f59e0b" },
-    { src: "/images/atam.jpg", title: "Eco Pulse", desc: "Мониторинг экологии", color: "#6366f1" },
-    { src: "/images/atam.jpg", title: "Vault X", desc: "Крипто-хранилище", color: "#06b6d4" },
+    { src: "/images/aura-computer.png", title: "ATAM Alpha", desc: "Флагманский WebGL проект", color: "#ff6c00" },
+    { src: "/images/aura-computer.png", title: "Neon City", desc: "Управление умным городом", color: "#00c6ff" },
+    { src: "/images/aura-computer.png", title: "Quantum Core", desc: "Аналитика вычислений", color: "#a855f7" },
+    { src: "/images/aura-computer.png", title: "Cyber Shield", desc: "Система защиты данных", color: "#e91e63" },
+    { src: "/images/aura-computer.png", title: "AI Nexus", desc: "Голосовой ассистент", color: "#10b981" },
+    { src: "/images/aura-computer.png", title: "Mars Colony", desc: "Интерактивная карта", color: "#f59e0b" },
+    { src: "/images/aura-computer.png", title: "Eco Pulse", desc: "Мониторинг экологии", color: "#6366f1" },
+    { src: "/images/aura-computer.png", title: "Vault X", desc: "Крипто-хранилище", color: "#06b6d4" },
   ], []);
 
   const containerRef = useRef(null);
@@ -371,14 +371,14 @@ const HorizontalScrollSection = () => {
   const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
 
   const portfolioProjects = useMemo(() => [
-    { title: "E-Commerce Platform", description: "Полнофункциональная платформа электронной коммерции", color: "#ff6c00", image: "/images/atam.jpg", tech: ["React", "Node.js", "MongoDB"] },
-    { title: "Task Management", description: "Приложение для управления задачами", color: "#00c6ff", image: "/images/atam.jpg", tech: ["React Native", "Firebase", "Redux"] },
-    { title: "Social Dashboard", description: "Панель управления социальными сетями", color: "#e91e63", image: "/images/atam.jpg", tech: ["Vue.js", "Express", "PostgreSQL"] },
-    { title: "Weather App", description: "Приложение прогноза погоды", color: "#a855f7", image: "/images/atam.jpg", tech: ["React", "Weather API", "PWA"] },
-    { title: "Fitness Tracker", description: "Трекер фитнеса с мониторингом", color: "#10b981", image: "/images/atam.jpg", tech: ["React Native", "GraphQL"] },
-    { title: "Portfolio Website", description: "Анимированное портфолио", color: "#f59e0b", image: "/images/atam.jpg", tech: ["React", "Framer Motion", "Three.js"] },
-    { title: "Chat Application", description: "Приложение реального времени", color: "#6366f1", image: "/images/atam.jpg", tech: ["Socket.io", "React", "Node.js"] },
-    { title: "Learning Platform", description: "Образовательная платформа", color: "#06b6d4", image: "/images/atam.jpg", tech: ["Next.js", "Prisma", "MySQL"] }
+    { title: "E-Commerce Platform", description: "Полнофункциональная платформа электронной коммерции", color: "#ff6c00", image: "/images/aura-computer.png", tech: ["React", "Node.js", "MongoDB"] },
+    { title: "Task Management", description: "Приложение для управления задачами", color: "#00c6ff", image: "/images/aura-computer.png", tech: ["React Native", "Firebase", "Redux"] },
+    { title: "Social Dashboard", description: "Панель управления социальными сетями", color: "#e91e63", image: "/images/aura-computer.png", tech: ["Vue.js", "Express", "PostgreSQL"] },
+    { title: "Weather App", description: "Приложение прогноза погоды", color: "#a855f7", image: "/images/aura-computer.png", tech: ["React", "Weather API", "PWA"] },
+    { title: "Fitness Tracker", description: "Трекер фитнеса с мониторингом", color: "#10b981", image: "/images/aura-computer.png", tech: ["React Native", "GraphQL"] },
+    { title: "Portfolio Website", description: "Анимированное портфолио", color: "#f59e0b", image: "/images/aura-computer.png", tech: ["React", "Framer Motion", "Three.js"] },
+    { title: "Chat Application", description: "Приложение реального времени", color: "#6366f1", image: "/images/aura-computer.png", tech: ["Socket.io", "React", "Node.js"] },
+    { title: "Learning Platform", description: "Образовательная платформа", color: "#06b6d4", image: "/images/aura-computer.png", tech: ["Next.js", "Prisma", "MySQL"] }
   ], []);
 
   return (
