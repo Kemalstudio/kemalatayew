@@ -5,16 +5,17 @@ import {
   useTransform,
   useSpring,
   useMotionValue,
-  useMotionValueEvent
+  useMotionValueEvent,
+  useVelocity,
+  useAnimationFrame,
+  AnimatePresence
 } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
 import './App.css';
 
-// import gsap from gsap
-
 // ==================================================================
-// КОМПОНЕНТЫ (БЕЗ ИЗМЕНЕНИЙ
+// ВСПОМОГАТЕЛЬНЫЕ КОМПОНЕНТЫ
 // ==================================================================
 
 const SmoothScroll = ({ children }) => {
@@ -130,114 +131,233 @@ const SmoothParallaxStars = () => {
     );
 };
 
+// ==================================================================
+// SUPER CRAZY 3D SLIDER (УЛУЧШЕННАЯ ВЕРСИЯ)
+// ==================================================================
+
 const Crazy3DImageSlider = () => {
-  const images = useMemo(() => [
-    { src: "/images/atam.jpg" }, { src: "/images/atam.jpg" },
-    { src: "/images/atam.jpg" }, { src: "/images/atam.jpg" },
-    { src: "/images/atam.jpg" }, { src: "/images/atam.jpg" },
-    { src: "/images/atam.jpg" }, { src: "/images/atam.jpg" },
+  const slides = useMemo(() => [
+    { src: "/images/atam.jpg", title: "QUANTUM CORE", subtitle: "Project Alpha", desc: "Система визуализации данных нового поколения с использованием WebGL." },
+    { src: "/images/atam.jpg", title: "NEON HORIZON", subtitle: "Cyberpunk UI", desc: "Интерфейс управления умным городом в стиле киберпанк." },
+    { src: "/images/atam.jpg", title: "AERO SPACE", subtitle: "Mars Mission", desc: "Интерактивная карта колонизации Марса с 3D рельефом." },
+    { src: "/images/atam.jpg", title: "ECO SYSTEM", subtitle: "Bio Tracker", desc: "Мониторинг глобальной экологии в реальном времени." },
+    { src: "/images/atam.jpg", title: "CRYPTO VAULT", subtitle: "Blockchain", desc: "Децентрализованное хранилище с биометрической защитой." },
+    { src: "/images/atam.jpg", title: "AI NEXUS", subtitle: "Neural Net", desc: "Визуализация обучения нейросети с голосовым ассистентом." },
+    { src: "/images/atam.jpg", title: "VIRTUAL REALITY", subtitle: "Metaverse", desc: "Платформа для создания виртуальных миров без кода." },
+    { src: "/images/atam.jpg", title: "SECURITY GRID", subtitle: "Firewall", desc: "Система кибербезопасности с предиктивным анализом угроз." },
   ], []);
 
-  const sceneRef = useRef(null);
   const containerRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [rotation, setRotation] = useState(0);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
-      const timeline = gsap.timeline({ repeat: -1 });
-      timeline.to(sceneRef.current, {
-        rotationY: 360,
-        duration: 30,
-        ease: "none"
-      });
-      sceneRef.current.timeline = timeline;
-    }, containerRef);
+  // Физика вращения
+  const scrollRotation = useTransform(scrollYProgress, [0, 1], [0, -360 * 2.5]);
+  const smoothRotation = useSpring(scrollRotation, { stiffness: 50, damping: 15, mass: 1 });
+  
+  // Эффект Warp Speed (звезды вытягиваются от скорости)
+  const scrollVelocity = useVelocity(scrollYProgress);
+  const starScale = useTransform(scrollVelocity, [-0.5, 0.5], [1, 15]);
+  const starOpacity = useTransform(scrollVelocity, [-0.5, 0, 0.5], [0.8, 0.2, 0.8]);
 
-    return () => ctx.revert();
-  }, []);
-
-  const handleMouseEnter = () => {
-    if (sceneRef.current?.timeline) {
-      gsap.to(sceneRef.current.timeline, { timeScale: 0.1, duration: 0.5 });
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (sceneRef.current?.timeline) {
-      gsap.to(sceneRef.current.timeline, { timeScale: 1, duration: 0.5 });
-    }
-    if (sceneRef.current) {
-      gsap.to(sceneRef.current, {
-        rotationX: 0,
-        rotationY: gsap.getProperty(sceneRef.current, "rotationY"),
-        rotationZ: 0,
-        duration: 1,
-        ease: "elastic.out(1, 0.5)"
-      });
-    }
-  };
-
-  const handleMouseMove = (e) => {
-    if (!sceneRef.current) return;
+  // Авто-вращение
+  useAnimationFrame((t, delta) => {
+    const currentScrollRot = smoothRotation.get();
     
-    const { currentTarget, clientX, clientY } = e;
-    const { width, height, left, top } = currentTarget.getBoundingClientRect();
-    const x = (clientX - left) / width - 0.5;
-    const y = (clientY - top) / height - 0.5;
+    // Если скролл остановился, добавляем медленное вращение
+    if (Math.abs(scrollVelocity.get()) < 0.001) {
+       setRotation(prev => prev - 0.03); // Медленное Idle вращение
+    } else {
+       setRotation(currentScrollRot);
+    }
+  });
 
-    gsap.to(sceneRef.current, {
-      rotationX: -y * 20,
-      rotationY: gsap.getProperty(sceneRef.current, "rotationY") - (x * 20),
-      rotationZ: -x * y * 10,
-      duration: 0.5,
-      ease: "power1.out"
-    });
-  };
+  // Вычисление активного индекса
+  useEffect(() => {
+    const anglePerSlide = 360 / slides.length;
+    const normalizedRotation = Math.abs(rotation) % 360;
+    const index = Math.round(normalizedRotation / anglePerSlide) % slides.length;
+    setActiveIndex(index);
+  }, [rotation, slides.length]);
 
   return (
-    <section className="crazy-3d-slider-section" ref={containerRef}>
-      <div className="container">
-        <motion.div
-          className="section-header"
-          initial={{ opacity: 0, y: 50 }}
+    <section ref={containerRef} className="crazy-3d-wrapper">
+      <div className="crazy-sticky-view">
+        
+        {/* Динамический фон со звездами */}
+        <div className="warp-stars">
+            {[...Array(20)].map((_, i) => (
+                <motion.div 
+                    key={i} 
+                    className="warp-star"
+                    style={{ 
+                        scaleY: starScale, 
+                        opacity: starOpacity,
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        animationDelay: `${Math.random() * 2}s`
+                    }} 
+                />
+            ))}
+        </div>
+
+        <motion.div 
+          className="crazy-header"
+          initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1 }}
         >
-          <h2>CRAZY 3D ГАЛЕРЕЯ</h2>
-          <p>Интерактивная 3D галерея с эффектом вращения на 360°</p>
+          <div className="header-badge">3D GALLERY</div>
+          <h2>ПРОЕКТЫ</h2>
         </motion.div>
 
-        <div
-          className="slider-3d-viewport-gsap"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onMouseMove={handleMouseMove}
-        >
-          <div className="slider-3d-scene-gsap" ref={sceneRef}>
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className="slider-3d-item-gsap"
-                style={{
-                  '--i': index,
-                  '--total': images.length,
-                }}
-              >
-                <img src={image.src} alt={`slide ${index + 1}`} />
-              </div>
-            ))}
+        <div className="scene-container">
+          <div className="scene-3d-stage">
+            {slides.map((slide, index) => {
+              // Вычисляем угол для каждой карточки
+              const anglePerSlide = 360 / slides.length;
+              const cardAngle = index * anglePerSlide;
+              
+              // Абсолютный угол поворота карточки в мировом пространстве
+              const currentAngle = cardAngle + rotation;
+              
+              // Приводим угол к диапазону 0-360 для вычисления "близости" к камере
+              // 0 градусов - это "лицо" к камере (по нашей логике CSS)
+              let normalizedAngle = currentAngle % 360;
+              if (normalizedAngle < 0) normalizedAngle += 360;
+              
+              // Расстояние от "центра" (0 градусов). 
+              // Если 0 или 360 - карточка прямо перед нами.
+              let distFromFront = Math.min(normalizedAngle, 360 - normalizedAngle);
+              
+              // Вычисляем стили на основе расстояния
+              const isActive = distFromFront < 22; // Зона активности (градусы)
+              
+              // scale: чем ближе, тем больше (от 0.6 до 1.2)
+              const scale = 0.6 + (1 - (distFromFront / 180)) * 0.6;
+              
+              // opacity: чем дальше, тем прозрачнее
+              const opacity = 1 - (distFromFront / 180) * 0.8;
+              
+              // blur: чем дальше, тем размытее
+              const blur = (distFromFront / 180) * 15;
+
+              // Wave Effect: карточки двигаются вверх/вниз по синусоиде
+              const yOffset = Math.sin((currentAngle * Math.PI) / 180) * 50;
+
+              return (
+                <div
+                  key={index}
+                  className={`slide-3d-card ${isActive ? 'active' : ''}`}
+                  style={{
+                    transform: `
+                        rotateY(${cardAngle}deg) 
+                        translateZ(650px) 
+                        translateY(${yOffset}px)
+                    `,
+                    // Применяем вращение сцены к самому контейнеру сцены, 
+                    // но здесь мы используем React для управления индивидуальными параметрами
+                  }}
+                >
+                    {/* Контейнер для "отмены" вращения, чтобы контент смотрел на нас? 
+                        Нет, мы используем transform сцены. Здесь мы просто стилизуем контент. */}
+                    <div 
+                        className="card-visual"
+                        style={{
+                            opacity: opacity,
+                            transform: `scale(${scale})`,
+                            filter: `blur(${blur}px) brightness(${isActive ? 1.2 : 0.5})`,
+                            pointerEvents: isActive ? 'auto' : 'none'
+                        }}
+                    >
+                        <div className="glitch-wrapper">
+                            <img src={slide.src} alt={slide.title} />
+                            <div className="scanline"></div>
+                            <div className="card-border-glow"></div>
+                        </div>
+                        {isActive && <div className="active-particles"></div>}
+                    </div>
+                </div>
+              );
+            })}
+            
+            {/* Сама сцена вращается через rotation */}
+            <style jsx>{`
+                .scene-3d-stage {
+                    transform: rotateY(${rotation}deg);
+                }
+            `}</style>
           </div>
         </div>
 
-        <div className="slider-background-elements">
-          <motion.div className="bg-orb orb-1" animate={{ y: [0, -40, 0], x: [0, 20, 0], rotate: [0, 180, 360] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
-          <motion.div className="bg-orb orb-2" animate={{ y: [0, 30, 0], x: [0, -25, 0], rotate: [0, -180, -360] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
-          <motion.div className="bg-orb orb-3" animate={{ y: [0, -25, 0], x: [0, 15, 0], scale: [1, 1.2, 1] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }} />
+        {/* HUD Info Panel */}
+        <div className="hud-panel-wrapper">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -20, filter: "blur(10px)" }}
+              transition={{ duration: 0.4, ease: "circOut" }}
+              className="hud-panel"
+            >
+              <div className="hud-line-top"></div>
+              <div className="hud-content">
+                  <div className="hud-number">0{activeIndex + 1}</div>
+                  <div className="hud-text">
+                      <motion.h4 
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.1 }}
+                      >
+                          {slides[activeIndex].subtitle}
+                      </motion.h4>
+                      <motion.h3
+                        initial={{ clipPath: "polygon(0 0, 0 100%, 0 100%, 0 0)" }}
+                        animate={{ clipPath: "polygon(0 0, 0 100%, 100% 100%, 100% 0)" }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                      >
+                          {slides[activeIndex].title}
+                      </motion.h3>
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                      >
+                          {slides[activeIndex].desc}
+                      </motion.p>
+                  </div>
+                  <motion.button 
+                    className="hud-btn"
+                    whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 108, 0, 0.2)" }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                      EXPLORE
+                  </motion.button>
+              </div>
+              <div className="hud-decor">
+                  <span className="decor-dot"></span>
+                  <span className="decor-line"></span>
+                  <span className="decor-dot"></span>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
+
+        <div className="floor-grid"></div>
       </div>
     </section>
   );
 };
+
+// ==================================================================
+// ОСТАЛЬНЫЕ КОМПОНЕНТЫ (БЕЗ ИЗМЕНЕНИЙ)
+// ==================================================================
 
 const ProjectCard = ({ project, index }) => {
   const cardRef = useRef(null);
@@ -372,9 +492,6 @@ const HorizontalScrollSection = () => {
   );
 };
 
-// ========================================================
-// ОБНОВЛЕННАЯ
-// ========================================================
 const SkillsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
