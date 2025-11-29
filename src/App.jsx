@@ -112,126 +112,138 @@ const VerticalTicker = React.memo(({ items, speed = 50 }) => {
 });
 
 const SmoothParallaxStars = () => {
-    const { scrollYProgress } = useScroll();
-    const smoothY1 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 200]), { stiffness: 100, damping: 30, restDelta: 0.001 });
-    const smoothY2 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 400]), { stiffness: 100, damping: 30, restDelta: 0.001 });
-    const smoothY3 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 600]), { stiffness: 100, damping: 30, restDelta: 0.001 });
+  const { scrollYProgress } = useScroll();
+  const smoothY1 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 200]), { stiffness: 100, damping: 30, restDelta: 0.001 });
+  const smoothY2 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 400]), { stiffness: 100, damping: 30, restDelta: 0.001 });
+  const smoothY3 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 600]), { stiffness: 100, damping: 30, restDelta: 0.001 });
 
-    const opacity1 = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3]);
-    const opacity2 = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.2, 0.6, 0.6, 0.2]);
-    const opacity3 = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.1, 0.3, 0.3, 0.1]);
+  const opacity1 = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3]);
+  const opacity2 = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.2, 0.6, 0.6, 0.2]);
+  const opacity3 = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.1, 0.3, 0.3, 0.1]);
 
-    return (
-        <div className="stars-container">
-            <motion.div className="stars-layer stars-1" style={{ y: smoothY1, opacity: opacity1 }} />
-            <motion.div className="stars-layer stars-2" style={{ y: smoothY2, opacity: opacity2 }} />
-            <motion.div className="stars-layer stars-3" style={{ y: smoothY3, opacity: opacity3 }} />
-        </div>
-    );
+  return (
+    <div className="stars-container">
+      <motion.div className="stars-layer stars-1" style={{ y: smoothY1, opacity: opacity1 }} />
+      <motion.div className="stars-layer stars-2" style={{ y: smoothY2, opacity: opacity2 }} />
+      <motion.div className="stars-layer stars-3" style={{ y: smoothY3, opacity: opacity3 }} />
+    </div>
+  );
 };
 
 // ==================================================================
-// ОБНОВЛЕННАЯ СЕКЦИЯ CRAZY 3D ГАЛЕРЕЯ
+// ОБНОВЛЕННАЯ СЕКЦИЯ CRAZY 3D ГАЛЕРЕЯ (PRO VERSION)
 // ==================================================================
 
+const CrazyParticles = () => {
+  // Создаем массив частиц для фона
+  const particles = Array.from({ length: 20 });
+  return (
+    <div className="crazy-particles-container">
+      {particles.map((_, i) => (
+        <motion.div
+          key={i}
+          className="crazy-particle"
+          initial={{
+            x: Math.random() * 100 - 50 + "%",
+            y: Math.random() * 100 - 50 + "%",
+            scale: Math.random() * 0.5 + 0.2,
+            opacity: Math.random() * 0.5 + 0.1
+          }}
+          animate={{
+            y: [null, Math.random() * -100 + "%"],
+            opacity: [null, 0]
+          }}
+          transition={{
+            duration: Math.random() * 10 + 10,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
 const Crazy3DImageSlider = () => {
-  // Данные карточек с уникальными описаниями
   const slides = useMemo(() => [
-    { src: "/images/atam.jpg", title: "ATAM Project Alpha", desc: "Флагманский проект с использованием WebGL и передовой анимации." },
-    { src: "/images/atam.jpg", title: "Neon Genesis", desc: "Киберпанк интерфейс для управления умным городом." },
-    { src: "/images/atam.jpg", title: "Quantum Dashboard", desc: "Аналитическая панель для квантовых вычислений." },
-    { src: "/images/atam.jpg", title: "Cyber Security", desc: "Система защиты данных нового поколения." },
-    { src: "/images/atam.jpg", title: "AI Assistant", desc: "Виртуальный помощник с голосовым управлением." },
-    { src: "/images/atam.jpg", title: "Space Xplorer", desc: "Интерактивная карта марсианской колонии." },
-    { src: "/images/atam.jpg", title: "Eco Tracker", desc: "Мониторинг экологии в реальном времени." },
-    { src: "/images/atam.jpg", title: "Crypto Vault", desc: "Безопасное хранилище цифровых активов." },
+    { src: "/images/atam.jpg", title: "ATAM Alpha", desc: "Флагманский WebGL проект", color: "#ff6c00" },
+    { src: "/images/atam.jpg", title: "Neon City", desc: "Управление умным городом", color: "#00c6ff" },
+    { src: "/images/atam.jpg", title: "Quantum Core", desc: "Аналитика вычислений", color: "#a855f7" },
+    { src: "/images/atam.jpg", title: "Cyber Shield", desc: "Система защиты данных", color: "#e91e63" },
+    { src: "/images/atam.jpg", title: "AI Nexus", desc: "Голосовой ассистент", color: "#10b981" },
+    { src: "/images/atam.jpg", title: "Mars Colony", desc: "Интерактивная карта", color: "#f59e0b" },
+    { src: "/images/atam.jpg", title: "Eco Pulse", desc: "Мониторинг экологии", color: "#6366f1" },
+    { src: "/images/atam.jpg", title: "Vault X", desc: "Крипто-хранилище", color: "#06b6d4" },
   ], []);
 
   const containerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isHovering, setIsHovering] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false);
   
-  // Создаем длинный контейнер для скролла
+  // Увеличиваем высоту скролла для более плавного хода
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // Вращение, привязанное к скроллу (3 полных оборота за весь скролл)
-  const scrollRotation = useTransform(scrollYProgress, [0, 1], [0, -360 * 3]);
-  const rotationValue = useMotionValue(0);
+  // Маппим скролл на вращение (2 полных оборота)
+  const rawRotation = useTransform(scrollYProgress, [0, 1], [0, -360 * 2]);
   
-  // Авто-вращение
-  const timeRef = useRef(0);
-  const autoRotateRef = useRef(null);
+  // Добавляем физику пружины для инерции и плавности
+  const smoothRotation = useSpring(rawRotation, {
+    stiffness: 40,
+    damping: 15,
+    mass: 1.2,
+    restDelta: 0.001
+  });
 
-  useEffect(() => {
-    // Функция авто-вращения
-    const animate = () => {
-      if (!isScrolling && !isHovering) {
-        timeRef.current -= 0.2; // Скорость авто-вращения
-        rotationValue.set(scrollRotation.get() + timeRef.current);
-      } else {
-        // Если скроллим, синхронизируемся со скроллом
-        rotationValue.set(scrollRotation.get() + timeRef.current);
-      }
-      
-      // Вычисляем активный индекс на основе текущего угла
-      const currentRotation = Math.abs(rotationValue.get()) % 360;
-      const anglePerSlide = 360 / slides.length;
-      // Корректируем индекс, чтобы активным был тот, что спереди
-      const index = Math.round(currentRotation / anglePerSlide) % slides.length;
+  // Вычисляем активный индекс в реальном времени
+  useMotionValueEvent(smoothRotation, "change", (latest) => {
+    // Нормализуем угол к 0-360
+    let degrees = Math.abs(latest) % 360;
+    const step = 360 / slides.length;
+    // Находим индекс, который сейчас "спереди" (ближе к 0/360)
+    const index = Math.round(degrees / step) % slides.length;
+    if (index !== activeIndex) {
       setActiveIndex(index);
-
-      autoRotateRef.current = requestAnimationFrame(animate);
-    };
-    
-    autoRotateRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(autoRotateRef.current);
-  }, [isScrolling, isHovering, slides.length, scrollRotation, rotationValue]);
-
-  // Детектор скролла для паузы авто-вращения
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    setIsScrolling(true);
-    // Сбрасываем флаг скролла через небольшую задержку
-    clearTimeout(window.scrollTimeout);
-    window.scrollTimeout = setTimeout(() => setIsScrolling(false), 200);
+    }
   });
 
   return (
     <section ref={containerRef} className="crazy-3d-wrapper">
       <div className="crazy-sticky-view">
+        <CrazyParticles />
+        
         <motion.div 
           className="crazy-header"
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
         >
-          <h2>CRAZY 3D ГАЛЕРЕЯ</h2>
-          <p>Скролльте вниз, чтобы вращать карусель</p>
+          <div className="crazy-subtitle">ПОРТФОЛИО</div>
+          <h2>IMMERSIVE GALLERY</h2>
         </motion.div>
 
         <div className="scene-container">
           <motion.div 
             className="scene-3d"
-            style={{ rotateY: rotationValue }}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
+            style={{ rotateY: smoothRotation }}
           >
             {slides.map((slide, index) => {
-              const isActive = index === activeIndex;
+              const angle = (360 / slides.length) * index;
               return (
                 <div
                   key={index}
-                  className={`slide-3d-item ${isActive ? 'active' : ''}`}
+                  className={`slide-3d-item ${index === activeIndex ? 'active' : ''}`}
                   style={{
-                    transform: `rotateY(${index * (360 / slides.length)}deg) translateZ(600px)`,
+                    // CSS переменная для использования в calc()
+                    '--rotate-angle': `${angle}deg`,
                   }}
                 >
-                  <div className="slide-content">
+                  <div className="slide-content-wrapper">
+                    <div className="slide-glass-effect"></div>
                     <img src={slide.src} alt={slide.title} />
                     <div className="slide-overlay" />
+                    <div className="slide-border-glow" style={{ borderColor: slide.color }}></div>
                   </div>
                 </div>
               );
@@ -239,28 +251,44 @@ const Crazy3DImageSlider = () => {
           </motion.div>
         </div>
 
-        {/* Описание активного слайда */}
+        {/* Информационная панель */}
         <div className="active-slide-info">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.4 }}
+              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -40, filter: "blur(10px)" }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="info-content"
             >
-              <h3>{slides[activeIndex].title}</h3>
+              <div className="info-number">
+                {String(activeIndex + 1).padStart(2, '0')}
+              </div>
+              <motion.h3 style={{ color: slides[activeIndex].color }}>
+                {slides[activeIndex].title}
+              </motion.h3>
               <p>{slides[activeIndex].desc}</p>
-              <div className="info-decor-line"></div>
+              <motion.div 
+                className="info-progress"
+                initial={{ width: 0 }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 1.5, ease: "circOut" }}
+                style={{ background: slides[activeIndex].color }}
+              />
             </motion.div>
           </AnimatePresence>
         </div>
 
-        <div className="crazy-bg-elements">
-          <div className="c-orb c-orb-1" />
-          <div className="c-orb c-orb-2" />
-        </div>
+        {/* Фоновые декорации */}
+        <div className="crazy-vignette"></div>
+        <motion.div 
+          className="crazy-bg-blur" 
+          animate={{ 
+            background: `radial-gradient(circle at 50% 50%, ${slides[activeIndex].color}15 0%, transparent 60%)` 
+          }}
+          transition={{ duration: 1 }}
+        />
       </div>
     </section>
   );
@@ -299,7 +327,7 @@ const ProjectCard = ({ project, index }) => {
       className="horizontal-card"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      whileHover={{ scale: 1.02 }} 
+      whileHover={{ scale: 1.02 }}
     >
       <motion.div
         className="card-inner"
@@ -348,7 +376,7 @@ const HorizontalScrollSection = () => {
 
   const x = useTransform(scrollYProgress, [0, 1], ['0%', '-85%']);
   const smoothX = useSpring(x, { stiffness: 60, damping: 20, mass: 0.8 });
-  
+
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
 
@@ -416,10 +444,10 @@ const SkillsSection = () => {
   ], []);
 
   const cardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 100, 
-      scale: 0.8, 
+    hidden: {
+      opacity: 0,
+      y: 100,
+      scale: 0.8,
       rotateX: 45,
     },
     visible: (index) => ({
@@ -432,7 +460,7 @@ const SkillsSection = () => {
         stiffness: 70,
         damping: 12,
         mass: 1,
-        delay: index * 0.15, 
+        delay: index * 0.15,
         duration: 0.8
       }
     })
@@ -442,24 +470,24 @@ const SkillsSection = () => {
     <section ref={containerRef} className="skills-section">
       <motion.div className="skills-background" style={{ scale, y }} />
       <div className="container">
-        <motion.div 
-          className="section-header" 
-          initial={{ opacity: 0, y: 50, rotateX: -20 }} 
-          whileInView={{ opacity: 1, y: 0, rotateX: 0 }} 
-          transition={{ duration: 1, ease: "easeOut" }} 
+        <motion.div
+          className="section-header"
+          initial={{ opacity: 0, y: 50, rotateX: -20 }}
+          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
           viewport={{ once: false, margin: "-50px" }}
         >
-          <motion.h2 
-            animate={{ backgroundPosition: ['0%', '100%', '0%'] }} 
-            transition={{ duration: 4, repeat: Infinity, ease: "linear" }} 
+          <motion.h2
+            animate={{ backgroundPosition: ['0%', '100%', '0%'] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
             style={{ background: "linear-gradient(90deg, #ff6c00, #00c6ff, #a855f7, #ff6c00)", backgroundSize: "300% auto", backgroundClip: "text", WebkitBackgroundClip: "text", color: "transparent" }}
           >
             МОИ НАВЫКИ
           </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }} 
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
             viewport={{ once: false }}
           >
             Технологии и инструменты, которые я использую для создания цифровых решений
@@ -588,7 +616,7 @@ function App() {
           <motion.div className="hero-floating-elements" animate={{ y: [0, -30, 0], rotate: [0, 8, 0] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }} />
           <div className="hero-vignette"></div>
         </section>
-        
+
         <HorizontalScrollSection />
         <SkillsSection />
         <StatsSection />
