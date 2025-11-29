@@ -1149,7 +1149,7 @@ body {
         height: 340px;
     }
     .slide-3d-item {
-        /* Уменьшаем радиус для мобильных, чтобы не было ды */
+        /* Уменьшаем радиус для мобильных, чтобы не было д */
         transform: rotateY(var(--rotate-angle)) translateZ(320px);
     }
     .crazy-header h2 {
