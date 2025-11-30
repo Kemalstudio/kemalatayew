@@ -204,7 +204,6 @@ const Crazy3DImageSlider = () => {
   });
 
   return (
-    // Этот div будет ОЧЕНЬ высоким (500vh в CSS), чтобы создать паузу
     <section ref={containerRef} className="crazy-3d-wrapper">
       {/* Этот блок "прилипнет" к верху экрана */}
       <div className="crazy-sticky-view">
