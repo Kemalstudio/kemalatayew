@@ -191,7 +191,7 @@ const Crazy3DImageSlider = () => {
     restDelta: 0.001
   });
 
-  // Вычисляем активный слайд
+  // Вычисляем активный слай
   useMotionValueEvent(smoothRotation, "change", (latest) => {
     const degrees = Math.abs(latest) % 360;
     const step = 360 / slides.length;
