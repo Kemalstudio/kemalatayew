@@ -216,8 +216,8 @@ const Crazy3DImageSlider = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <div className="crazy-subtitle">ГАЛЕРЕЯ</div>
-          <h2>SCROLL TO EXPLORE</h2>
+          {/* <div className="crazy-subtitle">ГАЛЕРЕЯ</div> */}
+          {/* <h2>SCROLL TO EXPLORE</h2> */}
         </motion.div>
 
         <div className="scene-container">
