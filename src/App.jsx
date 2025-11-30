@@ -184,10 +184,8 @@ const Crazy3DImageSlider = () => {
     offset: ["start start", "end end"]
   });
 
-  // Вращаем карусель на 2.5 оборота (360 * 2.5) за время прохождения секции
   const rawRotation = useTransform(scrollYProgress, [0, 1], [0, -360 * 2.5]);
   
-  // Добавляем физику: скролл управляет пружиной
   const smoothRotation = useSpring(rawRotation, {
     stiffness: 50,
     damping: 15,
