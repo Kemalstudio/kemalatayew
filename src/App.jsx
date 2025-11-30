@@ -178,7 +178,7 @@ const Crazy3DImageSlider = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   
   // Механика фиксации:
-  // Мы отслеживаем прогресс скролла внутри этого длинного контейне
+  // Мы отслеживаем прогресс скролла внутри этого длинного контейн
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
