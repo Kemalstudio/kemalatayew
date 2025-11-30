@@ -379,8 +379,7 @@ const HorizontalScrollSection = () => {
     { title: "Weather App", description: "Приложение прогноза погоды", color: "#a855f7", image: "/images/atam.jpg", tech: ["React", "Weather API", "PWA"] },
     { title: "Fitness Tracker", description: "Трекер фитнеса с мониторингом", color: "#10b981", image: "/images/atam.jpg", tech: ["React Native", "GraphQL"] },
     { title: "Portfolio Website", description: "Анимированное портфолио", color: "#f59e0b", image: "/images/atam.jpg", tech: ["React", "Framer Motion", "Three.js"] },
-    { title: "Chat Application", description: "Приложен
-      ие реального времени", color: "#6366f1", image: "/images/atam.jpg", tech: ["Socket.io", "React", "Node.js"] },
+    { title: "Chat Application", description: "Приложение реального времени", color: "#6366f1", image: "/images/atam.jpg", tech: ["Socket.io", "React", "Node.js"] },
     { title: "Learning Platform", description: "Образовательная платформа", color: "#06b6d4", image: "/images/atam.jpg", tech: ["Next.js", "Prisma", "MySQL"] }
   ], []);
 
