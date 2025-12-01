@@ -1026,7 +1026,7 @@ body {
 }
 
 .slide-3d-item.active .slide-content-wrapper img {
-    /* Для активного слайда высота авто, чтобы можно было скроллить длинную карти */
+    /* Для активного слайда высота авто, чтобы можно было скроллить длинную карт */
     height: auto; 
     min-height: 100%;
     object-fit: contain;
