@@ -1018,7 +1018,7 @@ body {
 .slide-content-wrapper img {
     width: 100%;
     display: block;
-    /* Стандартное поведение для неактивных (как об */
+    /* Стандартное поведение для неактивных (как о */
     height: 100%;
     object-fit: cover;
     object-position: top center; 
