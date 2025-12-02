@@ -1023,6 +1023,7 @@ body {
     object-fit: cover;
     object-position: top center; 
     transition: height 0.3s ease;
+    
 }
 
 .slide-3d-item.active .slide-content-wrapper img {
