@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -977,11 +978,6 @@ body {
     transform: rotateY(var(--rotate-angle)) translateZ(1100px);
     transition: filter 0.5s ease, opacity 0.5s ease;
     -webkit-box-reflect: below 10px linear-gradient(transparent 60%, rgba(0,0,0,0.4));
-    
-    /* --- ВАЖНЫЕ ИСПРАВЛЕНИЯ ДЛЯ ЧЕТКОСТИ --- */
-    backface-visibility: hidden; /* Улучшает рендеринг обратной стороны */
-    -webkit-backface-visibility: hidden;
-    /* Удалено свойство will-change: transform, которое вызывало размытие */
 }
 
 .slide-3d-item:not(.active) {
@@ -1027,11 +1023,7 @@ body {
     object-fit: cover;
     object-position: top center; 
     transition: height 0.3s ease;
-
-    /* --- ВАЖНЫЕ ИСПРАВЛЕНИЯ ДЛЯ ЧЕТКОСТИ --- */
-    image-rendering: -webkit-optimize-contrast; /* Улучшает контрастность в Webkit */
-    image-rendering: high-quality;
-    transform: translateZ(0); /* Хак, заставляющий GPU рендерить слой заново */
+    
 }
 
 .slide-3d-item.active .slide-content-wrapper img {
