@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -1025,12 +1026,13 @@ body {
 }
 
 .slide-3d-item.active .slide-content-wrapper img {
+    /* Для активного слайда высота авто, чтобы можно было скроллить длинную картинку */
     height: auto; 
     min-height: 100%;
     object-fit: contain;
 }
 
-/* =============================================== */
+/* =================================================== */
 
 .slide-glass-effect {
     position: absolute;
@@ -1138,150 +1140,6 @@ body {
     pointer-events: none;
 }
 
-/* ==================================================================
-   NEW STYLES FOR INTERACTIVE 3D CUBE
-   ================================================================== */
-
-.model-section {
-    padding: 100px 0;
-    background: #0a0a0a;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;
-    position: relative;
-    border-top: 1px solid rgba(255,255,255,0.05);
-}
-
-.model-header {
-    text-align: center;
-    margin-bottom: 50px;
-    z-index: 2;
-}
-
-.model-header h2 {
-    font-size: 3rem;
-    background: linear-gradient(45deg, #00c6ff, #ff6c00);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 900;
-}
-
-.model-interactive-area {
-    width: 100%;
-    height: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    perspective: 1200px;
-    position: relative;
-    touch-action: none; /* Важно для мобильных */
-}
-
-.cube-scene {
-    width: 300px;
-    height: 300px;
-    position: relative;
-    transform-style: preserve-3d;
-}
-
-.cube {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    transform-style: preserve-3d;
-    /* transition: transform 0.1s linear; Убрано для мгновенной реакции на drag */
-}
-
-.cube-face {
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    background: rgba(10, 10, 10, 0.85);
-    border: 2px solid #00c6ff;
-    box-shadow: 0 0 20px rgba(0, 198, 255, 0.2) inset;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    font-weight: bold;
-    color: white;
-    backface-visibility: hidden; /* или visible, если хотите прозрачность */
-    user-select: none;
-    overflow: hidden;
-}
-
-/* Расстановка граней куба */
-.cube-front  { transform: rotateY(0deg) translateZ(150px); }
-.cube-back   { transform: rotateY(180deg) translateZ(150px); border-color: #ff6c00; box-shadow: 0 0 20px rgba(255, 108, 0, 0.2) inset; }
-.cube-right  { transform: rotateY(90deg) translateZ(150px); }
-.cube-left   { transform: rotateY(-90deg) translateZ(150px); border-color: #ff6c00; box-shadow: 0 0 20px rgba(255, 108, 0, 0.2) inset; }
-.cube-top    { transform: rotateX(90deg) translateZ(150px); background: rgba(0, 198, 255, 0.1); border: 1px dashed rgba(0,198,255,0.5); }
-.cube-bottom { transform: rotateX(-90deg) translateZ(150px); background: rgba(255, 108, 0, 0.1); border: 1px dashed rgba(255,108,0,0.5); }
-
-/* Контент внутри граней */
-.cube-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-}
-
-.cube-content img {
-    width: 80%;
-    height: auto;
-    object-fit: cover;
-    opacity: 0.8;
-    filter: sepia(100%) hue-rotate(180deg) saturate(200%);
-    pointer-events: none;
-}
-
-.cube-back .cube-content img, .cube-left .cube-content img {
-    filter: sepia(100%) hue-rotate(320deg) saturate(200%);
-}
-
-.cube-content span {
-    font-size: 1rem;
-    letter-spacing: 2px;
-    background: rgba(0,0,0,0.5);
-    padding: 5px 10px;
-}
-
-/* Декор */
-.cube-grid {
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
-    background-size: 30px 30px;
-}
-
-.cube-shadow-pulse {
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(255,108,0,0.4) 0%, transparent 70%);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { opacity: 0.5; transform: scale(0.8); }
-    50% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0.5; transform: scale(0.8); }
-}
-
-.interaction-hint {
-    position: absolute;
-    bottom: 50px;
-    color: rgba(255,255,255,0.5);
-    font-size: 0.9rem;
-    letter-spacing: 2px;
-    pointer-events: none;
-}
-
 /* Адаптив */
 @media (max-width: 768px) {
     .hero h1 { font-size: 2.8rem; }
@@ -1330,20 +1188,4 @@ body {
     .info-number {
         font-size: 3rem;
     }
-
-    /* Адаптив куба */
-    .cube-scene {
-        width: 200px;
-        height: 200px;
-    }
-    .cube-face {
-        width: 200px;
-        height: 200px;
-    }
-    .cube-front  { transform: rotateY(0deg) translateZ(100px); }
-    .cube-back   { transform: rotateY(180deg) translateZ(100px); }
-    .cube-right  { transform: rotateY(90deg) translateZ(100px); }
-    .cube-left   { transform: rotateY(-90deg) translateZ(100px); }
-    .cube-top    { transform: rotateX(90deg) translateZ(100px); }
-    .cube-bottom { transform: rotateX(-90deg) translateZ(100px); }
 }
