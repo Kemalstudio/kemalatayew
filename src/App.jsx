@@ -538,8 +538,10 @@ function App() {
               Создаю современные веб и мобильные приложения
             </motion.p>
             <motion.div className="hero-buttons" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1 }}>
-              <Magnetic><button className="btn-primary">Связаться со мной</button></Magnetic>
-              <Magnetic><button className="btn-secondary">Скачать резюме</button></Magnetic>
+              <Magnetic>
+                <button className="btn-primary">Связаться со мной</button></Magnetic>
+              <Magnetic>
+                <button className="btn-secondary">Скачать резюме</button></Magnetic>
             </motion.div>
           </div>
           <div className="ticker-section">
