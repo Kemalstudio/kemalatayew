@@ -554,7 +554,7 @@ function App() {
         <SkillsSection />
         <StatsSection />
         
-        {/* ВОТ ЗДЕСЬ СЕКЦИЯ КОТОРАЯ ФИКСИРУЕТ */}
+        {/* ВОТ ЗДЕСЬ СЕКЦИЯ КОТОРАЯ ФИКСИРУЕ */}
         <Crazy3DImageSlider />
         
         <section className="services-grid">
