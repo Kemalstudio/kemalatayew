@@ -6,9 +6,7 @@ import {
   useSpring,
   useMotionValue,
   useMotionValueEvent,
-  AnimatePresence,
-  useAnimation,
-  pan
+  AnimatePresence
 } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
@@ -132,150 +130,6 @@ const SmoothParallaxStars = () => {
 };
 
 // ==================================================================
-// НОВЫЙ КОМПОНЕНТ: 360 INTERACTIVE CUBE
-// ==================================================================
-
-const Interactive3DModel = () => {
-  const containerRef = useRef(null);
-  const [rotation, setRotation] = useState({ x: -15, y: 45 });
-  const [isDragging, setIsDragging] = useState(false);
-  const lastMousePos = useRef({ x: 0, y: 0 });
-  const autoRotateSpeed = useRef(0.2); // Скорость авто-вращения
-
-  // Анимационный цикл для плавности и авто-вращения
-  useEffect(() => {
-    let animationFrame;
-
-    const animate = () => {
-      if (!isDragging) {
-        setRotation((prev) => ({
-          ...prev,
-          y: prev.y + autoRotateSpeed.current
-        }));
-      }
-      animationFrame = requestAnimationFrame(animate);
-    };
-
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [isDragging]);
-
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    lastMousePos.current = { x: e.clientX, y: e.clientY };
-    // При клике останавливаем авто-вращение, чтобы пользователь взял управление
-  };
-
-  const handleTouchStart = (e) => {
-    setIsDragging(true);
-    lastMousePos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    
-    const deltaX = e.clientX - lastMousePos.current.x;
-    const deltaY = e.clientY - lastMousePos.current.y;
-
-    setRotation((prev) => ({
-      x: Math.max(-60, Math.min(60, prev.x - deltaY * 0.5)), // Ограничиваем наклон вверх/вниз
-      y: prev.y + deltaX * 0.5
-    }));
-
-    lastMousePos.current = { x: e.clientX, y: e.clientY };
-  };
-
-  const handleTouchMove = (e) => {
-    if (!isDragging) return;
-    
-    const deltaX = e.touches[0].clientX - lastMousePos.current.x;
-    const deltaY = e.touches[0].clientY - lastMousePos.current.y;
-
-    setRotation((prev) => ({
-      x: Math.max(-60, Math.min(60, prev.x - deltaY * 0.5)),
-      y: prev.y + deltaX * 0.5
-    }));
-
-    lastMousePos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-  };
-
-  const handleEnd = () => {
-    setIsDragging(false);
-  };
-
-  return (
-    <section className="model-section" ref={containerRef}>
-      <div className="model-header">
-        <h2>360° TECH CORE</h2>
-        <p>Крутите объект мышкой или касанием</p>
-      </div>
-      
-      <div 
-        className="model-interactive-area"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleEnd}
-        onMouseLeave={handleEnd}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleEnd}
-        style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-      >
-        <div className="cube-scene">
-          <div 
-            className="cube" 
-            style={{ 
-              transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)` 
-            }}
-          >
-            {/* Передняя грань */}
-            <div className="cube-face cube-front">
-              <div className="cube-content">
-                <img src="/images/aura-computer.png" alt="Front" />
-                <span>FRONT_END</span>
-              </div>
-            </div>
-            {/* Задняя грань */}
-            <div className="cube-face cube-back">
-              <div className="cube-content">
-                <img src="/images/aura-computer.png" alt="Back" />
-                <span>BACK_END</span>
-              </div>
-            </div>
-            {/* Правая грань */}
-            <div className="cube-face cube-right">
-              <div className="cube-content">
-                <img src="/images/aura-computer.png" alt="Right" />
-                <span>API_DATA</span>
-              </div>
-            </div>
-            {/* Левая грань */}
-            <div className="cube-face cube-left">
-              <div className="cube-content">
-                <img src="/images/aura-computer.png" alt="Left" />
-                <span>SECURITY</span>
-              </div>
-            </div>
-            {/* Верхняя грань */}
-            <div className="cube-face cube-top">
-              <div className="cube-grid"></div>
-            </div>
-            {/* Нижняя грань */}
-            <div className="cube-face cube-bottom">
-              <div className="cube-shadow-pulse"></div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="interaction-hint">
-          {isDragging ? "DRAGGING..." : "↻ DRAG TO ROTATE"}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// ==================================================================
 // СЕКЦИЯ CRAZY 3D (ФИКСАЦИЯ И СКРОЛЛ)
 // ==================================================================
 
@@ -323,13 +177,17 @@ const Crazy3DImageSlider = () => {
   const containerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   
+  // Механика фиксации:
+  // Мы отслеживаем прогресс скролла внутри этого длинного контейнера.
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
+  // Вращаем карусель на 2.5 оборота (360 * 2.5) за время прохождения секции
   const rawRotation = useTransform(scrollYProgress, [0, 1], [0, -360 * 2.5]);
   
+  // Добавляем физику: скролл управляет пружиной
   const smoothRotation = useSpring(rawRotation, {
     stiffness: 50,
     damping: 15,
@@ -337,6 +195,7 @@ const Crazy3DImageSlider = () => {
     restDelta: 0.001
   });
 
+  // Вычисляем активный слайд
   useMotionValueEvent(smoothRotation, "change", (latest) => {
     const degrees = Math.abs(latest) % 360;
     const step = 360 / slides.length;
@@ -345,7 +204,9 @@ const Crazy3DImageSlider = () => {
   });
 
   return (
+    // Этот div будет ОЧЕНЬ высоким (500vh в CSS), чтобы создать паузу
     <section ref={containerRef} className="crazy-3d-wrapper">
+      {/* Этот блок "прилипнет" к верху экрана */}
       <div className="crazy-sticky-view">
         <CrazyParticles />
         
@@ -355,6 +216,7 @@ const Crazy3DImageSlider = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
+          {/* <h2>SCROLL TO EXPLORE</h2> */}
         </motion.div>
 
         <div className="scene-container">
@@ -371,9 +233,11 @@ const Crazy3DImageSlider = () => {
                   className={`slide-3d-item ${isActive ? 'active' : ''}`}
                   style={{ '--rotate-angle': `${angle}deg` }}
                 >
+                  {/* data-lenis-prevent останавливает прокрутку всей страницы, когда мы скроллим ВНУТРИ карточки */}
                   <div className="slide-content-wrapper" data-lenis-prevent>
                     <div className="slide-glass-effect"></div>
                     <img src={slide.src} alt={slide.title} />
+                    {/* Оверлей скрываем, если это активная карточка и мы хотим скроллить */}
                     <div className="slide-overlay" style={{ pointerEvents: isActive ? 'none' : 'auto' }} />
                     <div className="slide-border-glow" style={{ borderColor: slide.color }}></div>
                   </div>
@@ -690,6 +554,7 @@ function App() {
         <SkillsSection />
         <StatsSection />
         
+        {/* ВОТ ЗДЕСЬ СЕКЦИЯ КОТОРАЯ ФИКСИРУЕТСЯ */}
         <Crazy3DImageSlider />
         
         <section className="services-grid">
@@ -712,9 +577,6 @@ function App() {
             </div>
           </div>
         </section>
-
-        {/* --- НОВАЯ СЕКЦИЯ С 3D КУБОМ --- */}
-        <Interactive3DModel />
 
         <section className="continuous-ticker-section">
           <motion.div className="continuous-ticker" animate={{ x: ['0%', '-100%'] }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }}>
