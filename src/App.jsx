@@ -555,9 +555,8 @@ function App() {
         <HorizontalScrollSection />
         <SkillsSection />
         <StatsSection />
-        
-        
-        {/* ВОТ ЗДЕСЬ СЕК */}
+
+        {/* ВОТ ЗДЕСЬ СЕ*/}
         <Crazy3DImageSlider />
         
         <section className="services-grid">
