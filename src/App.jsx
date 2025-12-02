@@ -175,7 +175,6 @@ const Crazy3DImageSlider = () => {
   ], []);
 
   const containerRef = useRef(null);
-  const sceneRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   
   // Механика фиксации:
@@ -188,43 +187,23 @@ const Crazy3DImageSlider = () => {
   // Вращаем карусель на 2.5 оборота (360 * 2.5) за время прохождения секции
   const rawRotation = useTransform(scrollYProgress, [0, 1], [0, -360 * 2.5]);
   
-  // Добавляем физику: скролл управляет пружиной
+  // ИСПРАВЛЕНИЕ: Параметры пружины настроены жестче (stiffness выше), 
+  // чтобы карточка быстрее и точнее "вставала" на место и не плавала.
   const smoothRotation = useSpring(rawRotation, {
-    stiffness: 50,
-    damping: 15,
+    stiffness: 100, // Было 50, стало 100 - для более точной остановки
+    damping: 30,    // Было 15, стало 30 - чтобы не болталось
     mass: 1,
     restDelta: 0.001
   });
 
-  // ИСПРАВЛЕНИЕ: Плавное центрирование активного слайда
+  // Вычисляем активный слайд
   useMotionValueEvent(smoothRotation, "change", (latest) => {
     const degrees = Math.abs(latest) % 360;
     const step = 360 / slides.length;
+    // Округляем до ближайшего индекса для более точного определения "центра"
     const index = Math.round(degrees / step) % slides.length;
-    
-    // ИСПРАВЛЕНИЕ: Добавляем плавность переключения
-    if (index !== activeIndex) {
-      setTimeout(() => {
-        setActiveIndex(index);
-      }, 100);
-    }
+    if (index !== activeIndex) setActiveIndex(index);
   });
-
-  // ИСПРАВЛЕНИЕ: Автоматическое выравнивание при скролле
-  useEffect(() => {
-    const scene = sceneRef.current;
-    if (!scene) return;
-
-    const updateScenePosition = () => {
-      // Центрируем сцену
-      scene.style.transform = `rotateY(${smoothRotation.get()}deg)`;
-    };
-
-    // Подписываемся на изменения
-    const unsubscribe = smoothRotation.on("change", updateScenePosition);
-    
-    return () => unsubscribe();
-  }, [smoothRotation]);
 
   return (
     // Этот div будет ОЧЕНЬ высоким (500vh в CSS), чтобы создать паузу
@@ -239,13 +218,11 @@ const Crazy3DImageSlider = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <div className="crazy-subtitle">SCROLL TO EXPLORE</div>
-          <h2>IMMERSIVE 3D GALLERY</h2>
+          {/* <h2>SCROLL TO EXPLORE</h2> */}
         </motion.div>
 
         <div className="scene-container">
           <motion.div 
-            ref={sceneRef}
             className="scene-3d"
             style={{ rotateY: smoothRotation }}
           >
@@ -260,18 +237,8 @@ const Crazy3DImageSlider = () => {
                 >
                   {/* data-lenis-prevent останавливает прокрутку всей страницы, когда мы скроллим ВНУТРИ карточки */}
                   <div className="slide-content-wrapper" data-lenis-prevent>
-                    <div className="slide-glass-effect"></div>
-                    <img 
-                      src={slide.src} 
-                      alt={slide.title}
-                      style={{
-                        imageRendering: 'crisp-edges',
-                        WebkitFontSmoothing: 'antialiased',
-                        MozOsxFontSmoothing: 'grayscale'
-                      }}
-                    />
-                    {/* Оверлей скрываем, если это активная карточка и мы хотим скроллить */}
-                    <div className="slide-overlay" style={{ pointerEvents: isActive ? 'none' : 'auto' }} />
+                    {/* ИСПРАВЛЕНИЕ: Убрали стекло и оверлей в CSS, здесь просто удаляем или скрываем */}
+                    <img src={slide.src} alt={slide.title} />
                     <div className="slide-border-glow" style={{ borderColor: slide.color }}></div>
                   </div>
                 </div>
@@ -365,15 +332,7 @@ const ProjectCard = ({ project, index }) => {
             {String(index + 1).padStart(2, '0')}
           </motion.div>
           <motion.div className="card-image-container">
-            <motion.img 
-              src={project.image} 
-              alt={project.title} 
-              className="project-image"
-              style={{
-                imageRendering: 'crisp-edges',
-                WebkitFontSmoothing: 'antialiased'
-              }}
-            />
+            <motion.img src={project.image} alt={project.title} className="project-image"/>
             <motion.div className="image-glow" />
           </motion.div>
           <div className="card-text-content">
@@ -595,7 +554,7 @@ function App() {
         <SkillsSection />
         <StatsSection />
         
-        {/* ВОТ ЗДЕСЬ СЕКЦИЯ */}
+        {/* ВОТ ЗДЕСЬ СЕКЦИЯ КОТОРАЯ Ф */}
         <Crazy3DImageSlider />
         
         <section className="services-grid">
