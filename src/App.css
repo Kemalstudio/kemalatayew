@@ -1075,7 +1075,7 @@ body {
     width: 90%;
     max-width: 500px;
     text-align: center;
-    pointer-events: none; /* Чтобы текст не мешал скроллу, если налезет */
+    pointer-events: none; 
 }
 
 .info-content {
