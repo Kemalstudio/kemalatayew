@@ -532,7 +532,8 @@ function App() {
           <SmoothParallaxStars />
           <div className="hero-content">
             <motion.h1 initial={{ opacity: 0, y: 80 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5 }}>
-              JUNIOR <span className="highlight">FULL STACK</span> DEVELOPER
+              {/* JUNIOR <span className="highlight">FULL STACK</span> DEVELOPER */}
+              JUNIOR <span className="highlight">FULL STACK</span> DEVELOPER 
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 1.2 }}>
               Создаю современные веб и мобильные приложения
