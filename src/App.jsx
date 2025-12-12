@@ -129,6 +129,57 @@ const SmoothParallaxStars = () => {
   );
 };
 
+// ==================================================================
+// НОВЫЙ КОМПОНЕНТ ДЛЯ 3D МОДЕЛИ (ЗАМЕНА HERO TEXT)
+// ==================================================================
+
+const ModelViewer = ({ modelPath }) => {
+  // В РЕАЛЬНОМ ПРОЕКТЕ ДЛЯ ОТОБРАЖЕНИЯ И ВРАЩЕНИЯ МОДЕЛИ (вверх/вниз, влево/вправо) 
+  // СЛЕДУЕТ ИСПОЛЬЗОВАТЬ БИБЛИОТЕКИ @react-three/fiber и @react-three/drei.
+  // Ниже приведен ПРИМЕР того, как это должно выглядеть (закомментировано), 
+  // и визуальная ЗАГЛУШКА, поскольку я не могу выполнить установку пакетов.
+
+  /*
+  // import { Canvas } from '@react-three/fiber';
+  // import { OrbitControls, useGLTF } from '@react-three/drei';
+
+  // const Model = ({ path }) => {
+  //   const { scene } = useGLTF(path);
+  //   // Настройте scale, position и rotation, если это необходимо
+  //   return <primitive object={scene} scale={1} />; 
+  // };
+  */
+
+  return (
+    <div className="model-viewer-canvas-container">
+      {/* 
+        <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+          <ambientLight intensity={1.5} />
+          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={500} />
+          <Model path={modelPath} />
+          {/* OrbitControls позволяет вращать модель с помощью мыши * /
+          <OrbitControls 
+            enableDamping 
+            dampingFactor={0.1} 
+            maxPolarAngle={Math.PI / 2} // Ограничение вращения (вверх/вниз)
+          />
+        </Canvas> 
+      */}
+      <div className="model-viewer-placeholder">
+        <h3>3D Модель Загружена</h3>
+        <p className="path-text">Файл: {modelPath}</p>
+        <p className="hint-text">
+          Чтобы увидеть модель, используйте &lt;Canvas&gt; и OrbitControls 
+          из @react-three/fiber / @react-three/drei в реальном проекте.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// ==================================================================
+// СЕКЦИЯ CRAZY 3D (ФИКСАЦИЯ И СКРОЛЛ)
+// ==================================================================
 
 const CrazyParticles = () => {
   const particles = Array.from({ length: 25 });
@@ -528,19 +579,8 @@ function App() {
         <section className="hero">
           <SmoothParallaxStars />
           <div className="hero-content">
-            <motion.h1 initial={{ opacity: 0, y: 80 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5 }}>
-              {/* JUNIOR <span className="highlight">FULL STACK</span> DEVELOPER */}
-              JUNIOR <span className="highlight">FULL STACK</span> DEVELOPER 
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 1.2 }}>
-              Создаю современные веб и мобильные приложения
-            </motion.p>
-            <motion.div className="hero-buttons" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 1 }}>
-              <Magnetic>
-                <button className="btn-primary">Связаться со мной</button></Magnetic>
-              <Magnetic>
-                <button className="btn-secondary">Скачать резюме</button></Magnetic>
-            </motion.div>
+            {/* ЗАМЕНА: Раздел с заголовком, текстом и кнопками заменен на 3D модель */}
+            <ModelViewer modelPath="/images/gaming_desktop_pc.glb" />
           </div>
           <div className="ticker-section">
             <div className="ticker-label">ТЕХНОЛОГИИ</div>
