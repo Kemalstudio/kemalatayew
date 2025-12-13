@@ -1,3 +1,6 @@
+/* #ba6ef4 - основной сolor */
+
+
 * {
     margin: 0;
     padding: 0;
@@ -423,7 +426,7 @@ body {
 }
 
 .btn-hire {
-    background: #ff6c00;
+    background: #ba6ef4;
     color: white;
     border: none;
     padding: 12px 35px;
@@ -435,9 +438,9 @@ body {
 }
 
 .btn-hire:hover {
-    background: #e65c00;
+    background: #ba6ef4;
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(255, 108, 0, 0.2);
+    box-shadow: 0 10px 20px #ba6ef4;
 }
 
 .btn-resume {
