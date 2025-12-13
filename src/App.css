@@ -269,6 +269,7 @@ body {
     pointer-events: none;
     filter: blur(40px);
     z-index: 1;
+    
 }
 
 .horizontal-card:hover .card-inner::before {
