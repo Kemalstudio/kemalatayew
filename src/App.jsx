@@ -454,10 +454,9 @@ const Crazy3DImageSlider = () => {
 // ==================================================================
 const OverviewSection = () => {
   const cards = [
-    { title: "MERN Stack Developer", icon: "images/icon-mern.png" },
     { title: "Frontend Developer", icon: "images/icon-frontend.png" },
     { title: "Backend Developer", icon: "images/icon-backend.png" },
-    { title: "UI-UX Designer", icon: "images/icon-ui.png" }
+    { title: "Mobile Apps Developer", icon: "images/icon-ui.png" }
   ];
 
   return (
