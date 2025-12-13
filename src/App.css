@@ -115,7 +115,7 @@ body {
 /* LOADING SCREEN */
 /* ========================================= */
 
-.loading-screen {
+/* .loading-screen {
     position: fixed;
     top: 0;
     left: 0;
@@ -168,7 +168,7 @@ body {
     color: #888;
     letter-spacing: 2px;
     text-transform: uppercase;
-}
+} */
 
 /* ========================================= */
 /* HERO SECTION & BACKGROUND */
@@ -185,9 +185,10 @@ body {
 .hero-background-wrapper {
     background-image: url('/images/3084589.jpg');
     background-size: cover;
-    background-position: center;
+    /* background-position: center; */
     background-repeat: no-repeat;
-    filter: brightness(0.5) blur(2px);
+    background-position: 10% center;
+    filter: brightness(0.4) blur(2.9px);
     position: absolute;
     top: 0;
     left: 0;
