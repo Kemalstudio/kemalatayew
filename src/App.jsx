@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+import React, { useRef, useEffect, useState, useMemo, Suspense } from 'react';
 import {
   motion,
   useScroll,
@@ -10,6 +10,10 @@ import {
 } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
+// === ИМПОРТЫ ДЛЯ 3D ===
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, useGLTF, Float, Environment, ContactShadows } from '@react-three/drei';
+// ======================
 import './App.css';
 
 // ==================================================================
@@ -130,55 +134,75 @@ const SmoothParallaxStars = () => {
 };
 
 // ==================================================================
-// НОВЫЙ КОМПОНЕНТ ДЛЯ 3D МОДЕЛИ (ЗАМЕНА HERO TEXT)
+// КОМПОНЕНТ 3D МОДЕЛИ (ИСПРАВЛЕННЫЙ МАСШТАБ И КАМЕРА)
 // ==================================================================
 
-const ModelViewer = ({ modelPath }) => {
-  // В РЕАЛЬНОМ ПРОЕКТЕ ДЛЯ ОТОБРАЖЕНИЯ И ВРАЩЕНИЯ МОДЕЛИ (вверх/вниз, влево/вправо) 
-  // СЛЕДУЕТ ИСПОЛЬЗОВАТЬ БИБЛИОТЕКИ @react-three/fiber и @react-three/drei.
-  // Ниже приведен ПРИМЕР того, как это должно выглядеть (закомментировано), 
-  // и визуальная ЗАГЛУШКА, поскольку я не могу выполнить установку пакетов.
-
-  /*
-  // import { Canvas } from '@react-three/fiber';
-  // import { OrbitControls, useGLTF } from '@react-three/drei';
-
-  // const Model = ({ path }) => {
-  //   const { scene } = useGLTF(path);
-  //   // Настройте scale, position и rotation, если это необходимо
-  //   return <primitive object={scene} scale={1} />; 
-  // };
-  */
+const Model = ({ path }) => {
+  const { scene } = useGLTF(path);
+  const sceneClone = useMemo(() => scene.clone(), [scene]);
 
   return (
+    <primitive 
+      object={sceneClone} 
+      // ИЗМЕНЕНО: Уменьшил масштаб, чтобы модель влезла в экран
+      scale={0.7} 
+      // ИЗМЕНЕНО: Опустил пониже
+      position={[0, -2, 0]} 
+      rotation={[0, -0.2, 0]} 
+    />
+  );
+};
+
+const ModelViewer = ({ modelPath }) => {
+  return (
     <div className="model-viewer-canvas-container">
-      {/* 
-        <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-          <ambientLight intensity={1.5} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={500} />
-          <Model path={modelPath} />
-          {/* OrbitControls позволяет вращать модель с помощью мыши * /
+      <Canvas 
+        // ИЗМЕНЕНО: Отодвинул камеру назад (Z=13), чтобы было видно весь стол
+        camera={{ position: [0, 2, 13], fov: 40 }} 
+        dpr={[1, 2]}
+        gl={{ preserveDrawingBuffer: true, alpha: true }}
+      >
+        <Suspense fallback={null}>
+          <ambientLight intensity={0.7} />
+          <spotLight position={[10, 10, 10]} angle={0.5} penumbra={1} intensity={800} color="#ffffff" />
+          
+          <pointLight position={[-10, -5, -10]} intensity={1500} color="#ff6c00" />
+          <pointLight position={[10, 5, 10]} intensity={1500} color="#00c6ff" />
+
+          <Environment preset="city" />
+
+          <Float 
+            speed={2} 
+            rotationIntensity={0.2} 
+            floatIntensity={0.5} 
+            floatingRange={[-0.1, 0.1]}
+          >
+            <Model path={modelPath} />
+          </Float>
+
+          <ContactShadows position={[0, -2.5, 0]} opacity={0.5} scale={20} blur={2.5} far={4} color="#000000" />
+
           <OrbitControls 
-            enableDamping 
-            dampingFactor={0.1} 
-            maxPolarAngle={Math.PI / 2} // Ограничение вращения (вверх/вниз)
+            enableZoom={true} 
+            // ИЗМЕНЕНО: Ограничил зум, чтобы нельзя было влететь внутрь модели
+            minDistance={8}
+            maxDistance={20}
+            enablePan={false}
+            autoRotate={true}
+            autoRotateSpeed={1}
+            minPolarAngle={Math.PI / 3}
+            maxPolarAngle={Math.PI / 1.8}
           />
-        </Canvas> 
-      */}
-      <div className="model-viewer-placeholder">
-        <h3>3D Модель Загружена</h3>
-        <p className="path-text">Файл: {modelPath}</p>
-        <p className="hint-text">
-          Чтобы увидеть модель, используйте &lt;Canvas&gt; и OrbitControls 
-          из @react-three/fiber / @react-three/drei в реальном проекте.
-        </p>
-      </div>
+        </Suspense>
+      </Canvas>
     </div>
   );
 };
 
+useGLTF.preload('/images/gaming_desktop_pc.glb');
+
 // ==================================================================
-// СЕКЦИЯ CRAZY 3D (ФИКСАЦИЯ И СКРОЛЛ)
+// СЕКЦИЯ CRAZY 3D
 // ==================================================================
 
 const CrazyParticles = () => {
@@ -225,38 +249,29 @@ const Crazy3DImageSlider = () => {
   const containerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   
-  // Механика фиксации:
-  // Мы отслеживаем прогресс скролла внутри этого длинного контейнера.
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // Вращаем карусель на 2.5 оборота (360 * 2.5) за время прохождения секции
   const rawRotation = useTransform(scrollYProgress, [0, 1], [0, -360 * 2.5]);
   
-  // ИСПРАВЛЕНИЕ: Параметры пружины настроены жестче (stiffness выше), 
-  // чтобы карточка быстрее и точнее "вставала" на место и не плавала.
   const smoothRotation = useSpring(rawRotation, {
-    stiffness: 100, // Было 50, стало 100 - для более точной остановки
-    damping: 30,    // Было 15, стало 30 - чтобы не болталось
+    stiffness: 100,
+    damping: 30,
     mass: 1,
     restDelta: 0.001
   });
 
-  // Вычисляем активный слайд
   useMotionValueEvent(smoothRotation, "change", (latest) => {
     const degrees = Math.abs(latest) % 360;
     const step = 360 / slides.length;
-    // Округляем до ближайшего индекса для более точного определения "центра"
     const index = Math.round(degrees / step) % slides.length;
     if (index !== activeIndex) setActiveIndex(index);
   });
 
   return (
-    // Этот div будет ОЧЕНЬ высоким (500vh в CSS), чтобы создать паузу
     <section ref={containerRef} className="crazy-3d-wrapper">
-      {/* Этот блок "прилипнет" к верху экрана */}
       <div className="crazy-sticky-view">
         <CrazyParticles />
         
@@ -266,7 +281,6 @@ const Crazy3DImageSlider = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          {/* <h2>SCROLL TO EXPLORE</h2> */}
         </motion.div>
 
         <div className="scene-container">
@@ -283,9 +297,7 @@ const Crazy3DImageSlider = () => {
                   className={`slide-3d-item ${isActive ? 'active' : ''}`}
                   style={{ '--rotate-angle': `${angle}deg` }}
                 >
-                  {/* data-lenis-prevent останавливает прокрутку всей страницы, когда мы скроллим ВНУТРИ карточки */}
                   <div className="slide-content-wrapper" data-lenis-prevent>
-                    {/* ИСПРАВЛЕНИЕ: Убрали стекло и оверлей в CSS, здесь просто удаляем или скрываем */}
                     <img src={slide.src} alt={slide.title} />
                     <div className="slide-border-glow" style={{ borderColor: slide.color }}></div>
                   </div>
@@ -579,7 +591,7 @@ function App() {
         <section className="hero">
           <SmoothParallaxStars />
           <div className="hero-content">
-            {/* ЗАМЕНА: Раздел с заголовком, текстом и кнопками заменен на 3D модель */}
+            {/* 3D модель здесь */}
             <ModelViewer modelPath="/images/gaming_desktop_pc.glb" />
           </div>
           <div className="ticker-section">
