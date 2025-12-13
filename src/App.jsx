@@ -318,7 +318,7 @@ const ModelViewer = ({ modelPath }) => {
   );
 };
 
-useGLTF.preload('/images/gaming-desktop.glb');
+useGLTF.preload('/images/gaming_desktop_pc.glb');
 
 // ==================================================================
 // СЕКЦИЯ CRAZY 3D
@@ -455,6 +455,10 @@ const Crazy3DImageSlider = () => {
     </section>
   );
 };
+
+// ==================================================================
+// ОСТАЛЬНЫЕ КОМПОНЕНТЫ
+// ==================================================================
 
 const ProjectCard = ({ project, index }) => {
   const cardRef = useRef(null);
@@ -691,11 +695,12 @@ function App() {
 
   const tickerItems = useMemo(() => features.map(feature => feature.title), [features]);
 
+  // Роли для печатной машинки
   const typingRoles = useMemo(() => [
-    "Frontend Developer",
-    "Backend Developer",
-    "Mobile Apps Developer",
-    "Full Stack Web & App Developer"
+    "Software Developer",
+    "UI/UX Designer",
+    "Frontend Specialist",
+    "3D Web Enthusiast"
   ], []);
 
   return (
@@ -719,7 +724,7 @@ function App() {
                 className="greeting-container"
               >
                 <h1>Hi !, I'm <span className="highlight-text">Atayev Kemal</span></h1>
-                <p className="subtitle">I Develop Full Stack Web & Mobile Apps</p>
+                <p className="subtitle">I Develop 3D Visuals, Web Applications</p>
                 <div className="role-ticker">
                   <Typewriter words={typingRoles} wait={2000} />
                 </div>
