@@ -74,9 +74,6 @@ body {
     object-fit: cover; /* Чтобы картинка заполняла круг */
 }
 
-/* Старый класс logo-icon удален или закомментирован */
-/* .logo-icon { ... } */
-
 .logo-text {
     display: flex;
     flex-direction: column;
@@ -110,65 +107,6 @@ body {
 .nav-links a:hover {
     color: #ff6c00;
 }
-
-/* ========================================= */
-/* LOADING SCREEN */
-/* ========================================= */
-
-/* .loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #050505;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.8s ease-in-out, visibility 0.8s;
-}
-
-.loading-screen.loaded {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-}
-
-.loader-content {
-    text-align: center;
-    width: 300px;
-}
-
-.loader-text {
-    font-size: 4rem;
-    font-weight: 900;
-    color: #fff;
-    margin-bottom: 20px;
-    font-variant-numeric: tabular-nums;
-}
-
-.loader-bar-container {
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 15px;
-}
-
-.loader-bar-fill {
-    height: 100%;
-    background: #c176fa;
-    transition: width 0.2s ease-out;
-}
-
-.loader-subtext {
-    font-size: 0.9rem;
-    color: #888;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-} */
 
 /* ========================================= */
 /* HERO SECTION & BACKGROUND */
@@ -394,7 +332,6 @@ body {
     overflow: hidden;
     position: relative;
     border-radius: 20px;
-    /* box-shadow: 0 0 20px rgba(186, 110, 244, 0.05); */
 }
 
 .ticker-fade-top {
@@ -440,365 +377,186 @@ body {
     text-align: center;
 }
 
-/* Horizontal Scroll */
-.horizontal-scroll-wrapper {
+/* ========================================= */
+/* НОВАЯ СЕКЦИЯ OVERVIEW (Вместо Horizontal) */
+/* ========================================= */
+.overview-section {
+    padding: 100px 0;
+    background-color: #050505;
     position: relative;
-    height: 400vh;
-    background: linear-gradient(180deg, #030014 0%, #0a0a0a 100%);
+    z-index: 10;
 }
 
-.horizontal-scroll-sticky-view {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;
+.overview-header {
+    margin-bottom: 60px;
+    max-width: 800px;
+}
+
+.intro-label {
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: #aaa;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.overview-title {
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 25px;
+    color: #fff;
+    line-height: 1;
+}
+
+.overview-desc {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #cccccc;
+    margin-bottom: 35px;
+    max-width: 750px;
+}
+
+.overview-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.btn-hire {
+    background: #ff6c00;
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-hire:hover {
+    background: #e65c00;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 108, 0, 0.2);
+}
+
+.btn-resume {
+    background: #e0e0e0;
+    color: #333;
+    border: none;
+    padding: 12px 35px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-resume:hover {
+    background: #fff;
+    transform: translateY(-2px);
+}
+
+/* СЕТКА КАРТОЧЕК */
+.overview-cards-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 колонки в ряд */
+    gap: 25px;
+    margin-top: 80px;
+    padding: 20px 0;
+}
+
+.role-card {
+    position: relative;
+    background: #0f0f16;
+    height: 320px;
+    border-radius: 20px;
+    padding: 30px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
-
-.scroll-section-header {
+    align-items: center;
     text-align: center;
-    position: absolute;
-    top: 50px;
-    left: 0;
-    width: 100%;
-    z-index: 2;
-}
-
-.scroll-section-header h2 {
-    font-size: 3.5rem;
-    font-weight: 900;
-    margin-bottom: 1.5rem;
-    background: linear-gradient(45deg, #ffffff, #ff6c00);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.scroll-section-header p {
-    font-size: 1.2rem;
-    opacity: 0.8;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
-.horizontal-scroll-container {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    padding-top: 80px;
-}
-
-.horizontal-scroll-content {
-    display: flex;
-    gap: 60px;
-    padding-left: 10vw;
-    padding-right: 10vw;
-    width: max-content;
-    will-change: transform;
-}
-
-.horizontal-card {
-    width: 450px;
-    height: 600px;
-    flex-shrink: 0;
-    perspective: 1500px;
-    cursor: pointer;
-    position: relative;
-}
-
-.card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 40px;
-    overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    transform-style: preserve-3d;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 100px rgba(255, 108, 0, 0.1) inset;
-}
-
-.card-inner::before {
-    content: '';
-    position: absolute;
-    top: var(--mouse-y, 50%);
-    left: var(--mouse-x, 50%);
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, var(--glow-color, #ff6c00) 0%, transparent 70%);
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.4s ease-out;
-    pointer-events: none;
-    filter: blur(40px);
-    z-index: 1;
-
-}
-
-.horizontal-card:hover .card-inner::before {
-    opacity: 0.3;
-}
-
-.card-inner::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-}
-
-.horizontal-card:hover .card-inner::after {
-    opacity: 1;
-}
-
-.card-glare {
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 150%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05), transparent);
-    transform: skewX(-15deg);
-    transition: left 1.2s ease;
-    z-index: 2;
-}
-
-.horizontal-card:hover .card-glare {
-    left: 150%;
-}
-
-.project-index {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--glow-color);
-    background: rgba(255, 255, 255, 0.1);
-    padding: 8px 15px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    z-index: 3;
-    transform: translateZ(60px);
-    transition: all 0.3s ease;
-}
-
-.horizontal-card:hover .project-index {
-    transform: translateZ(80px) scale(1.1);
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.card-image-container {
-    position: relative;
-    height: 220px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 30px;
-    transform-style: preserve-3d;
-}
-
-.project-image {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-    z-index: 2;
-    position: relative;
-    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.6));
-    transform: translateZ(50px);
+    border: 2px solid transparent; 
     transition: all 0.4s ease;
+    cursor: default;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
 }
 
-.horizontal-card:hover .project-image {
-    transform: translateZ(70px) scale(1.05);
-    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.8));
-}
-
-.image-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) translateZ(30px);
-    width: 220px;
-    height: 220px;
-    background: var(--glow-color);
-    border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.3;
-    transition: all 0.4s ease;
-}
-
-.horizontal-card:hover .image-glow {
-    opacity: 0.4;
-    transform: translate(-50%, -50%) translateZ(40px) scale(1.1);
-    filter: blur(70px);
-}
-
-.card-text-content {
-    transform-style: preserve-3d;
-}
-
-.card-text-content h3 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 15px;
-    color: #ffffff;
+.card-content h3 {
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-top: 25px;
     line-height: 1.3;
-    transform: translateZ(40px);
-    transition: all 0.4s ease;
 }
 
-.horizontal-card:hover .card-text-content h3 {
-    transform: translateZ(60px);
-    color: var(--glow-color);
-    text-shadow: 0 0 20px rgba(255, 108, 0, 0.3);
+/* Стилизация конкретных карточек (цвета и наклон) */
+
+/* 1. MERN Stack (Cyan/Purple) */
+.role-card.card-0 {
+    border-color: #9d4edd;
+    box-shadow: 0 0 15px rgba(157, 78, 221, 0.4);
 }
 
-.card-text-content p {
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 25px;
-    line-height: 1.6;
-    font-size: 1rem;
-    transform: translateZ(30px);
-    transition: all 0.4s ease;
+/* 2. Frontend (Tilted, Green/Cyan) */
+.role-card.card-1 {
+    border-color: #00c6ff;
+    box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+    transform: rotate(-3deg) scale(1.05) translateY(-10px);
+    z-index: 2;
+}
+.role-card.card-1:hover {
+    transform: rotate(0deg) scale(1.1) translateY(-10px) !important;
 }
 
-.horizontal-card:hover .card-text-content p {
-    transform: translateZ(50px);
-    color: rgba(255, 255, 255, 0.9);
+/* 3. Backend (Purple/Blue) */
+.role-card.card-2 {
+    border-color: #a18cd1;
+    box-shadow: 0 0 15px rgba(161, 140, 209, 0.4);
 }
 
-.tech-list {
-    list-style: none;
-    margin-bottom: 30px;
-    transform: translateZ(20px);
-    transition: all 0.4s ease;
+/* 4. UI-UX (Pink/Purple) */
+.role-card.card-3 {
+    border-color: #f093fb;
+    box-shadow: 0 0 15px rgba(240, 147, 251, 0.4);
 }
 
-.horizontal-card:hover .tech-list {
-    transform: translateZ(40px);
+/* Геометрические 3D иконки (CSS) */
+.card-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 500px;
 }
 
-.tech-list li {
-    padding: 8px 0;
-    color: rgba(255, 255, 255, 0.8);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    font-size: 0.9rem;
+.geometric-icon {
+    width: 50px;
+    height: 50px;
+    transform: rotateX(45deg) rotateY(45deg);
+    box-shadow: 0 0 30px rgba(255,255,255,0.3);
+    animation: floatIcon 4s ease-in-out infinite;
     position: relative;
-    padding-left: 15px;
-    transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.5);
 }
 
-.tech-list li:hover {
-    color: var(--glow-color);
-    transform: translateX(5px);
+.card-0 .geometric-icon { background: linear-gradient(135deg, #00c6ff, #0072ff); }
+.card-1 .geometric-icon { background: linear-gradient(135deg, #00c6ff, #42e695); }
+.card-2 .geometric-icon { background: linear-gradient(135deg, #7F00FF, #E100FF); }
+.card-3 .geometric-icon { background: linear-gradient(135deg, #ff00cc, #333399); }
+
+@keyframes floatIcon {
+    0%, 100% { transform: rotateX(45deg) rotateY(45deg) translateY(0); }
+    50% { transform: rotateX(45deg) rotateY(225deg) translateY(-15px); }
 }
 
-.tech-list li::before {
-    content: '›';
-    position: absolute;
-    left: 0;
-    color: var(--glow-color);
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
 
-.tech-list li:hover::before {
-    transform: scale(1.3);
-}
-
-.tech-list li:last-child {
-    border-bottom: none;
-}
-
-.project-button {
-    background: transparent;
-    border: 2px solid;
-    color: white;
-    padding: 12px 30px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    width: 100%;
-    font-size: 1rem;
-    backdrop-filter: blur(10px);
-    position: relative;
-    overflow: hidden;
-    transform: translateZ(30px);
-}
-
-.horizontal-card:hover .project-button {
-    transform: translateZ(50px);
-    background-color: var(--glow-color);
-    box-shadow: 0 10px 30px rgba(255, 108, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-}
-
-.project-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.6s ease;
-}
-
-.project-button:hover::before {
-    left: 100%;
-}
-
-.scroll-progress-container {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    text-align: center;
-    width: 100%;
-}
-
-.scroll-progress-bar {
-    width: 400px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 15px;
-    backdrop-filter: blur(10px);
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.scroll-progress-fill {
-    width: 100%;
-    height: 100%;
-    transform-origin: left;
-    border-radius: 4px;
-}
-
-.scroll-hint {
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: #ff6c00;
-    text-shadow: 0 0 10px rgba(255, 108, 0, 0.5);
-}
-
-/* Services */
+/* ========================================= */
+/* SERVICES */
+/* ========================================= */
 .services-grid {
     padding: 150px 0;
     background: #0a0a0a;
@@ -1063,6 +821,10 @@ body {
     margin-left: auto;
     margin-right: auto;
     line-height: 1.6;
+}
+.btn-primary {
+    background: linear-gradient(45deg, #ff6c00, #ff0055); border: none; padding: 15px 40px;
+    color: white; font-weight: 700; border-radius: 30px; cursor: pointer; font-size: 1.1rem;
 }
 
 /* Stars Parallax */
@@ -1468,13 +1230,16 @@ body {
         width: 300px;
         height: 300px;
     }
-    .horizontal-card {
-        width: 320px;
-        height: 500px;
+    
+    /* Адаптив для новой секции Overview */
+    .overview-cards-container {
+        grid-template-columns: 1fr;
     }
+    .overview-title { font-size: 3rem; }
+    .overview-buttons { justify-content: flex-start; }
+
     .services-grid-content { grid-template-columns: 1fr; }
     .scroll-progress-bar { width: 300px; }
-    .scroll-section-header h2 { font-size: 2.5rem; }
 
     .crazy-3d-wrapper {
         height: 500vh; 
