@@ -318,7 +318,7 @@ const ModelViewer = ({ modelPath }) => {
   );
 };
 
-useGLTF.preload('/images/gaming_desktop_pc.glb');
+useGLTF.preload('/images/gaming-desktop.glb');
 
 // ==================================================================
 // СЕКЦИЯ CRAZY 3D
