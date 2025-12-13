@@ -181,6 +181,7 @@ body {
     background: #030014; 
 }
 
+/* Background Image (С затемнением) */
 .hero-background-wrapper {
     background-image: url('/images/3084589.jpg');
     background-size: cover;
