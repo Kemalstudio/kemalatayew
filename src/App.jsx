@@ -10,6 +10,7 @@ import {
 } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
+// === ИМПОРТЫ ДЛЯ 3D ===
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Float, Environment, ContactShadows, useProgress } from '@react-three/drei';
 // ======================
@@ -47,6 +48,93 @@ const LoadingScreen = () => {
         </div>
         <p className="loader-subtext">Loading 3D Experience...</p>
       </div>
+    </div>
+  );
+};
+
+// ==================================================================
+// КОМПОНЕНТ NAVBAR (МЕНЮ)
+// ==================================================================
+const Navbar = () => {
+  return (
+    <motion.nav 
+      className="navbar"
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, delay: 0.5 }}
+    >
+      <div className="nav-logo">
+        <div className="logo-icon">C</div>
+        <div className="logo-text">
+          <span className="name">Atayev Kemal</span>
+          <span className="portfolio">| Portfolio</span>
+        </div>
+      </div>
+      <ul className="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </motion.nav>
+  );
+};
+
+// ==================================================================
+// КОМПОНЕНТ TYPEWRITER (ПЕЧАТНАЯ МАШИНКА)
+// ==================================================================
+const Typewriter = ({ words, wait = 3000 }) => {
+  const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [reverse, setReverse] = useState(false);
+  const [blink, setBlink] = useState(true);
+
+  // Курсор мигает
+  useEffect(() => {
+    const timeout2 = setTimeout(() => {
+      setBlink((prev) => !prev);
+    }, 500);
+    return () => clearTimeout(timeout2);
+  }, [blink]);
+
+  // Логика печати
+  useEffect(() => {
+    if (index === words.length) return; // Защита
+
+    if (subIndex === words[index].length + 1 && !reverse) {
+      setReverse(true);
+      return;
+    }
+
+    if (subIndex === 0 && reverse) {
+      setReverse(false);
+      setIndex((prev) => (prev + 1) % words.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (reverse ? -1 : 1));
+    }, Math.max(reverse ? 75 : subIndex === words[index].length ? wait : 150, parseInt(Math.random() * 350)));
+
+    return () => clearTimeout(timeout);
+  }, [subIndex, index, reverse, words, wait]);
+
+  return (
+    <span className="typewriter-text">
+      {words[index].substring(0, subIndex)}
+      <span className={`cursor ${blink ? 'blink' : ''}`}>|</span>
+    </span>
+  );
+};
+
+// ==================================================================
+// FON ВОЛНЫ (BACKGROUND WAVES)
+// ==================================================================
+const HeroBackground = () => {
+  return (
+    <div className="hero-background-wrapper">
+      <div className="wave-pattern"></div>
+      <div className="gradient-overlay"></div>
+      <div className="noise-overlay"></div>
     </div>
   );
 };
@@ -115,25 +203,21 @@ const Magnetic = ({ children }) => {
   return React.cloneElement(children, { ref });
 };
 
-// ОБНОВЛЕННЫЙ ВЕРТИКАЛЬНЫЙ ТИКЕР (БЕСКОНЕЧНОЕ КОЛЕСО)
 const VerticalTicker = ({ items }) => {
-  // Дублируем элементы, чтобы создать эффект бесконечности без дыр
   const duplicatedItems = useMemo(() => [...items, ...items], [items]);
 
   return (
     <div className="ticker-wrapper-styled">
       <div className="ticker-label">ТЕХНОЛОГИИ</div>
       <div className="ticker-container">
-        {/* Градиенты для маскировки краев (эффект колеса) */}
         <div className="ticker-fade-top"></div>
         <div className="ticker-fade-bottom"></div>
         
         <motion.div
           className="ticker-track"
-          // Анимация: движемся от -50% (середина списка) до 0% (начало), создавая иллюзию падения вниз
           animate={{ y: ["-50%", "0%"] }}
           transition={{
-            duration: 20, // Скорость прокрутки (чем больше число, тем медленнее)
+            duration: 20,
             ease: "linear",
             repeat: Infinity,
           }}
@@ -159,17 +243,11 @@ const SmoothParallaxStars = () => {
   const { scrollYProgress } = useScroll();
   const smoothY1 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 200]), { stiffness: 100, damping: 30, restDelta: 0.001 });
   const smoothY2 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 400]), { stiffness: 100, damping: 30, restDelta: 0.001 });
-  const smoothY3 = useSpring(useTransform(scrollYProgress, [0, 1], [0, 600]), { stiffness: 100, damping: 30, restDelta: 0.001 });
-
-  const opacity1 = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3]);
-  const opacity2 = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.2, 0.6, 0.6, 0.2]);
-  const opacity3 = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.1, 0.3, 0.3, 0.1]);
-
+  
   return (
     <div className="stars-container">
-      <motion.div className="stars-layer stars-1" style={{ y: smoothY1, opacity: opacity1 }} />
-      <motion.div className="stars-layer stars-2" style={{ y: smoothY2, opacity: opacity2 }} />
-      <motion.div className="stars-layer stars-3" style={{ y: smoothY3, opacity: opacity3 }} />
+      <motion.div className="stars-layer stars-1" style={{ y: smoothY1 }} />
+      <motion.div className="stars-layer stars-2" style={{ y: smoothY2 }} />
     </div>
   );
 };
@@ -609,40 +687,48 @@ function App() {
 
   const tickerItems = useMemo(() => features.map(feature => feature.title), [features]);
 
+  // Роли для печатной машинки
+  const typingRoles = useMemo(() => [
+    "Software Developer",
+    "UI/UX Designer",
+    "Frontend Specialist",
+    "3D Web Enthusiast"
+  ], []);
+
   return (
     <SmoothScroll>
       <div className="app">
-        {/* Экран загрузки поверх всего */}
         <LoadingScreen />
+        <Navbar />
 
         <section className="hero">
+          {/* Новый сложный фон */}
+          <HeroBackground />
           <SmoothParallaxStars />
           
           <div className="hero-content">
-            {/* ТЕКСТОВЫЙ БЛОК */}
             <div className="hero-text-overlay">
+              <div className="hero-left-decoration"></div> {/* Фиолетовая линия слева */}
               <motion.div 
-                initial={{ opacity: 0, y: 30 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ duration: 1, delay: 0.2 }}
+                initial={{ opacity: 0, x: -50 }} 
+                animate={{ opacity: 1, x: 0 }} 
+                transition={{ duration: 1, delay: 0.5 }}
                 className="greeting-container"
               >
                 <h1>Hi !, I'm <span className="highlight-text">Atayev Kemal</span></h1>
-                <p className="subtitle">Full Stack Web & App Developer</p>
+                <p className="subtitle">I Develop 3D Visuals, Web Applications</p>
                 <div className="role-ticker">
-                  {/* <span className="blinking-cursor">|</span> */}
+                  <Typewriter words={typingRoles} wait={2000} />
                 </div>
               </motion.div>
             </div>
 
-            {/* 3D МОДЕЛЬ */}
             <ModelViewer modelPath="/images/gaming_desktop_pc.glb" />
           </div>
 
           <div className="ticker-section">
             <VerticalTicker items={tickerItems} speed={50} />
           </div>
-          <div className="hero-vignette"></div>
         </section>
 
         <HorizontalScrollSection />
