@@ -136,7 +136,7 @@ body {
     font-size: 0.9rem;
     font-weight: 700;
     letter-spacing: 3px;
-    color: #ff6c00;
+    color: #ba6ef4;
 }
 
 .ticker-container {
@@ -145,9 +145,9 @@ body {
     overflow: hidden;
     position: relative;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.02);
+    /* background: rgba(255, 255, 255, 0.02); */
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* border: 1px solid rgba(255, 255, 255, 0.1); */
 }
 
 .ticker-track {
@@ -164,7 +164,7 @@ body {
     font-size: 1rem;
     font-weight: 600;
     color: #ffffff;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.05); */
     flex-shrink: 0;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -269,7 +269,7 @@ body {
     pointer-events: none;
     filter: blur(40px);
     z-index: 1;
-    
+
 }
 
 .horizontal-card:hover .card-inner::before {
@@ -1212,6 +1212,7 @@ body {
         bottom: 5vh;
         width: 95%;
     }
+
     .info-number {
         font-size: 3rem;
     }
