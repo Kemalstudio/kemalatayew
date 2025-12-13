@@ -776,7 +776,8 @@ function App() {
             <div className="footer-content">
               <h3>ГОТОВЫ К СОТРУДНИЧЕСТВУ?</h3>
               <p>Давайте создадим что-то удивительное вместе</p>
-              <Magnetic><button className="btn-primary">Начать проект</button></Magnetic>
+              <Magnetic>
+                <button className="btn-primary">Начать проект</button></Magnetic>
             </div>
           </div>
         </motion.footer>
