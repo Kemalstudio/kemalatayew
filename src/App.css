@@ -10,7 +10,7 @@ body {
     color: #ffffff;
     overflow-x: hidden;
     cursor: default;
-    background-image: background-image: url('/');
+    background-image: background-image: url('');
 }
 
 .app {
