@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: #0a0a0a;
+    background: #050505; /* Темнее фон как на примере */
     color: #ffffff;
     overflow-x: hidden;
     cursor: default;
@@ -23,7 +23,7 @@ body {
 }
 
 /* ========================================= */
-/* HERO SECTION & 3D MODEL */
+/* HERO SECTION */
 /* ========================================= */
 
 .hero {
@@ -34,83 +34,88 @@ body {
     align-items: center;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 30%, #16213e 70%, #0a0a0a 100%);
+    /* Сложный фон с градиентом как на примере */
+    background: radial-gradient(circle at 50% -20%, #1a1a2e 0%, #050505 60%);
 }
 
 .hero-content {
-    text-align: center;
-    z-index: 5;
     position: relative;
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    /* Распределяем пространство: текст сверху, модель снизу */
+    justify-content: flex-start; 
     align-items: center;
+    z-index: 5;
+    padding-top: 120px; /* Отступ сверху для текста */
 }
 
-/* Стили для контейнера 3D модели (Canvas) */
-.model-viewer-canvas-container {
-    /* ИЗМЕНЕНО: Растягиваем на всю ширину и высоту Hero секции */
+/* --- TEXT OVERLAY STYLES --- */
+.hero-text-overlay {
+    z-index: 20; /* Текст поверх модели */
+    text-align: left;
     width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
+    max-width: 1200px;
+    padding: 0 40px;
+    margin-bottom: -100px; /* Немного наезжаем на модель для компактности */
+}
+
+.greeting-container h1 {
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.highlight-text {
+    /* Фиолетовый градиент для имени */
+    background: linear-gradient(90deg, #9d4edd, #c77dff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: #e0e0e0;
+    margin-bottom: 10px;
+}
+
+.role-ticker {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #9d4edd; /* Фиолетовый цвет роли */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.blinking-cursor {
+    animation: blink 1s step-end infinite;
+    color: #fff;
+    font-weight: 300;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* --- 3D MODEL CONTAINER --- */
+.model-viewer-canvas-container {
+    width: 100%;
+    height: 70vh; /* Занимает нижнюю часть экрана */
+    position: relative;
     background: transparent; 
     display: flex;
     justify-content: center;
-    align-items: center;
-    border: none;
-    box-shadow: none;
+    align-items: flex-end; /* Модель прижимаем к низу */
 }
 
-.model-viewer-placeholder {
+.model-viewer-placeholder, .path-text, .hint-text, .hero-buttons {
     display: none;
-}
-
-.path-text, .hint-text {
-    display: none;
-}
-
-.hero h1 {
-    display: none; 
-}
-
-.hero p {
-    display: none;
-}
-
-.hero-buttons {
-    display: none;
-    gap: 1.5rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn-primary, .btn-secondary {
-    padding: 15px 40px;
-    border: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    will-change: transform;
-}
-
-.btn-primary {
-    background: linear-gradient(45deg, #ff6c00, #ff8c00);
-    color: white;
-    box-shadow: 0 8px 32px rgba(255, 108, 0, 0.3);
-}
-
-.btn-secondary {
-    background: transparent;
-    border: 2px solid #ff6c00;
-    color: #ff6c00;
-    backdrop-filter: blur(10px);
 }
 
 /* Вертикальный тикер */
@@ -122,7 +127,7 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
-    z-index: 20; /* Поднял z-index, чтобы тикер был поверх 3D модели */
+    z-index: 20; 
 }
 
 .ticker-label {
@@ -1136,19 +1141,41 @@ body {
 
 /* Адаптив */
 @media (max-width: 768px) {
+    .hero-content {
+        padding-top: 80px;
+        justify-content: center;
+    }
+    
+    .hero-text-overlay {
+        text-align: center;
+        margin-bottom: 20px;
+        padding: 0 20px;
+    }
+
+    .greeting-container h1 {
+        font-size: 3rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .role-ticker {
+        justify-content: center;
+        font-size: 1.5rem;
+    }
     
     .model-viewer-canvas-container {
         width: 100vw; 
         height: 50vh;
     }
     
-    .hero h1 { font-size: 2.8rem; }
     .ticker-section {
         position: relative;
         right: auto;
         top: auto;
         transform: none;
-        margin-top: 80px;
+        margin-top: 20px;
         flex-direction: column;
     }
     .ticker-label {
@@ -1164,7 +1191,6 @@ body {
         height: 500px;
     }
     .services-grid-content { grid-template-columns: 1fr; }
-    .hero-buttons { flex-direction: column; align-items: center; }
     .scroll-progress-bar { width: 300px; }
     .scroll-section-header h2 { font-size: 2.5rem; }
 
