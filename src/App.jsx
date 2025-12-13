@@ -13,9 +13,6 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Float, Environment, ContactShadows, useProgress } from '@react-three/drei';
 import './App.css';
 
-// ==================================================================
-// КОМПОНЕНТ ЗАГРУЗКИ (LOADING SCREEN)
-// ==================================================================
 const LoadingScreen = () => {
   const { progress } = useProgress();
   const [finished, setFinished] = useState(false);
