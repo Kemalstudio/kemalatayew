@@ -695,8 +695,8 @@ function App() {
   const typingRoles = useMemo(() => [
     "Frontend Developer",
     "Backend Developer",
-    "Frontend Specialist",
-    "3D Web Enthusiast"
+    "App Developer",
+    "Full Stack Web & App Developer"
   ], []);
 
   return (
