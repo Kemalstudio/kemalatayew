@@ -256,7 +256,6 @@ const SmoothParallaxStars = () => {
 // ==================================================================
 // 3D MODEL
 // ==================================================================
-
 const Model = ({ path }) => {
   const { scene } = useGLTF(path);
   const sceneClone = useMemo(() => scene.clone(), [scene]);
