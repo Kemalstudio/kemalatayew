@@ -460,7 +460,10 @@ const OverviewSection = () => {
 
   return (
     <section className="overview-section" id="overview">
+      {/* ДОБАВЛЕН ФОН КАК НА ГЛАВНОЙ */}
+      <HeroBackground />
       <SmoothParallaxStars />
+      
       <div className="container">
         <div className="overview-header">
           <motion.div 
