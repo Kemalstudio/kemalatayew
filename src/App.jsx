@@ -10,10 +10,15 @@ import {
 } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
+// === ИМПОРТЫ ДЛЯ 3D ===
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Float, Environment, ContactShadows, useProgress } from '@react-three/drei';
+// ======================
 import './App.css';
 
+// ==================================================================
+// КОМПОНЕНТ ЗАГРУЗКИ (LOADING SCREEN)
+// ==================================================================
 const LoadingScreen = () => {
   const { progress } = useProgress();
   const [finished, setFinished] = useState(false);
@@ -47,6 +52,9 @@ const LoadingScreen = () => {
   );
 };
 
+// ==================================================================
+// КОМПОНЕНТ NAVBAR (МЕНЮ С ФОТО-ЛОГОТИПОМ)
+// ==================================================================
 const Navbar = () => {
   return (
     <motion.nav 
@@ -56,7 +64,15 @@ const Navbar = () => {
       transition={{ duration: 0.8, delay: 0.5 }}
     >
       <div className="nav-logo">
-        <div className="logo-icon">C</div>
+        {/* Логотип-изображение */}
+        <div className="logo-container">
+          <img 
+            src="/images/kemalstudio.jpg" 
+            alt="Kemal Studio Logo" 
+            className="logo-image"
+          />
+        </div>
+        
         <div className="logo-text">
           <span className="name">Atayev Kemal</span>
           <span className="portfolio">| Portfolio</span>
