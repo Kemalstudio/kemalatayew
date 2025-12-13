@@ -24,16 +24,14 @@ const LoadingScreen = () => {
   const [finished, setFinished] = useState(false);
 
   useEffect(() => {
-    // Когда загрузка достигает 100%, ждем немного и скрываем экран
     if (progress === 100) {
       const timer = setTimeout(() => {
         setFinished(true);
-      }, 1000); // Задержка 1 секунда перед исчезновением
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [progress]);
 
-  // Если загрузка завершена и анимация прошла, не рендерим компонент
   if (finished) return null;
 
   return (
@@ -118,39 +116,45 @@ const Magnetic = ({ children }) => {
   return React.cloneElement(children, { ref });
 };
 
-const VerticalTicker = React.memo(({ items, speed = 50 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % items.length);
-    }, speed * 100);
-    return () => clearInterval(interval);
-  }, [items.length, speed]);
-
-  const extendedItems = useMemo(() => [...items, items[0]], [items]);
+// ОБНОВЛЕННЫЙ ВЕРТИКАЛЬНЫЙ ТИКЕР (БЕСКОНЕЧНОЕ КОЛЕСО)
+const VerticalTicker = ({ items }) => {
+  // Дублируем элементы, чтобы создать эффект бесконечности без дыр
+  const duplicatedItems = useMemo(() => [...items, ...items], [items]);
 
   return (
-    <div className="ticker-container">
-      <motion.div
-        className="ticker-track"
-        animate={{ y: `-${(currentIndex * 100) / extendedItems.length}%` }}
-        transition={{ type: "spring", stiffness: 100, damping: 20, mass: 0.5 }}
-      >
-        {extendedItems.map((item, index) => (
-          <motion.div
-            key={index}
-            className="ticker-item"
-            whileHover={{ scale: 1.05, color: "#c176fa" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            {item}
-          </motion.div>
-        ))}
-      </motion.div>
+    <div className="ticker-wrapper-styled">
+      <div className="ticker-label">ТЕХНОЛОГИИ</div>
+      <div className="ticker-container">
+        {/* Градиенты для маскировки краев (эффект колеса) */}
+        <div className="ticker-fade-top"></div>
+        <div className="ticker-fade-bottom"></div>
+        
+        <motion.div
+          className="ticker-track"
+          // Анимация: движемся от -50% (середина списка) до 0% (начало), создавая иллюзию падения вниз
+          animate={{ y: ["-50%", "0%"] }}
+          transition={{
+            duration: 20, // Скорость прокрутки (чем больше число, тем медленнее)
+            ease: "linear",
+            repeat: Infinity,
+          }}
+        >
+          {duplicatedItems.map((item, index) => (
+            <div key={index} className="ticker-item-wrapper">
+              <motion.div
+                className="ticker-item"
+                whileHover={{ scale: 1.1, color: "#c176fa", x: -5 }}
+                transition={{ duration: 0.2 }}
+              >
+                {item}
+              </motion.div>
+            </div>
+          ))}
+        </motion.div>
+      </div>
     </div>
   );
-});
+};
 
 const SmoothParallaxStars = () => {
   const { scrollYProgress } = useScroll();
@@ -229,7 +233,6 @@ const ModelViewer = ({ modelPath }) => {
   );
 };
 
-// Предварительная загрузка
 useGLTF.preload('/images/gaming_desktop_pc.glb');
 
 // ==================================================================
@@ -617,7 +620,7 @@ function App() {
           <SmoothParallaxStars />
           
           <div className="hero-content">
-            {/* ТЕКСТОВЫЙ БЛОК (ВЕРНУЛ) */}
+            {/* ТЕКСТОВЫЙ БЛОК */}
             <div className="hero-text-overlay">
               <motion.div 
                 initial={{ opacity: 0, y: 30 }} 
@@ -633,12 +636,11 @@ function App() {
               </motion.div>
             </div>
 
-            {/* 3D МОДЕЛЬ (РАСПОЛОЖЕНА НИЖЕ) */}
+            {/* 3D МОДЕЛЬ */}
             <ModelViewer modelPath="/images/gaming_desktop_pc.glb" />
           </div>
 
           <div className="ticker-section">
-            <div className="ticker-label">ТЕХНОЛОГИИ</div>
             <VerticalTicker items={tickerItems} speed={50} />
           </div>
           <div className="hero-vignette"></div>
