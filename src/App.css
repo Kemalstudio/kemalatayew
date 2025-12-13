@@ -382,9 +382,10 @@ body {
 /* ========================================= */
 .overview-section {
     padding: 100px 0;
-    background-color: #050505;
+    background-color: #030014; /* Тот же цвет, что и у Hero */
     position: relative;
     z-index: 10;
+    overflow: hidden;
 }
 
 .overview-header {
