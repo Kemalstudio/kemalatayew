@@ -691,11 +691,10 @@ function App() {
 
   const tickerItems = useMemo(() => features.map(feature => feature.title), [features]);
 
-  // Роли для печатной машинки
   const typingRoles = useMemo(() => [
     "Frontend Developer",
     "Backend Developer",
-    "App Developer",
+    "Mobile Apps Developer",
     "Full Stack Web & App Developer"
   ], []);
 
@@ -720,7 +719,7 @@ function App() {
                 className="greeting-container"
               >
                 <h1>Hi !, I'm <span className="highlight-text">Atayev Kemal</span></h1>
-                <p className="subtitle">I Develop 3D Visuals, Web Applications</p>
+                <p className="subtitle">I Develop Full Stack Web & Mobile Apps</p>
                 <div className="role-ticker">
                   <Typewriter words={typingRoles} wait={2000} />
                 </div>
