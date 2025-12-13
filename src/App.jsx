@@ -134,7 +134,7 @@ const SmoothParallaxStars = () => {
 };
 
 // ==================================================================
-// КОМПОНЕНТ 3D МОДЕЛИ (ИСПРАВЛЕННЫЙ МАСШТАБ И КАМЕРА)
+// КОМПОНЕНТ 3D МОДЕЛИ
 // ==================================================================
 
 const Model = ({ path }) => {
@@ -144,10 +144,10 @@ const Model = ({ path }) => {
   return (
     <primitive 
       object={sceneClone} 
-      // ИЗМЕНЕНО: Уменьшил масштаб, чтобы модель влезла в экран
-      scale={0.7} 
-      // ИЗМЕНЕНО: Опустил пониже
-      position={[0, -2, 0]} 
+      // Масштаб подбираем так, чтобы стол был "средним"
+      scale={0.75} 
+      // Опускаем модель ниже, чтобы она была в нижней части экрана
+      position={[0, -2.5, 0]} 
       rotation={[0, -0.2, 0]} 
     />
   );
@@ -157,41 +157,36 @@ const ModelViewer = ({ modelPath }) => {
   return (
     <div className="model-viewer-canvas-container">
       <Canvas 
-        // ИЗМЕНЕНО: Отодвинул камеру назад (Z=13), чтобы было видно весь стол
-        camera={{ position: [0, 2, 13], fov: 40 }} 
+        // Камера настроена так, чтобы видеть модель немного сверху и спереди
+        camera={{ position: [0, 1, 11], fov: 40 }} 
         dpr={[1, 2]}
         gl={{ preserveDrawingBuffer: true, alpha: true }}
       >
         <Suspense fallback={null}>
-          <ambientLight intensity={0.7} />
+          <ambientLight intensity={0.8} />
           <spotLight position={[10, 10, 10]} angle={0.5} penumbra={1} intensity={800} color="#ffffff" />
-          
-          <pointLight position={[-10, -5, -10]} intensity={1500} color="#ff6c00" />
+          <pointLight position={[-10, -5, -10]} intensity={1500} color="#9d4edd" />
           <pointLight position={[10, 5, 10]} intensity={1500} color="#00c6ff" />
 
           <Environment preset="city" />
 
           <Float 
             speed={2} 
-            rotationIntensity={0.2} 
-            floatIntensity={0.5} 
-            floatingRange={[-0.1, 0.1]}
+            rotationIntensity={0.1} 
+            floatIntensity={0.2} 
+            floatingRange={[-0.05, 0.05]}
           >
             <Model path={modelPath} />
           </Float>
 
-          <ContactShadows position={[0, -2.5, 0]} opacity={0.5} scale={20} blur={2.5} far={4} color="#000000" />
+          <ContactShadows position={[0, -2.6, 0]} opacity={0.5} scale={20} blur={2.5} far={4} color="#000000" />
 
           <OrbitControls 
-            enableZoom={true} 
-            // ИЗМЕНЕНО: Ограничил зум, чтобы нельзя было влететь внутрь модели
-            minDistance={8}
-            maxDistance={20}
-            enablePan={false}
-            autoRotate={true}
-            autoRotateSpeed={1}
-            minPolarAngle={Math.PI / 3}
-            maxPolarAngle={Math.PI / 1.8}
+            enableZoom={false} /* ВАЖНО: Отключаем зум, чтобы работал скролл страницы */
+            enablePan={false}  /* Отключаем перетаскивание модели в стороны */
+            autoRotate={false} /* Можно включить true, если нужно медленное вращение */
+            minPolarAngle={Math.PI / 3} /* Ограничиваем вращение вверх */
+            maxPolarAngle={Math.PI / 1.9} /* Ограничиваем вращение вниз (чтобы не смотреть под стол) */
           />
         </Suspense>
       </Canvas>
@@ -274,15 +269,6 @@ const Crazy3DImageSlider = () => {
     <section ref={containerRef} className="crazy-3d-wrapper">
       <div className="crazy-sticky-view">
         <CrazyParticles />
-        
-        <motion.div 
-          className="crazy-header"
-          initial={{ opacity: 0, y: -50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-        >
-        </motion.div>
-
         <div className="scene-container">
           <motion.div 
             className="scene-3d"
@@ -590,14 +576,33 @@ function App() {
       <div className="app">
         <section className="hero">
           <SmoothParallaxStars />
+          
           <div className="hero-content">
+            {/* ТЕКСТОВЫЙ БЛОК (ВЕРНУЛ) */}
+            <div className="hero-text-overlay">
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                transition={{ duration: 1, delay: 0.2 }}
+                className="greeting-container"
+              >
+                <h1>Hi !, I'm <span className="highlight-text">Chinmay Kaitade</span></h1>
+                <p className="subtitle">I Develop 3D Visuals, Web Applications</p>
+                <div className="role-ticker">
+                  <span className="role-text">UI-UX Designer</span>
+                  <span className="blinking-cursor">|</span>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* 3D МОДЕЛЬ (РАСПОЛОЖЕНА НИЖЕ) */}
             <ModelViewer modelPath="/images/gaming_desktop_pc.glb" />
           </div>
+
           <div className="ticker-section">
             <div className="ticker-label">ТЕХНОЛОГИИ</div>
             <VerticalTicker items={tickerItems} speed={50} />
           </div>
-          <motion.div className="hero-floating-elements" animate={{ y: [0, -30, 0], rotate: [0, 8, 0] }} transition={{ duration: 10, repeat: Infinity }} />
           <div className="hero-vignette"></div>
         </section>
 
