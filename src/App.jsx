@@ -455,7 +455,8 @@ const OverviewSection = () => {
   const cards = [
     { title: "Frontend Developer", icon: "images/icon-frontend.png" },
     { title: "Backend Developer", icon: "images/icon-backend.png" },
-    { title: "Mobile Apps Developer", icon: "images/icon-ui.png" }
+    { title: "Mobile Apps Developer", icon: "images/icon-ui.png" },
+    { title: "UI-UX Designer", icon: "images/icon-ui.png" }
   ];
 
   return (
