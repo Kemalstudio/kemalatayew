@@ -693,8 +693,8 @@ function App() {
 
   // Роли для печатной машинки
   const typingRoles = useMemo(() => [
-    "Software Developer",
-    "UI/UX Designer",
+    "Frontend Developer",
+    "Backend Developer",
     "Frontend Specialist",
     "3D Web Enthusiast"
   ], []);
