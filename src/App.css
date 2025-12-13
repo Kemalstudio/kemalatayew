@@ -10,7 +10,7 @@ body {
     color: #ffffff;
     overflow-x: hidden;
     cursor: default;
-    background-image: url('/images/3084589.jpg');
+    
 }
 
 .app {
@@ -178,11 +178,15 @@ body {
     height: 100vh;
     position: relative;
     overflow: hidden;
-    background: #030014; /* Глубокий темно-синий/фиолетовый фон */
+    background: #030014; 
 }
 
-/* СЛОЖНЫЙ УЗОРНЫЙ ФОН (Генерация узора на CSS) */
 .hero-background-wrapper {
+    background-image: url('/images/3084589.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.5) blur(2px);
     position: absolute;
     top: 0;
     left: 0;
