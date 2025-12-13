@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: #050505; 
+    background: #050505; /* Темнее фон как на примере */
     color: #ffffff;
     overflow-x: hidden;
     cursor: default;
@@ -40,7 +40,6 @@ body {
     transition: opacity 0.8s ease-in-out, visibility 0.8s;
 }
 
-/* Класс для скрытия экрана после загрузки */
 .loading-screen.loaded {
     opacity: 0;
     visibility: hidden;
@@ -57,7 +56,7 @@ body {
     font-weight: 900;
     color: #fff;
     margin-bottom: 20px;
-    font-variant-numeric: tabular-nums; /* Чтобы цифры не прыгали */
+    font-variant-numeric: tabular-nums;
 }
 
 .loader-bar-container {
@@ -71,7 +70,7 @@ body {
 
 .loader-bar-fill {
     height: 100%;
-    background: #c176fa; /* Фиолетовый цвет прогресса */
+    background: #c176fa;
     transition: width 0.2s ease-out;
 }
 
@@ -94,7 +93,6 @@ body {
     align-items: center;
     position: relative;
     overflow: hidden;
-    /* Сложный фон с градиентом как на примере */
     background: radial-gradient(circle at 50% -20%, #1a1a2e 0%, #050505 60%);
 }
 
@@ -104,25 +102,24 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
-    /* Распределяем пространство: текст сверху, модель снизу */
     justify-content: flex-start; 
     align-items: center;
     z-index: 5;
-    padding-top: 140px; /* Увеличил отступ */
+    padding-top: 140px;
 }
 
 /* --- TEXT OVERLAY STYLES --- */
 .hero-text-overlay {
-    z-index: 20; /* Текст поверх модели */
+    z-index: 20;
     text-align: left;
     width: 100%;
     max-width: 1200px;
     padding: 0 40px;
-    margin-bottom: -100px; /* Немного наезжаем на модель для компактности */
+    margin-bottom: -100px;
 }
 
 .greeting-container h1 {
-    font-size: 5.5rem; /* Сделал шрифт еще больше */
+    font-size: 5.5rem;
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 25px;
@@ -131,7 +128,6 @@ body {
 }
 
 .highlight-text {
-    /* Фиолетовый градиент для имени */
     background: linear-gradient(90deg, #c176fa, #9d4edd);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -149,7 +145,7 @@ body {
 .role-ticker {
     font-size: 2rem;
     font-weight: 700;
-    color: #9d4edd; /* Фиолетовый цвет роли */
+    color: #9d4edd;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -169,28 +165,37 @@ body {
 /* --- 3D MODEL CONTAINER --- */
 .model-viewer-canvas-container {
     width: 100%;
-    height: 70vh; /* Занимает нижнюю часть экрана */
+    height: 70vh;
     position: relative;
     background: transparent; 
     display: flex;
     justify-content: center;
-    align-items: flex-end; /* Модель прижимаем к низу */
+    align-items: flex-end;
 }
 
 .model-viewer-placeholder, .path-text, .hint-text, .hero-buttons {
     display: none;
 }
 
-/* Вертикальный тикер */
+/* ========================================= */
+/* ОБНОВЛЕННЫЙ ТИКЕР (Ticker) */
+/* ========================================= */
+
 .ticker-section {
     position: absolute;
-    right: 80px; /* Сдвинул правее */
+    right: 80px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     align-items: center;
-    gap: 30px;
+    justify-content: center;
     z-index: 20; 
+}
+
+.ticker-wrapper-styled {
+    display: flex;
+    align-items: center;
+    gap: 25px;
 }
 
 .ticker-label {
@@ -204,34 +209,61 @@ body {
 }
 
 .ticker-container {
-    height: 350px;
+    height: 350px; /* Высота видимой области */
     width: 200px;
     overflow: hidden;
     position: relative;
-    /* Убрал фон рамки для чистоты */
-    /* background: rgba(255, 255, 255, 0.02); */
-    /* border: 1px solid rgba(255, 255, 255, 0.1); */
-    /* border-radius: 20px; */
+    /* Стиль "Glassmorphism" фона */
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(186, 110, 244, 0.05);
+}
+
+/* Маски для создания эффекта исчезновения сверху и снизу (колесо) */
+.ticker-fade-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(to bottom, #050505 0%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.ticker-fade-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(to top, #050505 0%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
 }
 
 .ticker-track {
-    height: 100%;
     display: flex;
     flex-direction: column;
+    /* Важно: padding должен быть равен высоте одного элемента * N, чтобы цикл был плавным */
+}
+
+.ticker-item-wrapper {
+    height: 60px; /* Фиксированная высота элемента */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Центрируем текст */
+    width: 100%;
 }
 
 .ticker-item {
-    height: calc(100% / 7);
-    display: flex;
-    align-items: center;
-    justify-content: flex-end; /* Текст справа */
     font-size: 1.1rem;
     font-weight: 600;
-    color: #aaaaaa; /* Более серый цвет по умолчанию */
-    flex-shrink: 0;
-    transition: all 0.3s ease;
+    color: #aaaaaa;
     cursor: pointer;
-    padding-right: 20px;
+    text-align: center;
 }
 
 /* Horizontal Scroll */
