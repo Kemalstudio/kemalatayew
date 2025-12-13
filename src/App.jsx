@@ -4,7 +4,6 @@ import {
   useScroll,
   useTransform,
   useSpring,
-  useMotionValue,
   useMotionValueEvent,
   AnimatePresence
 } from 'framer-motion';
@@ -61,7 +60,6 @@ const Navbar = () => {
       transition={{ duration: 0.8, delay: 0.5 }}
     >
       <div className="nav-logo">
-        {/* Логотип-изображение */}
         <div className="logo-container">
           <img 
             src="/images/kemalstudio.jpg" 
@@ -76,19 +74,16 @@ const Navbar = () => {
         </div>
       </div>
       <ul className="nav-links">
-        <li>
-          <a href="#about">About</a></li>
-        <li>
-          <a href="#work">Work</a></li>
-        <li>
-          <a href="#contact">Contact</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </motion.nav>
   );
 };
 
 // ==================================================================
-// КОМПОНЕНТ TYPEWRITER (ПЕЧАТНАЯ МАШИНКА)
+// КОМПОНЕНТ TYPEWRITER
 // ==================================================================
 const Typewriter = ({ words, wait = 3000 }) => {
   const [index, setIndex] = useState(0);
@@ -96,7 +91,6 @@ const Typewriter = ({ words, wait = 3000 }) => {
   const [reverse, setReverse] = useState(false);
   const [blink, setBlink] = useState(true);
 
-  // Курсор мигает
   useEffect(() => {
     const timeout2 = setTimeout(() => {
       setBlink((prev) => !prev);
@@ -104,9 +98,8 @@ const Typewriter = ({ words, wait = 3000 }) => {
     return () => clearTimeout(timeout2);
   }, [blink]);
 
-  // Логика печати
   useEffect(() => {
-    if (index === words.length) return; // Защита
+    if (index === words.length) return;
 
     if (subIndex === words[index].length + 1 && !reverse) {
       setReverse(true);
@@ -135,7 +128,7 @@ const Typewriter = ({ words, wait = 3000 }) => {
 };
 
 // ==================================================================
-// FON ВОЛНЫ (BACKGROUND WAVES)
+// FON ВОЛНЫ
 // ==================================================================
 const HeroBackground = () => {
   return (
@@ -261,7 +254,7 @@ const SmoothParallaxStars = () => {
 };
 
 // ==================================================================
-// КОМПОНЕНТ 3D МОДЕЛИ
+// 3D MODEL
 // ==================================================================
 
 const Model = ({ path }) => {
@@ -320,9 +313,9 @@ const ModelViewer = ({ modelPath }) => {
 
 useGLTF.preload('/images/gaming-desktop.glb');
 
-// ================================================================
-// СЕКЦИЯ CRAZY 3D
-// ================================================================
+// ==================================================================
+// CRAZY 3D SECTION
+// ==================================================================
 
 const CrazyParticles = () => {
   const particles = Array.from({ length: 25 });
@@ -456,139 +449,94 @@ const Crazy3DImageSlider = () => {
   );
 };
 
-const ProjectCard = ({ project, index }) => {
-  const cardRef = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const rotateX = useTransform(y, [-100, 100], [15, -15]);
-  const rotateY = useTransform(x, [-100, 100], [-15, 15]);
-
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    x.set(e.clientX - rect.left - rect.width / 2);
-    y.set(e.clientY - rect.top - rect.height / 2);
-    cardRef.current.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-    cardRef.current.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
+// ==================================================================
+// НОВАЯ СЕКЦИЯ OVERVIEW (Вместо HorizontalScroll)
+// ==================================================================
+const OverviewSection = () => {
+  const cards = [
+    { title: "MERN Stack Developer", icon: "images/icon-mern.png" },
+    { title: "Frontend Developer", icon: "images/icon-frontend.png" },
+    { title: "Backend Developer", icon: "images/icon-backend.png" },
+    { title: "UI-UX Designer", icon: "images/icon-ui.png" }
+  ];
 
   return (
-    <motion.div
-      ref={cardRef}
-      key={index}
-      className="horizontal-card"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      whileHover={{ scale: 1.02 }}
-    >
-      <motion.div
-        className="card-inner"
-        style={{ '--glow-color': project.color, rotateX, rotateY, transformStyle: "preserve-3d" }}
-        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      >
-        <div style={{ transform: "translateZ(50px)" }}>
-          <div className="card-glare"></div>
-          <motion.div className="project-index">
-            {String(index + 1).padStart(2, '0')}
-          </motion.div>
-          <motion.div className="card-image-container">
-            <motion.img src={project.image} alt={project.title} className="project-image"/>
-            <motion.div className="image-glow" />
-          </motion.div>
-          <div className="card-text-content">
-            <h3>{project.title}</h3>
-            <p>{project.description}</p>
-            <motion.ul className="tech-list">
-              {project.tech.map((tech, techIndex) => (
-                <motion.li key={techIndex}>{tech}</motion.li>
-              ))}
-            </motion.ul>
-            <motion.button className="project-button" style={{ borderColor: project.color }}>
-              <span>Посмотреть проект ›</span>
-            </motion.button>
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-};
-
-const HorizontalScrollSection = () => {
-  const containerRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    setIsVisible(latest > 0.1 && latest < 0.9);
-  });
-
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-85%']);
-  const smoothX = useSpring(x, { stiffness: 60, damping: 20, mass: 0.8 });
-
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
-
-  const portfolioProjects = useMemo(() => [
-    { title: "E-Commerce Platform", description: "Полнофункциональная платформа электронной коммерции", color: "#ff6c00", image: "/images/atam.jpg", tech: ["React", "Node.js", "MongoDB"] },
-    { title: "Task Management", description: "Приложение для управления задачами", color: "#00c6ff", image: "/images/atam.jpg", tech: ["React Native", "Firebase", "Redux"] },
-    { title: "Social Dashboard", description: "Панель управления социальными сетями", color: "#e91e63", image: "/images/atam.jpg", tech: ["Vue.js", "Express", "PostgreSQL"] },
-    { title: "Weather App", description: "Приложение прогноза погоды", color: "#a855f7", image: "/images/atam.jpg", tech: ["React", "Weather API", "PWA"] },
-    { title: "Fitness Tracker", description: "Трекер фитнеса с мониторингом", color: "#10b981", image: "/images/atam.jpg", tech: ["React Native", "GraphQL"] },
-    { title: "Portfolio Website", description: "Анимированное портфолио", color: "#f59e0b", image: "/images/atam.jpg", tech: ["React", "Framer Motion", "Three.js"] },
-    { title: "Chat Application", description: "Приложение реального времени", color: "#6366f1", image: "/images/atam.jpg", tech: ["Socket.io", "React", "Node.js"] },
-    { title: "Learning Platform", description: "Образовательная платформа", color: "#06b6d4", image: "/images/atam.jpg", tech: ["Next.js", "Prisma", "MySQL"] }
-  ], []);
-
-  return (
-    <section ref={containerRef} className="horizontal-scroll-wrapper">
+    <section className="overview-section" id="overview">
       <SmoothParallaxStars />
-      <div className="horizontal-scroll-sticky-view">
-        <div className="scroll-section-header">
-          <motion.h2 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2 }}>
-            МОИ ПРОЕКТЫ
+      <div className="container">
+        <div className="overview-header">
+          <motion.div 
+            className="intro-label"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            INTRODUCTION
+          </motion.div>
+          <motion.h2 
+            className="overview-title"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            Overview
           </motion.h2>
-          <motion.p initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.3 }}>
-            Исследуйте мои работы через интерактивную прокрутку
+          
+          <motion.p 
+            className="overview-desc"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            I'm a highly motivated Software Developer skilled in the MERN stack (MongoDB, 
+            Express.js, React.js, Node.js) with a strong focus on Frontend Development. Proficient 
+            in modern web technologies including HTML, CSS, JavaScript, and React, and 
+            animation tools like GSAP, ScrollTrigger, and Locomotive Scroll. Transitioned from non-tech 
+            role to IT, now eager to deliver responsive, user-focused web applications to 
+            leverage skills and grow in a dynamic web development role.
           </motion.p>
-        </div>
 
-        <div className="horizontal-scroll-container">
-          <motion.div className="horizontal-scroll-content" style={{ x: smoothX }}>
-            {portfolioProjects.map((project, index) => (
-              <ProjectCard project={project} index={index} key={index} />
-            ))}
+          <motion.div 
+            className="overview-buttons"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <button className="btn-hire">Hire Me</button>
+            <button className="btn-resume">Resume</button>
           </motion.div>
         </div>
 
-        <motion.div className="scroll-progress-container" style={{ opacity }}>
-          <div className="scroll-progress-bar">
-            <motion.div className="scroll-progress-fill" style={{ scaleX: scrollYProgress, background: "linear-gradient(90deg, #ff6c00, #00c6ff, #a855f7)" }} />
-          </div>
-          <motion.div className="scroll-hint" animate={{ y: [-2, 2, -2], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity }}>
-            {isVisible ? "🌀 ПРОЕКТЫ ЗАГРУЖЕНЫ" : "⌛ SCROLL DOWN"}
-          </motion.div>
-        </motion.div>
-
-        <div className="background-elements">
-          <motion.div className="bg-grid" style={{ y: backgroundY }} />
-          <motion.div className="floating-shapes shape-1" animate={{ y: [0, -40, 0], rotate: [0, 10, 0], scale: [1, 1.1, 1] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
-          <motion.div className="floating-shapes shape-2" animate={{ y: [0, 30, 0], rotate: [0, -15, 0], scale: [1, 1.05, 1] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
+        <div className="overview-cards-container">
+          {cards.map((card, index) => (
+            <motion.div 
+              key={index} 
+              className={`role-card card-${index}`}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.15 }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <div className="card-content">
+                <div className="card-icon-wrapper">
+                  <div className="geometric-icon">
+                    <div className="inner-shape"></div>
+                  </div>
+                </div>
+                <h3>{card.title.split(' ').slice(0, -1).join(' ')} <br/> {card.title.split(' ').slice(-1)}</h3>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
   );
 };
 
+
+// ==================================================================
+// SKILLS SECTION
+// ==================================================================
 const SkillsSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
@@ -734,7 +682,9 @@ function App() {
           </div>
         </section>
 
-        <HorizontalScrollSection />
+        {/* ЗАМЕНЕННАЯ СЕКЦИЯ: ВМЕСТО HORIZONTAL SCROLL ТЕПЕРЬ OVERVIEW */}
+        <OverviewSection />
+        
         <SkillsSection />
         <StatsSection />
 
@@ -776,8 +726,7 @@ function App() {
             <div className="footer-content">
               <h3>ГОТОВЫ К СОТРУДНИЧЕСТВУ?</h3>
               <p>Давайте создадим что-то удивительное вместе</p>
-              <Magnetic>
-                <button className="btn-primary">Начать проект</button></Magnetic>
+              <Magnetic><button className="btn-primary">Начать проект</button></Magnetic>
             </div>
           </div>
         </motion.footer>
