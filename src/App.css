@@ -10,6 +10,7 @@ body {
     color: #ffffff;
     overflow-x: hidden;
     cursor: default;
+    background-image: background-image: url('/');
 }
 
 .app {
@@ -84,7 +85,7 @@ body {
 
 .logo-text .name {
     font-weight: 800;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
 }
 
 .logo-text .portfolio {
