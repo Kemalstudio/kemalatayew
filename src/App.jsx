@@ -12,9 +12,47 @@ import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
 // === ИМПОРТЫ ДЛЯ 3D ===
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Float, Environment, ContactShadows } from '@react-three/drei';
+import { OrbitControls, useGLTF, Float, Environment, ContactShadows, useProgress } from '@react-three/drei';
 // ======================
 import './App.css';
+
+// ==================================================================
+// КОМПОНЕНТ ЗАГРУЗКИ (LOADING SCREEN)
+// ==================================================================
+const LoadingScreen = () => {
+  const { progress } = useProgress();
+  const [finished, setFinished] = useState(false);
+
+  useEffect(() => {
+    // Когда загрузка достигает 100%, ждем немного и скрываем экран
+    if (progress === 100) {
+      const timer = setTimeout(() => {
+        setFinished(true);
+      }, 1000); // Задержка 1 секунда перед исчезновением
+      return () => clearTimeout(timer);
+    }
+  }, [progress]);
+
+  // Если загрузка завершена и анимация прошла, не рендерим компонент
+  if (finished) return null;
+
+  return (
+    <div className={`loading-screen ${progress === 100 ? 'loaded' : ''}`}>
+      <div className="loader-content">
+        <div className="loader-text">
+          {progress.toFixed(0)}%
+        </div>
+        <div className="loader-bar-container">
+          <div 
+            className="loader-bar-fill" 
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
+        <p className="loader-subtext">Loading 3D Experience...</p>
+      </div>
+    </div>
+  );
+};
 
 // ==================================================================
 // ВСПОМОГАТЕЛЬНЫЕ КОМПОНЕНТЫ
@@ -103,7 +141,6 @@ const VerticalTicker = React.memo(({ items, speed = 50 }) => {
           <motion.div
             key={index}
             className="ticker-item"
-            // ИЗМЕНЕНО: Цвет при наведении теперь #c176fa
             whileHover={{ scale: 1.05, color: "#c176fa" }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
@@ -145,9 +182,7 @@ const Model = ({ path }) => {
   return (
     <primitive 
       object={sceneClone} 
-      // Масштаб подбираем так, чтобы стол был "средним"
       scale={0.75} 
-      // Опускаем модель ниже, чтобы она была в нижней части экрана
       position={[0, -2.5, 0]} 
       rotation={[0, -0.2, 0]} 
     />
@@ -158,7 +193,6 @@ const ModelViewer = ({ modelPath }) => {
   return (
     <div className="model-viewer-canvas-container">
       <Canvas 
-        // Камера настроена так, чтобы видеть модель немного сверху и спереди
         camera={{ position: [0, 1, 11], fov: 40 }} 
         dpr={[1, 2]}
         gl={{ preserveDrawingBuffer: true, alpha: true }}
@@ -183,11 +217,11 @@ const ModelViewer = ({ modelPath }) => {
           <ContactShadows position={[0, -2.6, 0]} opacity={0.5} scale={20} blur={2.5} far={4} color="#000000" />
 
           <OrbitControls 
-            enableZoom={false} /* ВАЖНО: Отключаем зум, чтобы работал скролл страницы */
-            enablePan={false}  /* Отключаем перетаскивание модели в стороны */
-            autoRotate={false} /* Можно включить true, если нужно медленное вращение */
-            minPolarAngle={Math.PI / 3} /* Ограничиваем вращение вверх */
-            maxPolarAngle={Math.PI / 1.9} /* Ограничиваем вращение вниз (чтобы не смотреть под стол) */
+            enableZoom={false} 
+            enablePan={false}  
+            autoRotate={false} 
+            minPolarAngle={Math.PI / 3} 
+            maxPolarAngle={Math.PI / 1.9} 
           />
         </Suspense>
       </Canvas>
@@ -195,6 +229,7 @@ const ModelViewer = ({ modelPath }) => {
   );
 };
 
+// Предварительная загрузка
 useGLTF.preload('/images/gaming_desktop_pc.glb');
 
 // ==================================================================
@@ -575,6 +610,9 @@ function App() {
   return (
     <SmoothScroll>
       <div className="app">
+        {/* Экран загрузки поверх всего */}
+        <LoadingScreen />
+
         <section className="hero">
           <SmoothParallaxStars />
           
