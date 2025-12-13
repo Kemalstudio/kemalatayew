@@ -586,11 +586,10 @@ function App() {
                 transition={{ duration: 1, delay: 0.2 }}
                 className="greeting-container"
               >
-                <h1>Hi !, I'm <span className="highlight-text">Chinmay Kaitade</span></h1>
-                <p className="subtitle">I Develop 3D Visuals, Web Applications</p>
+                <h1>Hi !, I'm <span className="highlight-text">Atayev Kemal</span></h1>
+                <p className="subtitle">Full Stack Web & App Developer</p>
                 <div className="role-ticker">
-                  <span className="role-text">UI-UX Designer</span>
-                  <span className="blinking-cursor">|</span>
+                  {/* <span className="blinking-cursor">|</span> */}
                 </div>
               </motion.div>
             </div>
