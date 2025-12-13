@@ -81,8 +81,7 @@ body {
     text-transform: uppercase;
 }
 
-/* HERO SECTION */
-
+/* ==================== HERO SECTION ==================== */
 .hero {
     height: 100vh;
     display: flex;
