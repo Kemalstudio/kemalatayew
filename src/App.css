@@ -382,11 +382,9 @@ body {
 /* ========================================= */
 .overview-section {
     padding: 100px 0;
-    /* УСТАНОВЛЕН ЦВЕТ ФОНА КАК У HERO */
-    background: #030014;
+    background-color: #050505;
     position: relative;
     z-index: 10;
-    overflow: hidden; /* Важно, чтобы эффекты фона не вылезали */
 }
 
 .overview-header {
