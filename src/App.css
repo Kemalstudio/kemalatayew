@@ -1172,7 +1172,6 @@ body {
     pointer-events: none;
 }
 
-/* Адаптив */
 @media (max-width: 768px) {
     .navbar {
         padding: 15px 20px;
