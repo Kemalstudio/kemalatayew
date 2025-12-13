@@ -216,7 +216,6 @@ body {
     border-radius: 20px;
 }
 
-/* Маски для создания эффекта исчезновения сверху и снизу (колесо) */
 .ticker-fade-top {
     position: absolute;
     top: 0;
