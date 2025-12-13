@@ -591,7 +591,7 @@ function App() {
         <section className="hero">
           <SmoothParallaxStars />
           <div className="hero-content">
-            {/* 3D модел
+            {/* 3D моде
             <ModelViewer modelPath="/images/gaming_desktop_pc.glb" />
           </div>
           <div className="ticker-section">
