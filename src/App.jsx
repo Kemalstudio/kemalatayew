@@ -15,9 +15,6 @@ import { OrbitControls, useGLTF, Float, Environment, ContactShadows, useProgress
 // ======================
 import './App.css';
 
-// ============================================================
-// КОМПОНЕНТ ЗАГРУЗКИ (LOADING SCREEN)
-// ============================================================
 const LoadingScreen = () => {
   const { progress } = useProgress();
   const [finished, setFinished] = useState(false);
