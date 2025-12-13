@@ -103,7 +103,8 @@ const VerticalTicker = React.memo(({ items, speed = 50 }) => {
           <motion.div
             key={index}
             className="ticker-item"
-            whileHover={{ scale: 1.05, color: "#ff6c00" }}
+            // ИЗМЕНЕНО: Цвет при наведении теперь #c176fa
+            whileHover={{ scale: 1.05, color: "#c176fa" }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             {item}
