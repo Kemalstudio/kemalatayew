@@ -386,10 +386,6 @@ body {
     width: 200px;
     overflow: hidden;
     position: relative;
-    /* Стиль "Glassmorphism" */
-    /* background: rgba(255, 255, 255, 0.03); */
-    /* backdrop-filter: blur(10px); */
-    /* border: 1px solid rgba(255, 255, 255, 0.08); */
     border-radius: 20px;
     /* box-shadow: 0 0 20px rgba(186, 110, 244, 0.05); */
 }
