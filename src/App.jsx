@@ -334,22 +334,23 @@ useGLTF.preload('/images/gaming-desktop.glb');
 
 // Компонент одного шара
 const Ball = (props) => {
+  // ВАЖНО: Убедитесь, что путь к картинке правильный. Если картинки нет, шар будет пустым.
   const [decal] = useTexture([props.imgUrl]);
   const meshRef = useRef();
 
-  // Анимация вращения самого шарика
   useFrame((state, delta) => {
     if(meshRef.current) {
-      // delta * 0.1 - это ОЧЕНЬ медленная скорость
-      meshRef.current.rotation.y += delta * 0.1; // Вращение по кругу (вокруг оси Y)
-      meshRef.current.rotation.x += delta * 0.05; // Чуть-чуть вращения вверх-вниз для объема
+      // Медленное вращение вокруг своей оси
+      meshRef.current.rotation.y += delta * 0.15; 
+      // Легкое покачивание для объема
+      meshRef.current.rotation.x += delta * 0.05; 
     }
   });
 
   return (
-    // speed={0.75} - замедлили "плавание" в воздухе
-    <Float speed={0.75} rotationIntensity={1} floatIntensity={2}>
-      <ambientLight intensity={0.25} />
+    <Float speed={1.75} rotationIntensity={1} floatIntensity={2}>
+      {/* Увеличил яркость света, чтобы логотип был виден лучше */}
+      <ambientLight intensity={0.5} />
       <directionalLight position={[0, 0, 0.05]} />
       <mesh ref={meshRef} castShadow receiveShadow scale={2.75}>
         <icosahedronGeometry args={[1, 1]} />
@@ -359,6 +360,8 @@ const Ball = (props) => {
           polygonOffsetFactor={-5}
           flatShading
         />
+        
+        {/* Логотип СПЕРЕДИ */}
         <Decal
           position={[0, 0, 1]}
           rotation={[2 * Math.PI, 0, 6.25]}
@@ -366,6 +369,16 @@ const Ball = (props) => {
           map={decal}
           flatShading
         />
+
+        {/* Логотип СЗАДИ (чтобы при повороте не было пусто) */}
+        <Decal
+          position={[0, 0, -1]}
+          rotation={[2 * Math.PI, Math.PI, 6.25]} // Повернут на 180 градусов
+          scale={1}
+          map={decal}
+          flatShading
+        />
+
       </mesh>
     </Float>
   );
@@ -390,6 +403,7 @@ const BallCanvas = ({ icon }) => {
 
 // Секция с шарами
 const TechBallSection = () => {
+  // ПРОВЕРЬТЕ, что эти файлы существуют в папке public/images/tech/
   const technologies = [
     { name: "HTML 5", icon: "/images/tech/html.png" },
     { name: "CSS 3", icon: "/images/tech/css.png" },
