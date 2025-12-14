@@ -17,9 +17,9 @@ import {
   Environment, 
   ContactShadows, 
   useProgress,
-  Decal,     // Добавлено для шаров
-  Preload,   // Добавлено для шаров
-  useTexture // Добавлено для шаров
+  Decal,     
+  Preload,   
+  useTexture 
 } from '@react-three/drei';
 import './App.css';
 
@@ -334,8 +334,6 @@ useGLTF.preload('/images/gaming-desktop.glb');
 
 // Компонент одного шара
 const Ball = (props) => {
-  // Загружаем текстуру. Если URL неверен, может быть ошибка, поэтому 
-  // используйте существующие картинки или заглушки.
   const [decal] = useTexture([props.imgUrl]);
 
   return (
@@ -366,12 +364,16 @@ const Ball = (props) => {
 const BallCanvas = ({ icon }) => {
   return (
     <Canvas
-      frameloop='demand'
+      frameloop='always' // Изменено на 'always' для плавного вращения
       dpr={[1, 2]}
       gl={{ preserveDrawingBuffer: true }}
     >
       <Suspense fallback={null}>
-        <OrbitControls enableZoom={false} />
+        <OrbitControls 
+          enableZoom={false} 
+          autoRotate={true}       // Включено автоматическое вращение
+          autoRotateSpeed={5}     // Скорость вращения
+        />
         <Ball imgUrl={icon} />
       </Suspense>
       <Preload all />
@@ -381,8 +383,6 @@ const BallCanvas = ({ icon }) => {
 
 // Секция с шарами
 const TechBallSection = () => {
-  // Список технологий. Убедитесь, что пути ведут к реальным картинкам в папке public!
-  // Если картинок нет, шары могут быть черными или выдавать ошибку.
   const technologies = [
     { name: "HTML 5", icon: "/images/tech/html.png" },
     { name: "CSS 3", icon: "/images/tech/css.png" },
@@ -393,7 +393,7 @@ const TechBallSection = () => {
     { name: "Tailwind", icon: "/images/tech/tailwind.png" },
     { name: "Node JS", icon: "/images/tech/nodejs.png" },
     { name: "MongoDB", icon: "/images/tech/mongodb.png" },
-    { name: "Three JS", icon: "/images/tech/threejs.svg" }, // Обычно svg или png
+    { name: "Three JS", icon: "/images/tech/threejs.svg" }, 
     { name: "Git", icon: "/images/tech/git.png" },
     { name: "Figma", icon: "/images/tech/figma.png" },
     { name: "Docker", icon: "/images/tech/docker.png" },
