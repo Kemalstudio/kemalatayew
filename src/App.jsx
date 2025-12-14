@@ -819,7 +819,7 @@ function App() {
         {/* Секция с карточками */}
         <OverviewSection />
         
-        {/* НОВАЯ СЕКЦИЯ С 3D ШАР
+        {/* НОВАЯ СЕКЦИЯ С 3D ША
         <TechBallSection />
         
         <SkillsSection />
