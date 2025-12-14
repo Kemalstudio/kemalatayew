@@ -9,7 +9,7 @@ import {
 } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
-import { Canvas, useFrame } from '@react-three/fiber'; 
+import { Canvas } from '@react-three/fiber';
 import { 
   OrbitControls, 
   useGLTF, 
@@ -17,9 +17,9 @@ import {
   Environment, 
   ContactShadows, 
   useProgress,
-  Decal,     
-  Preload,   
-  useTexture 
+  Decal,     // Добавлено для шаров
+  Preload,   // Добавлено для шаров
+  useTexture // Добавлено для шаров
 } from '@react-three/drei';
 import './App.css';
 
@@ -334,25 +334,15 @@ useGLTF.preload('/images/gaming-desktop.glb');
 
 // Компонент одного шара
 const Ball = (props) => {
+  // Загружаем текстуру. Если URL неверен, может быть ошибка, поэтому 
+  // используйте существующие картинки или заглушки.
   const [decal] = useTexture([props.imgUrl]);
-  const meshRef = useRef();
-
-  useFrame((state, delta) => {
-    if(meshRef.current) {
-      // Медленное вращение вокруг своей оси (Y)
-      meshRef.current.rotation.y += delta * 0.15; 
-      // Легкое покачивание (X), но не сильное, чтобы не сбивать вид
-      meshRef.current.rotation.x += delta * 0.05; 
-    }
-  });
 
   return (
     <Float speed={1.75} rotationIntensity={1} floatIntensity={2}>
-      {/* Свет */}
-      <ambientLight intensity={0.5} />
+      <ambientLight intensity={0.25} />
       <directionalLight position={[0, 0, 0.05]} />
-      
-      <mesh ref={meshRef} castShadow receiveShadow scale={2.75}>
+      <mesh castShadow receiveShadow scale={2.75}>
         <icosahedronGeometry args={[1, 1]} />
         <meshStandardMaterial
           color='#fff8eb'
@@ -360,9 +350,6 @@ const Ball = (props) => {
           polygonOffsetFactor={-5}
           flatShading
         />
-        
-        {/* Логотип ТОЛЬКО СПЕРЕДИ */}
-        {/* position=[0, 0, 1] - это лицевая сторона по оси Z */}
         <Decal
           position={[0, 0, 1]}
           rotation={[2 * Math.PI, 0, 6.25]}
@@ -370,9 +357,6 @@ const Ball = (props) => {
           map={decal}
           flatShading
         />
-        
-        {/* ВТОРОЙ DECAL УДАЛЕН - теперь сзади будет просто цвет шара */}
-
       </mesh>
     </Float>
   );
@@ -382,7 +366,7 @@ const Ball = (props) => {
 const BallCanvas = ({ icon }) => {
   return (
     <Canvas
-      frameloop='always' 
+      frameloop='demand'
       dpr={[1, 2]}
       gl={{ preserveDrawingBuffer: true }}
     >
@@ -397,6 +381,8 @@ const BallCanvas = ({ icon }) => {
 
 // Секция с шарами
 const TechBallSection = () => {
+  // Список технологий. Убедитесь, что пути ведут к реальным картинкам в папке public!
+  // Если картинок нет, шары могут быть черными или выдавать ошибку.
   const technologies = [
     { name: "HTML 5", icon: "/images/tech/html.png" },
     { name: "CSS 3", icon: "/images/tech/css.png" },
@@ -407,7 +393,7 @@ const TechBallSection = () => {
     { name: "Tailwind", icon: "/images/tech/tailwind.png" },
     { name: "Node JS", icon: "/images/tech/nodejs.png" },
     { name: "MongoDB", icon: "/images/tech/mongodb.png" },
-    { name: "Three JS", icon: "/images/tech/threejs.svg" }, 
+    { name: "Three JS", icon: "/images/tech/threejs.svg" }, // Обычно svg или png
     { name: "Git", icon: "/images/tech/git.png" },
     { name: "Figma", icon: "/images/tech/figma.png" },
     { name: "Docker", icon: "/images/tech/docker.png" },
