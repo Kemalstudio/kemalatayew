@@ -392,7 +392,7 @@ const TechBallSection = () => {
     { name: "Tailwind", icon: "/images/tech/tailwind.png" },
     { name: "Node JS", icon: "/images/tech/nodejs.png" },
     { name: "MongoDB", icon: "/images/tech/mongodb.png" },
-    { name: "Three JS", icon: "/images/tech/threejs.svg" }, // Обычно svg или png
+    { name: "Three JS", icon: "/images/tech/threejs.svg" }, 
     { name: "Git", icon: "/images/tech/git.png" },
     { name: "Figma", icon: "/images/tech/figma.png" },
     { name: "Docker", icon: "/images/tech/docker.png" },
