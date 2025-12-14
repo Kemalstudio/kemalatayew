@@ -10,9 +10,22 @@ import {
 import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Float, Environment, ContactShadows, useProgress } from '@react-three/drei';
+import { 
+  OrbitControls, 
+  useGLTF, 
+  Float, 
+  Environment, 
+  ContactShadows, 
+  useProgress,
+  Decal,     // Добавлено для шаров
+  Preload,   // Добавлено для шаров
+  useTexture // Добавлено для шаров
+} from '@react-three/drei';
 import './App.css';
 
+// ==================================================================
+// LOADING SCREEN
+// ==================================================================
 const LoadingScreen = () => {
   const { progress } = useProgress();
   const [finished, setFinished] = useState(false);
@@ -46,6 +59,9 @@ const LoadingScreen = () => {
   );
 };
 
+// ==================================================================
+// NAVBAR
+// ==================================================================
 const Navbar = () => {
   return (
     <motion.nav 
@@ -84,7 +100,7 @@ const Navbar = () => {
 };
 
 // ==================================================================
-// КОМПОНЕНТ TYPEWRITER
+// TYPEWRITER
 // ==================================================================
 const Typewriter = ({ words, wait = 3000 }) => {
   const [index, setIndex] = useState(0);
@@ -129,7 +145,7 @@ const Typewriter = ({ words, wait = 3000 }) => {
 };
 
 // ==================================================================
-// FON ВОЛНЫ
+// HERO BACKGROUND
 // ==================================================================
 const HeroBackground = () => {
   return (
@@ -142,7 +158,7 @@ const HeroBackground = () => {
 };
 
 // ==================================================================
-// ВСПОМОГАТЕЛЬНЫЕ КОМПОНЕНТЫ
+// SMOOTH SCROLL & UTILS
 // ==================================================================
 const SmoothScroll = ({ children }) => {
   useEffect(() => {
@@ -254,7 +270,7 @@ const SmoothParallaxStars = () => {
 };
 
 // ==================================================================
-// 3D MODEL
+// HERO 3D MODEL
 // ==================================================================
 const Model = ({ path }) => {
   const { scene } = useGLTF(path);
@@ -311,6 +327,102 @@ const ModelViewer = ({ modelPath }) => {
 };
 
 useGLTF.preload('/images/gaming-desktop.glb');
+
+// ==================================================================
+// NEW: 3D BALL COMPONENTS (Tech Spheres)
+// ==================================================================
+
+// Компонент одного шара
+const Ball = (props) => {
+  // Загружаем текстуру. Если URL неверен, может быть ошибка, поэтому 
+  // используйте существующие картинки или заглушки.
+  const [decal] = useTexture([props.imgUrl]);
+
+  return (
+    <Float speed={1.75} rotationIntensity={1} floatIntensity={2}>
+      <ambientLight intensity={0.25} />
+      <directionalLight position={[0, 0, 0.05]} />
+      <mesh castShadow receiveShadow scale={2.75}>
+        <icosahedronGeometry args={[1, 1]} />
+        <meshStandardMaterial
+          color='#fff8eb'
+          polygonOffset
+          polygonOffsetFactor={-5}
+          flatShading
+        />
+        <Decal
+          position={[0, 0, 1]}
+          rotation={[2 * Math.PI, 0, 6.25]}
+          scale={1}
+          map={decal}
+          flatShading
+        />
+      </mesh>
+    </Float>
+  );
+};
+
+// Канвас для шара
+const BallCanvas = ({ icon }) => {
+  return (
+    <Canvas
+      frameloop='demand'
+      dpr={[1, 2]}
+      gl={{ preserveDrawingBuffer: true }}
+    >
+      <Suspense fallback={null}>
+        <OrbitControls enableZoom={false} />
+        <Ball imgUrl={icon} />
+      </Suspense>
+      <Preload all />
+    </Canvas>
+  );
+};
+
+// Секция с шарами
+const TechBallSection = () => {
+  // Список технологий. Убедитесь, что пути ведут к реальным картинкам в папке public!
+  // Если картинок нет, шары могут быть черными или выдавать ошибку.
+  const technologies = [
+    { name: "HTML 5", icon: "/images/tech/html.png" },
+    { name: "CSS 3", icon: "/images/tech/css.png" },
+    { name: "JavaScript", icon: "/images/tech/javascript.png" },
+    { name: "TypeScript", icon: "/images/tech/typescript.png" },
+    { name: "React JS", icon: "/images/tech/reactjs.png" },
+    { name: "Redux", icon: "/images/tech/redux.png" },
+    { name: "Tailwind", icon: "/images/tech/tailwind.png" },
+    { name: "Node JS", icon: "/images/tech/nodejs.png" },
+    { name: "MongoDB", icon: "/images/tech/mongodb.png" },
+    { name: "Three JS", icon: "/images/tech/threejs.svg" }, // Обычно svg или png
+    { name: "Git", icon: "/images/tech/git.png" },
+    { name: "Figma", icon: "/images/tech/figma.png" },
+    { name: "Docker", icon: "/images/tech/docker.png" },
+  ];
+
+  return (
+    <section className="tech-balls-section">
+      <div className="container">
+        <motion.div 
+          className="section-header" 
+          initial={{ opacity: 0, y: 50 }} 
+          whileInView={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 1 }}
+        >
+           <p style={{textAlign: 'center', marginBottom: '10px', color: '#aaa'}}>WHAT I KNOW</p>
+           <h2 style={{textAlign: 'center', fontSize: '3rem', fontWeight: '900', color: 'white'}}>Technologies</h2>
+        </motion.div>
+        
+        <div className='tech-balls-container'>
+          {technologies.map((technology) => (
+            <div className='tech-ball-wrapper' key={technology.name}>
+              <BallCanvas icon={technology.icon} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 // ==================================================================
 // CRAZY 3D SECTION
@@ -449,8 +561,8 @@ const Crazy3DImageSlider = () => {
 };
 
 // ==================================================================
-// НОВАЯ СЕКЦИЯ OVERVIEW (Вместо HorizontalScroll)
-// ===========================================================
+// OVERVIEW SECTION
+// ==================================================================
 const OverviewSection = () => {
   const cards = [
     { title: "Frontend Developer", icon: "images/icon-frontend.png" },
@@ -534,7 +646,7 @@ const OverviewSection = () => {
 
 
 // ==================================================================
-// SKILLS SECTION
+// SKILLS SECTION (OLD)
 // ==================================================================
 const SkillsSection = () => {
   const containerRef = useRef(null);
@@ -626,6 +738,9 @@ const StatsSection = () => {
   );
 };
 
+// ==================================================================
+// MAIN APP COMPONENT
+// ==================================================================
 function App() {
   const features = useMemo(() => [
     { title: "React Dev", description: "Современные приложения", icon: "⚛️" },
@@ -652,13 +767,12 @@ function App() {
         <Navbar />
 
         <section className="hero">
-          {/* Новый сложный фон */}
           <HeroBackground />
           <SmoothParallaxStars />
           
           <div className="hero-content">
             <div className="hero-text-overlay">
-              <div className="hero-left-decoration"></div> {/* Фиолетовая линия слева */}
+              <div className="hero-left-decoration"></div> 
               <motion.div 
                 initial={{ opacity: 0, x: -50 }} 
                 animate={{ opacity: 1, x: 0 }} 
@@ -681,8 +795,11 @@ function App() {
           </div>
         </section>
 
-        {/* ЗАМЕНЕННАЯ СЕКЦИЯ: ВМЕСТО HORIZONTAL SCROLL ТЕПЕРЬ OVERVIEW */}
+        {/* Секция с карточками */}
         <OverviewSection />
+        
+        {/* НОВАЯ СЕКЦИЯ С 3D ШАРАМИ */}
+        <TechBallSection />
         
         <SkillsSection />
         <StatsSection />
