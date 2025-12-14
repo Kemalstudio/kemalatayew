@@ -450,7 +450,7 @@ const Crazy3DImageSlider = () => {
 
 // ==================================================================
 // НОВАЯ СЕКЦИЯ OVERVIEW (Вместо HorizontalScroll)
-// =================================================================
+// ================================================================
 const OverviewSection = () => {
   const cards = [
     { title: "Frontend Developer", icon: "images/icon-frontend.png" },
