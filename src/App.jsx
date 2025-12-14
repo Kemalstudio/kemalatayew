@@ -804,7 +804,7 @@ function App() {
         {/* Секция с карточками */}
         <OverviewSection />
         
-        {/* НО
+        {/* Н
         <TechBallSection />
         
         <SkillsSection />
