@@ -801,7 +801,7 @@ function App() {
           </div>
         </section>
 
-        {/* Секция с карточкам
+        {/* Секция с карточка
         <OverviewSection />
         
         <TechBallSection />
