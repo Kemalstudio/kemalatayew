@@ -225,7 +225,7 @@ const VerticalTicker = ({ items }) => {
 
   return (
     <div className="ticker-wrapper-styled">
-      <div className="ticker-label">ТЕХНОЛОГИИ</div>
+      <div className="ticker-label">Technology</div>
       <div className="ticker-container">
         <div className="ticker-fade-top"></div>
         <div className="ticker-fade-bottom"></div>
