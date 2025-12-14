@@ -334,24 +334,24 @@ useGLTF.preload('/images/gaming-desktop.glb');
 
 // Компонент одного шара
 const Ball = (props) => {
-  // ВАЖНО: Убедитесь, что путь к картинке правильный. Если картинки нет, шар будет пустым.
   const [decal] = useTexture([props.imgUrl]);
   const meshRef = useRef();
 
   useFrame((state, delta) => {
     if(meshRef.current) {
-      // Медленное вращение вокруг своей оси
+      // Медленное вращение вокруг своей оси (Y)
       meshRef.current.rotation.y += delta * 0.15; 
-      // Легкое покачивание для объема
+      // Легкое покачивание (X), но не сильное, чтобы не сбивать вид
       meshRef.current.rotation.x += delta * 0.05; 
     }
   });
 
   return (
     <Float speed={1.75} rotationIntensity={1} floatIntensity={2}>
-      {/* Увеличил яркость света, чтобы логотип был виден лучше */}
+      {/* Свет */}
       <ambientLight intensity={0.5} />
       <directionalLight position={[0, 0, 0.05]} />
+      
       <mesh ref={meshRef} castShadow receiveShadow scale={2.75}>
         <icosahedronGeometry args={[1, 1]} />
         <meshStandardMaterial
@@ -361,7 +361,8 @@ const Ball = (props) => {
           flatShading
         />
         
-        {/* Логотип СПЕРЕДИ */}
+        {/* Логотип ТОЛЬКО СПЕРЕДИ */}
+        {/* position=[0, 0, 1] - это лицевая сторона по оси Z */}
         <Decal
           position={[0, 0, 1]}
           rotation={[2 * Math.PI, 0, 6.25]}
@@ -369,15 +370,8 @@ const Ball = (props) => {
           map={decal}
           flatShading
         />
-
-        {/* Логотип СЗАДИ (чтобы при повороте не было пусто) */}
-        <Decal
-          position={[0, 0, -1]}
-          rotation={[2 * Math.PI, Math.PI, 6.25]} // Повернут на 180 градусов
-          scale={1}
-          map={decal}
-          flatShading
-        />
+        
+        {/* ВТОРОЙ DECAL УДАЛЕН - теперь сзади будет просто цвет шара */}
 
       </mesh>
     </Float>
@@ -403,7 +397,6 @@ const BallCanvas = ({ icon }) => {
 
 // Секция с шарами
 const TechBallSection = () => {
-  // ПРОВЕРЬТЕ, что эти файлы существуют в папке public/images/tech/
   const technologies = [
     { name: "HTML 5", icon: "/images/tech/html.png" },
     { name: "CSS 3", icon: "/images/tech/css.png" },
@@ -816,8 +809,10 @@ function App() {
           </div>
         </section>
 
+        {/* Секция с карточками */}
         <OverviewSection />
         
+        {/* НОВАЯ СЕКЦИЯ С 3D ШАРАМИ */}
         <TechBallSection />
         
         <SkillsSection />
