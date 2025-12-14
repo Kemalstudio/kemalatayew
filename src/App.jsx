@@ -9,7 +9,7 @@ import {
 } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber'; // Добавлен useFrame
 import { 
   OrbitControls, 
   useGLTF, 
@@ -335,12 +335,21 @@ useGLTF.preload('/images/gaming-desktop.glb');
 // Компонент одного шара
 const Ball = (props) => {
   const [decal] = useTexture([props.imgUrl]);
+  const meshRef = useRef();
+
+  // Анимация вращения самого шарика вокруг своей оси Y
+  useFrame((state, delta) => {
+    // Вращаем шар по оси Y (вокруг себя)
+    if(meshRef.current) {
+      meshRef.current.rotation.y += delta * 2.5; // Скорость вращения
+    }
+  });
 
   return (
     <Float speed={1.75} rotationIntensity={1} floatIntensity={2}>
       <ambientLight intensity={0.25} />
       <directionalLight position={[0, 0, 0.05]} />
-      <mesh castShadow receiveShadow scale={2.75}>
+      <mesh ref={meshRef} castShadow receiveShadow scale={2.75}>
         <icosahedronGeometry args={[1, 1]} />
         <meshStandardMaterial
           color='#fff8eb'
@@ -364,16 +373,13 @@ const Ball = (props) => {
 const BallCanvas = ({ icon }) => {
   return (
     <Canvas
-      frameloop='always' // Изменено на 'always' для плавного вращения
+      frameloop='always' 
       dpr={[1, 2]}
       gl={{ preserveDrawingBuffer: true }}
     >
       <Suspense fallback={null}>
-        <OrbitControls 
-          enableZoom={false} 
-          autoRotate={true}       // Включено автоматическое вращение
-          autoRotateSpeed={5}     // Скорость вращения
-        />
+        {/* Убрали autoRotate, чтобы вращался только шар, а не камера */}
+        <OrbitControls enableZoom={false} />
         <Ball imgUrl={icon} />
       </Suspense>
       <Preload all />
