@@ -9,7 +9,7 @@ import {
 } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
-import { Canvas, useFrame } from '@react-three/fiber'; // Добавлен useFrame
+import { Canvas, useFrame } from '@react-three/fiber'; 
 import { 
   OrbitControls, 
   useGLTF, 
@@ -337,16 +337,18 @@ const Ball = (props) => {
   const [decal] = useTexture([props.imgUrl]);
   const meshRef = useRef();
 
-  // Анимация вращения самого шарика вокруг своей оси Y
+  // Анимация вращения самого шарика
   useFrame((state, delta) => {
-    // Вращаем шар по оси Y (вокруг себя)
     if(meshRef.current) {
-      meshRef.current.rotation.y += delta * 2.5; // Скорость вращения
+      // delta * 0.1 - это ОЧЕНЬ медленная скорость
+      meshRef.current.rotation.y += delta * 0.1; // Вращение по кругу (вокруг оси Y)
+      meshRef.current.rotation.x += delta * 0.05; // Чуть-чуть вращения вверх-вниз для объема
     }
   });
 
   return (
-    <Float speed={1.75} rotationIntensity={1} floatIntensity={2}>
+    // speed={0.75} - замедлили "плавание" в воздухе
+    <Float speed={0.75} rotationIntensity={1} floatIntensity={2}>
       <ambientLight intensity={0.25} />
       <directionalLight position={[0, 0, 0.05]} />
       <mesh ref={meshRef} castShadow receiveShadow scale={2.75}>
@@ -378,7 +380,6 @@ const BallCanvas = ({ icon }) => {
       gl={{ preserveDrawingBuffer: true }}
     >
       <Suspense fallback={null}>
-        {/* Убрали autoRotate, чтобы вращался только шар, а не камера */}
         <OrbitControls enableZoom={false} />
         <Ball imgUrl={icon} />
       </Suspense>
@@ -801,9 +802,10 @@ function App() {
           </div>
         </section>
 
-        {/* Секция с
+        {/* Секция с карточками */}
         <OverviewSection />
         
+        {/* НОВАЯ СЕКЦИЯ С 3D ШАРАМИ */}
         <TechBallSection />
         
         <SkillsSection />
