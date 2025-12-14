@@ -382,7 +382,6 @@ const BallCanvas = ({ icon }) => {
 // Секция с шарами
 const TechBallSection = () => {
   // Список технологий. Убедитесь, что пути ведут к реальным картинкам в папке public!
-  // Если картинок нет, шары могут быть черными или выдавать ошибку.
   const technologies = [
     { name: "HTML 5", icon: "/images/tech/html.png" },
     { name: "CSS 3", icon: "/images/tech/css.png" },
