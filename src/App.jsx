@@ -381,7 +381,6 @@ const BallCanvas = ({ icon }) => {
 
 // Секция с шарами
 const TechBallSection = () => {
-  // Список технологий. Убедитесь, что пути ведут к реальным картинкам в папке public!
   const technologies = [
     { name: "HTML 5", icon: "/images/tech/html.png" },
     { name: "CSS 3", icon: "/images/tech/css.png" },
@@ -392,7 +391,7 @@ const TechBallSection = () => {
     { name: "Laravel", icon: "/images/tech/laravel.svg" },
     { name: "Python", icon: "/images/tech/python.svg" },
     { name: "Django", icon: "/images/tech/django.svg" },
-    { name: "Postgre", icon: "/images/tech/postgressql.svg" }, 
+    { name: "PostgreSQL", icon: "/images/tech/postgresql.svg" },
     { name: "Git", icon: "/images/tech/git.png" },
     { name: "Figma", icon: "/images/tech/figma.png" },
     { name: "Docker", icon: "/images/tech/docker.png" },
