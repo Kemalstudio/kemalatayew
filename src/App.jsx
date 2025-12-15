@@ -389,8 +389,8 @@ const TechBallSection = () => {
     { name: "JavaScript", icon: "/images/tech/javascript.png" },
     { name: "React JS", icon: "/images/tech/reactjs.png" },
     { name: "PHP", icon: "/images/tech/php.png" },
-    { name: "Redux", icon: "/images/tech/laravel.svg" },
-    { name: "Node JS", icon: "/images/tech/nodejs.png" },
+    { name: "Laravel", icon: "/images/tech/laravel.svg" },
+    { name: "Python", icon: "/images/tech/python.svg" },
     { name: "MongoDB", icon: "/images/tech/mongodb.png" },
     { name: "Three JS", icon: "/images/tech/threejs.svg" }, // Обычно svg или png
     { name: "Git", icon: "/images/tech/git.png" },
