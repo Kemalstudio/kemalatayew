@@ -392,6 +392,7 @@ const TechBallSection = () => {
     { name: "Python", icon: "/images/tech/python.svg" },
     { name: "Django", icon: "/images/tech/django.svg" },
     { name: "PostgreSQL", icon: "/images/tech/postgresql.svg" },
+    { name: "MySQL", icon: "/images/tech/mysql.svg" },
     { name: "Git", icon: "/images/tech/git.png" },
     { name: "Figma", icon: "/images/tech/figma.png" },
     { name: "Docker", icon: "/images/tech/docker.png" },
