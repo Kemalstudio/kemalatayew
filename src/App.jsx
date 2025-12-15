@@ -391,10 +391,17 @@ const TechBallSection = () => {
     { name: "PHP", icon: "/images/tech/php.png" },
     { name: "Laravel", icon: "/images/tech/laravel.svg" },
     { name: "Python", icon: "/images/tech/python.svg" },
-    { name: "MongoDB", icon: "/images/tech/mongodb.png" },
+    { name: "Django", icon: "/images/tech/django.svg" },
     { name: "Three JS", icon: "/images/tech/threejs.svg" }, // Обычно svg или png
     { name: "Git", icon: "/images/tech/git.png" },
     { name: "Figma", icon: "/images/tech/figma.png" },
+    { name: "Docker", icon: "/images/tech/docker.png" },
+    { name: "Docker", icon: "/images/tech/docker.png" },
+    { name: "Docker", icon: "/images/tech/docker.png" },
+    { name: "Docker", icon: "/images/tech/docker.png" },
+    { name: "Docker", icon: "/images/tech/docker.png" },
+    { name: "Docker", icon: "/images/tech/docker.png" },
+    { name: "Docker", icon: "/images/tech/docker.png" },
     { name: "Docker", icon: "/images/tech/docker.png" },
   ];
 
