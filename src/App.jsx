@@ -396,13 +396,6 @@ const TechBallSection = () => {
     { name: "Git", icon: "/images/tech/git.png" },
     { name: "Figma", icon: "/images/tech/figma.png" },
     { name: "Docker", icon: "/images/tech/docker.png" },
-    { name: "Docker", icon: "/images/tech/docker.png" },
-    { name: "Docker", icon: "/images/tech/docker.png" },
-    { name: "Docker", icon: "/images/tech/docker.png" },
-    { name: "Docker", icon: "/images/tech/docker.png" },
-    { name: "Docker", icon: "/images/tech/docker.png" },
-    { name: "Docker", icon: "/images/tech/docker.png" },
-    { name: "Docker", icon: "/images/tech/docker.png" },
   ];
 
   return (
