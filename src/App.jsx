@@ -392,7 +392,7 @@ const TechBallSection = () => {
     { name: "Laravel", icon: "/images/tech/laravel.svg" },
     { name: "Python", icon: "/images/tech/python.svg" },
     { name: "Django", icon: "/images/tech/django.svg" },
-    { name: "Three JS", icon: "/images/tech/threejs.svg" }, // Обычно svg или png
+    { name: "Postgre", icon: "/images/tech/postgressql.svg" }, 
     { name: "Git", icon: "/images/tech/git.png" },
     { name: "Figma", icon: "/images/tech/figma.png" },
     { name: "Docker", icon: "/images/tech/docker.png" },
