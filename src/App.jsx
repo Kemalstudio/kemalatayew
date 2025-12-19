@@ -379,7 +379,7 @@ const BallCanvas = ({ icon }) => {
   );
 };
 
-// Секция с шарами
+// Секция с шарам
 const TechBallSection = () => {
   const technologies = [
     { name: "HTML 5", icon: "/images/tech/html.png" },
