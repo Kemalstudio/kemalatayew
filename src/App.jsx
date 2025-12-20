@@ -334,7 +334,7 @@ useGLTF.preload('/images/gaming-desktop.glb');
 
 // Компонент одного шар
 const Ball = (props) => {
-  // Загружаем текстуру. Если URL неверен, может быть ошибка, поэт
+  // Загружаем текстуру. Если URL неверен, может быть ошибка, поэ
   const [decal] = useTexture([props.imgUrl]);
 
   return (
