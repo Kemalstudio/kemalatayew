@@ -362,7 +362,7 @@ const Ball = (props) => {
   );
 };
 
-// Кан
+// Ка
 const BallCanvas = ({ icon }) => {
   return (
     <Canvas
