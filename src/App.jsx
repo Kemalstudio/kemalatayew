@@ -17,7 +17,7 @@ import {
   Environment, 
   ContactShadows, 
   useProgress,
-  Decal,     // Добавлено для ша
+  Decal,     // Добавлено для ш
   Preload,   // Добавлено для шаров
   useTexture // Добавлено для шаров
 } from '@react-three/drei';
