@@ -682,7 +682,7 @@ const SkillsSection = () => {
       sectionRef.current,
       { translateX: 0 },
       {
-        translateX: "-500vw", // For 6 cards
+        translateX: "-500vw", // For 6 card
         ease: "none",
         duration: 1,
         scrollTrigger: {
