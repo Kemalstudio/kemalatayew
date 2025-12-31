@@ -456,17 +456,17 @@ const CrazyParticles = () => {
   );
 };
 
-const Crazy3DImageSlider = () => {
-  const slides = useMemo(() => [
-    { src: "/images/aura-computer.png", title: "ATAM Alpha", desc: "Флагманский WebGL проект", color: "#ff6c00" },
-    { src: "/images/aura-computer.png", title: "Neon City", desc: "Управление умным городом", color: "#00c6ff" },
-    { src: "/images/aura-computer.png", title: "Quantum Core", desc: "Аналитика вычислений", color: "#a855f7" },
-    { src: "/images/aura-computer.png", title: "Cyber Shield", desc: "Система защиты данных", color: "#e91e63" },
-    { src: "/images/aura-computer.png", title: "AI Nexus", desc: "Голосовой ассистент", color: "#10b981" },
-    { src: "/images/aura-computer.png", title: "Mars Colony", desc: "Интерактивная карта", color: "#f59e0b" },
-    { src: "/images/aura-computer.png", title: "Eco Pulse", desc: "Мониторинг экологии", color: "#6366f1" },
-    { src: "/images/aura-computer.png", title: "Vault X", desc: "Крипто-хранилище", color: "#06b6d4" },
-  ], []);
+// const Crazy3DImageSlider = () => {
+//   const slides = useMemo(() => [
+//     { src: "/images/aura-computer.png", title: "ATAM Alpha", desc: "Флагманский WebGL проект", color: "#ff6c00" },
+//     { src: "/images/aura-computer.png", title: "Neon City", desc: "Управление умным городом", color: "#00c6ff" },
+//     { src: "/images/aura-computer.png", title: "Quantum Core", desc: "Аналитика вычислений", color: "#a855f7" },
+//     { src: "/images/aura-computer.png", title: "Cyber Shield", desc: "Система защиты данных", color: "#e91e63" },
+//     { src: "/images/aura-computer.png", title: "AI Nexus", desc: "Голосовой ассистент", color: "#10b981" },
+//     { src: "/images/aura-computer.png", title: "Mars Colony", desc: "Интерактивная карта", color: "#f59e0b" },
+//     { src: "/images/aura-computer.png", title: "Eco Pulse", desc: "Мониторинг экологии", color: "#6366f1" },
+//     { src: "/images/aura-computer.png", title: "Vault X", desc: "Крипто-хранилище", color: "#06b6d4" },
+//   ], []);
 
   const containerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
