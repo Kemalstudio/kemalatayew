@@ -9,8 +9,8 @@ import {
 } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger'; // Добавлен ScrollTrigger
-import { Canvas, useFrame } from '@react-three/fiber';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Canvas } from '@react-three/fiber';
 import { 
   OrbitControls, 
   useGLTF, 
@@ -26,7 +26,6 @@ import {
 } from '@react-three/drei';
 import './App.css';
 
-// Регистрируем ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
 // ==================================================================
@@ -335,9 +334,8 @@ const ModelViewer = ({ modelPath }) => {
 useGLTF.preload('/images/gaming-desktop.glb');
 
 // ==================================================================
-// NEW: 3D BALL COMPONENTS (Tech Spheres)
+// 3D BALL COMPONENTS (Tech Spheres)
 // ==================================================================
-
 const Ball = (props) => {
   const [decal] = useTexture([props.imgUrl]);
 
@@ -427,9 +425,8 @@ const TechBallSection = () => {
 };
 
 // ==================================================================
-// CRAZY 3D SECTION
+// CRAZY 3D SECTION (Image Slider)
 // ==================================================================
-
 const CrazyParticles = () => {
   const particles = Array.from({ length: 25 });
   return (
@@ -648,19 +645,19 @@ const OverviewSection = () => {
 
 
 // ==================================================================
-// 🔥 NEW SKILLS SECTION: HORIZONTAL 3D GSAP SCROLL
+// 🔥 EXPERTISE SECTION (PREMIUM HORIZONTAL)
 // ==================================================================
-
 const SkillFloatingSphere = ({ color }) => {
   return (
     <mesh>
-      <Sphere args={[1, 64, 64]} scale={1.5}>
+      <Sphere args={[1, 64, 64]} scale={1.8}>
         <MeshDistortMaterial
           color={color}
           attach="material"
-          distort={0.4}
-          speed={2}
-          roughness={0}
+          distort={0.45}
+          speed={2.5}
+          roughness={0.1}
+          metalness={0.9}
         />
       </Sphere>
     </mesh>
@@ -672,12 +669,12 @@ const SkillsSection = () => {
   const triggerRef = useRef(null);
 
   const skills = [
-    { title: "Frontend", icon: "⚛️", color: "#61dafb", tech: "React, Next.js, TS", desc: "Создание реактивных интерфейсов высокого уровня сложности." },
-    { title: "Backend", icon: "⚙️", color: "#83cd29", tech: "Node.js, Laravel, SQL", desc: "Проектирование надежных серверных архитектур и API." },
-    { title: "Mobile", icon: "📱", color: "#ff4081", tech: "React Native, Expo", desc: "Разработка кроссплатформенных мобильных приложений." },
-    { title: "Animations", icon: "✨", color: "#ba6ef4", tech: "GSAP, Three.js, R3F", desc: "Магия движения: от простых переходов до 3D-миров." },
-    { title: "UI/UX Design", icon: "🎨", color: "#f093fb", tech: "Figma, Adobe CC", desc: "Прототипирование интуитивно понятных и красивых интерфейсов." },
-    { title: "Tools", icon: "🛠️", color: "#ff6c00", tech: "Docker, Git, AWS", desc: "Управление инфраструктурой и контроль версий." }
+    { title: "Frontend", icon: "⚛️", color: "#61dafb", tech: "React, Next.js, TypeScript", desc: "Building immersive, pixel-perfect user interfaces with blazing fast performance and smooth interactivity." },
+    { title: "Backend", icon: "⚙️", color: "#83cd29", tech: "Node.js, Laravel, PostgreSQL", desc: "Architecting scalable server environments, secure APIs, and complex database management systems." },
+    { title: "Mobile", icon: "📱", color: "#ff4081", tech: "React Native, Expo, Flutter", desc: "Crafting powerful cross-platform applications with native performance and elegant user experiences." },
+    { title: "Animations", icon: "✨", color: "#ba6ef4", tech: "GSAP, Three.js, R3F", desc: "Bringing code to life through cinematic motion design, interactive 3D elements, and creative scroll magic." },
+    { title: "UI/UX Design", icon: "🎨", color: "#f093fb", tech: "Figma, Adobe Creative Suite", desc: "Fusing aesthetics with functionality to design user-centric interfaces that solve real-world problems." },
+    { title: "DevOps & Tools", icon: "🛠️", color: "#ff6c00", tech: "Docker, Git, AWS, CI/CD", desc: "Automating workflows, managing cloud infrastructure, and ensuring reliable deployments and scalability." }
   ];
 
   useEffect(() => {
@@ -685,14 +682,14 @@ const SkillsSection = () => {
       sectionRef.current,
       { translateX: 0 },
       {
-        translateX: "-300vw", // Расстояние прокрутки зависит от количества карточек
+        translateX: "-500vw", // For 6 cards
         ease: "none",
         duration: 1,
         scrollTrigger: {
           trigger: triggerRef.current,
           start: "top top",
-          end: "2000 top",
-          scrub: 0.6,
+          end: "4500 top",
+          scrub: 1, // Smoother feel
           pin: true,
           anticipatePin: 1
         },
@@ -702,7 +699,7 @@ const SkillsSection = () => {
   }, []);
 
   return (
-    <div ref={triggerRef} className="skills-horizontal-wrapper">
+    <div ref={triggerRef} className="skills-horizontal-wrapper" id="skills">
       <div className="skills-sticky-header">
         <motion.h2 
           initial={{ opacity: 0, x: -50 }}
@@ -716,23 +713,44 @@ const SkillsSection = () => {
       <div ref={sectionRef} className="skills-horizontal-inner">
         {skills.map((skill, index) => (
           <div key={index} className="skill-slide">
-            <div className="skill-slide-card" style={{ '--accent-color': skill.color }}>
+            <motion.div 
+                className="skill-slide-card" 
+                style={{ '--accent-color': skill.color }}
+                whileHover={{ rotateY: -10, scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 100 }}
+            >
               <div className="skill-card-visual">
-                <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+                <Canvas camera={{ position: [0, 0, 5], fov: 45 }} gl={{ alpha: true }}>
                    <ambientLight intensity={0.5} />
-                   <pointLight position={[10, 10, 10]} />
+                   <pointLight position={[10, 10, 10]} intensity={2} />
                    <SkillFloatingSphere color={skill.color} />
                 </Canvas>
                 <div className="skill-icon-overlay">{skill.icon}</div>
+                <div className="skill-blob" style={{ background: skill.color }}></div>
               </div>
+              
               <div className="skill-card-text">
                 <div className="skill-number">0{index + 1}</div>
                 <h3>{skill.title}</h3>
                 <div className="skill-tech-list">{skill.tech}</div>
                 <p>{skill.desc}</p>
+                <div className="skill-card-footer">
+                   <div className="skill-bar-container">
+                       <motion.div 
+                        className="skill-progress-bar" 
+                        initial={{ width: 0 }}
+                        whileInView={{ width: '92%' }}
+                        transition={{ duration: 1.5, delay: 0.2 }}
+                        style={{ background: skill.color }}
+                       />
+                   </div>
+                </div>
               </div>
+
               <div className="skill-card-glow"></div>
-            </div>
+              <div className="glass-shine-animation"></div>
+              <div className="card-border-shimmer"></div>
+            </motion.div>
           </div>
         ))}
       </div>
@@ -747,10 +765,10 @@ const StatsSection = () => {
   const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 0.8]);
   const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
   const stats = useMemo(() => [
-    { number: "25", label: "Проектов", suffix: "+" },
-    { number: "3", label: "Года опыта", suffix: "+" },
-    { number: "15", label: "Клиентов", suffix: "+" },
-    { number: "99", label: "Успех", suffix: "%" }
+    { number: "25", label: "Projects", suffix: "+" },
+    { number: "3", label: "Years Experience", suffix: "+" },
+    { number: "15", label: "Clients", suffix: "+" },
+    { number: "99", label: "Success", suffix: "%" }
   ], []);
 
   return (
@@ -777,12 +795,12 @@ const StatsSection = () => {
 // ==================================================================
 function App() {
   const features = useMemo(() => [
-    { title: "React Dev", description: "Современные приложения", icon: "⚛️" },
-    { title: "Responsive", description: "Адаптивный дизайн", icon: "📱" },
-    { title: "API Integration", description: "REST API сервисы", icon: "🔌" },
-    { title: "Database", description: "Оптимизация баз данных", icon: "🗃️" },
-    { title: "Mobile Apps", description: "Кроссплатформа", icon: "📲" },
-    { title: "UI/UX Design", description: "Интуитивные интерфейсы", icon: "🎨" },
+    { title: "React Dev", description: "Modern dynamic apps", icon: "⚛️" },
+    { title: "Responsive", description: "Adaptive design", icon: "📱" },
+    { title: "API Integration", description: "REST API services", icon: "🔌" },
+    { title: "Database", description: "DB optimization", icon: "🗃️" },
+    { title: "Mobile Apps", description: "Cross-platform", icon: "📲" },
+    { title: "UI/UX Design", description: "Intuitive UI", icon: "🎨" },
   ], []);
 
   const tickerItems = useMemo(() => features.map(feature => feature.title), [features]);
@@ -829,12 +847,8 @@ function App() {
           </div>
         </section>
 
-        {/* Секция с карточками */}
         <OverviewSection />
-        
-        {/* НОВАЯ СЕКЦИЯ С 3D ШАРАМИ */}
         <TechBallSection />
-        
         <SkillsSection />
         <StatsSection />
 
@@ -843,8 +857,8 @@ function App() {
         <section className="services-grid">
           <div className="container">
             <motion.div className="section-header" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2 }}>
-              <h2>Мои Услуги</h2>
-              <p>Полный цикл разработки от идеи до запуска</p>
+              <h2>Services</h2>
+              <p>Full development cycle from idea to launch</p>
             </motion.div>
             <div className="services-grid-content">
               {features.map((service, index) => (
@@ -874,9 +888,9 @@ function App() {
         <motion.footer className="footer" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1.2 }}>
           <div className="container">
             <div className="footer-content">
-              <h3>ГОТОВЫ К СОТРУДНИЧЕСТВУ?</h3>
-              <p>Давайте создадим что-то удивительное вместе</p>
-              <Magnetic><button className="btn-primary">Начать проект</button></Magnetic>
+              <h3>READY TO COLLABORATE?</h3>
+              <p>Let's build something amazing together</p>
+              <Magnetic><button className="btn-primary">Start Project</button></Magnetic>
             </div>
           </div>
         </motion.footer>
