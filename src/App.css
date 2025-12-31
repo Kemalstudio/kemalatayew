@@ -16,6 +16,7 @@ body {
 
 .app {
     position: relative;
+    display: block;
 }
 
 .container {
