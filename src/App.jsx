@@ -9,7 +9,8 @@ import {
 } from 'framer-motion';
 import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
-import { Canvas } from '@react-three/fiber';
+import { ScrollTrigger } from 'gsap/ScrollTrigger'; // Добавлен ScrollTrigger
+import { Canvas, useFrame } from '@react-three/fiber';
 import { 
   OrbitControls, 
   useGLTF, 
@@ -17,11 +18,16 @@ import {
   Environment, 
   ContactShadows, 
   useProgress,
-  Decal,     // Доба
-  Preload,   // Добавлено для шаров
-  useTexture // Добавлено для шаров
+  Decal,     
+  Preload,   
+  useTexture,
+  Sphere,
+  MeshDistortMaterial
 } from '@react-three/drei';
 import './App.css';
+
+// Регистрируем ScrollTrigger
+gsap.registerPlugin(ScrollTrigger);
 
 // ==================================================================
 // LOADING SCREEN
@@ -332,9 +338,7 @@ useGLTF.preload('/images/gaming-desktop.glb');
 // NEW: 3D BALL COMPONENTS (Tech Spheres)
 // ==================================================================
 
-// Компонент одного шар
 const Ball = (props) => {
-  // Загружаем текстуру. Если URL неверен, может быть ошибка, п
   const [decal] = useTexture([props.imgUrl]);
 
   return (
@@ -377,7 +381,6 @@ const BallCanvas = ({ icon }) => {
   );
 };
 
-// Секция с шарам
 const TechBallSection = () => {
   const technologies = [
     { name: "HTML 5", icon: "/images/tech/html.png" },
@@ -645,66 +648,98 @@ const OverviewSection = () => {
 
 
 // ==================================================================
-// SKILLS SECTION (OLD)
+// 🔥 NEW SKILLS SECTION: HORIZONTAL 3D GSAP SCROLL
 // ==================================================================
-const SkillsSection = () => {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 0.8]);
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const skills = useMemo(() => [
-    { icon: "⚛️", title: "Frontend", description: "React, Vue.js, TypeScript" },
-    { icon: "🔧", title: "Backend", description: "Node.js, Express, Python" },
-    { icon: "📱", title: "Mobile", description: "React Native, iOS & Android" },
-    { icon: "🛠️", title: "Tools", description: "Git, Docker, AWS, CI/CD" }
-  ], []);
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 100, scale: 0.8, rotateX: 45 },
-    visible: (index) => ({
-      opacity: 1, y: 0, scale: 1, rotateX: 0,
-      transition: { type: "spring", stiffness: 70, damping: 12, delay: index * 0.15 }
-    })
-  };
-
+const SkillFloatingSphere = ({ color }) => {
   return (
-    <section ref={containerRef} className="skills-section">
-      <motion.div className="skills-background" style={{ scale, y }} />
-      <div className="container">
-        <motion.div className="section-header" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
-          <motion.h2
-            animate={{ backgroundPosition: ['0%', '100%', '0%'] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-            style={{ background: "linear-gradient(90deg, #ff6c00, #00c6ff, #a855f7, #ff6c00)", backgroundSize: "300% auto", backgroundClip: "text", WebkitBackgroundClip: "text", color: "transparent" }}
-          >
-            МОИ НАВЫКИ
-          </motion.h2>
-          <p>Инструменты для создания цифровых решений</p>
-        </motion.div>
-
-        <div className="skills-grid">
-          {skills.map((skill, index) => (
-            <motion.div 
-              key={index} 
-              className="skill-card"
-              custom={index}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }} 
-              variants={cardVariants}
-              whileHover={{ scale: 1.05, y: -15, rotateX: 5, transition: { duration: 0.3 } }}
-            >
-              <motion.div className="skill-icon" animate={{ rotate: [0, 10, -5, 0], scale: [1, 1.1, 1] }} transition={{ duration: 4, repeat: Infinity, delay: index * 0.5 }}>{skill.icon}</motion.div>
-              <h3>{skill.title}</h3>
-              <p>{skill.description}</p>
-              <motion.div className="skill-glow" animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.3, 1], rotate: [0, 180, 360] }} transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: index * 0.3 }} />
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
+    <mesh>
+      <Sphere args={[1, 64, 64]} scale={1.5}>
+        <MeshDistortMaterial
+          color={color}
+          attach="material"
+          distort={0.4}
+          speed={2}
+          roughness={0}
+        />
+      </Sphere>
+    </mesh>
   );
 };
+
+const SkillsSection = () => {
+  const sectionRef = useRef(null);
+  const triggerRef = useRef(null);
+
+  const skills = [
+    { title: "Frontend", icon: "⚛️", color: "#61dafb", tech: "React, Next.js, TS", desc: "Создание реактивных интерфейсов высокого уровня сложности." },
+    { title: "Backend", icon: "⚙️", color: "#83cd29", tech: "Node.js, Laravel, SQL", desc: "Проектирование надежных серверных архитектур и API." },
+    { title: "Mobile", icon: "📱", color: "#ff4081", tech: "React Native, Expo", desc: "Разработка кроссплатформенных мобильных приложений." },
+    { title: "Animations", icon: "✨", color: "#ba6ef4", tech: "GSAP, Three.js, R3F", desc: "Магия движения: от простых переходов до 3D-миров." },
+    { title: "UI/UX Design", icon: "🎨", color: "#f093fb", tech: "Figma, Adobe CC", desc: "Прототипирование интуитивно понятных и красивых интерфейсов." },
+    { title: "Tools", icon: "🛠️", color: "#ff6c00", tech: "Docker, Git, AWS", desc: "Управление инфраструктурой и контроль версий." }
+  ];
+
+  useEffect(() => {
+    const pin = gsap.fromTo(
+      sectionRef.current,
+      { translateX: 0 },
+      {
+        translateX: "-300vw", // Расстояние прокрутки зависит от количества карточек
+        ease: "none",
+        duration: 1,
+        scrollTrigger: {
+          trigger: triggerRef.current,
+          start: "top top",
+          end: "2000 top",
+          scrub: 0.6,
+          pin: true,
+          anticipatePin: 1
+        },
+      }
+    );
+    return () => pin.kill();
+  }, []);
+
+  return (
+    <div ref={triggerRef} className="skills-horizontal-wrapper">
+      <div className="skills-sticky-header">
+        <motion.h2 
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+        >
+          My Expertise <span className="dot">.</span>
+        </motion.h2>
+      </div>
+
+      <div ref={sectionRef} className="skills-horizontal-inner">
+        {skills.map((skill, index) => (
+          <div key={index} className="skill-slide">
+            <div className="skill-slide-card" style={{ '--accent-color': skill.color }}>
+              <div className="skill-card-visual">
+                <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+                   <ambientLight intensity={0.5} />
+                   <pointLight position={[10, 10, 10]} />
+                   <SkillFloatingSphere color={skill.color} />
+                </Canvas>
+                <div className="skill-icon-overlay">{skill.icon}</div>
+              </div>
+              <div className="skill-card-text">
+                <div className="skill-number">0{index + 1}</div>
+                <h3>{skill.title}</h3>
+                <div className="skill-tech-list">{skill.tech}</div>
+                <p>{skill.desc}</p>
+              </div>
+              <div className="skill-card-glow"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 
 const StatsSection = () => {
   const containerRef = useRef(null);
