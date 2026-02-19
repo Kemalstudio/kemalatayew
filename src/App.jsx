@@ -561,7 +561,7 @@ const Crazy3DImageSlider = () => {
 
 // ===============================================================
 // OVERVIEW SECTION
-// ================================================================
+// ===============================================================
 const OverviewSection = () => {
   const cards = [
     { title: "Frontend Developer", icon: "images/icon-frontend.png" },
