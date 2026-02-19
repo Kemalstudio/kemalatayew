@@ -647,6 +647,7 @@ const OverviewSection = () => {
 // ==================================================================
 // 🔥 EXPERTISE SECTION (PREMIUM HORIZONTAL)
 // ====================================================
+
 const SkillFloatingSphere = ({ color }) => {
   return (
     <mesh>
