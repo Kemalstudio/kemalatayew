@@ -26,7 +26,8 @@
 
 /* Этот класс применяется ТОЛЬКО к имени в шапке */
 .custom-font {
-    font-family: 'Amsterdam', cursive, sans-serif;
+    font-family: 'Nunito';
+    font-weight: bold;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
