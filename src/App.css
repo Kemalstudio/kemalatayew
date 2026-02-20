@@ -57,46 +57,6 @@ body {
 }
 
 /* ==========================================
-   ЛЕТАЮЩИЙ 3D ДРОН
-   ========================================== */
-.flying-drone-wrapper {
-    position: fixed;
-    top: 20%;
-    right: 10%;
-    width: 180px;
-    height: 180px;
-    z-index: 9999;
-    cursor: pointer;
-    /* Не даем ломать скролл */
-    transform-style: preserve-3d;
-}
-
-.drone-tooltip {
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 800;
-    color: #fff;
-    opacity: 0;
-    transition: all 0.3s ease;
-    pointer-events: none;
-    white-space: nowrap;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.8);
-}
-
-.flying-drone-wrapper:hover .drone-tooltip.visible {
-    opacity: 1;
-    top: -45px;
-}
-
-/* ==========================================
    🔥🔥 РЕЖИМ ДОСТУПНОСТИ (ДЛЯ СЛАБОВИДЯЩИХ) 🔥🔥
    ========================================== */
 .a11y-active p,
@@ -174,7 +134,7 @@ body {
 .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 1rem; font-weight: 700; transition: color 0.3s; }
 .nav-links a:hover { color: var(--text-main); }
 
-.nav-right { display: flex; align-items: center; gap: 30px; }
+.nav-right { display: flex; align-items: center; gap: 20px; }
 
 .lang-switcher { display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 20px; }
 .lang-switcher span { 
@@ -182,6 +142,30 @@ body {
     cursor: pointer; color: var(--text-muted); transition: 0.3s;
 }
 .lang-switcher span.active { background: var(--text-main); color: var(--bg-dark); }
+
+/* Кнопка Доступности (Глаз) */
+.a11y-toggle-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: var(--text-main);
+    transition: all 0.3s ease;
+}
+.a11y-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+}
+.a11y-toggle-btn.active {
+    background: #ffff00;
+    color: #000;
+    border-color: #ffff00;
+}
 
 .nav-cta {
     background: transparent; border: 1px solid var(--border-light);
@@ -305,5 +289,4 @@ body {
     .horizontal-panel { width: 85vw; margin-right: 10vw; }
     .panel-text { font-size: 4rem; }
     .footer-bottom { flex-direction: column; gap: 20px; }
-    .flying-drone-wrapper { display: none; /* Убираем дрона на мобилках чтобы не мешал */ }
 }
