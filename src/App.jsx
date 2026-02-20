@@ -175,7 +175,7 @@ const GsapPanelsShowcase = () => {
           trigger: containerRef.current,
           pin: true,
           scrub: 1,
-          end: () => "+=" + window.innerHeight * 4, // 4 экрана скролла
+          end: () => "+=" + window.innerHeight * 4, // 4 экрана скролл
         }
       });
 
