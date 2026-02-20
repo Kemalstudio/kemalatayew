@@ -493,3 +493,5 @@ export default function App() {
     </SmoothScroll>
   );
 }
+
+// smoothScroll<GithubLinkedInTwitter>
