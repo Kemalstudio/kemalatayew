@@ -543,6 +543,7 @@ const Crazy3DImageSlider = () => {
                 animate={{ width: "100%" }}
                 transition={{ duration: 1.5, ease: "circOut" }}
                 style={{ background: slides[activeIndex].color }}
+                style-{ background: slider[activeIndex].color}
               />
             </motion.div>
           </AnimatePresence>
