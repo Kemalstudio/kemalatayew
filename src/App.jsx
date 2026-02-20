@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState, useMemo, Suspense, useLayoutEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollSmoother } from 'gsap/ScrollSmoother';
+import { gsap } from 'gsap-trial';
+import { ScrollTrigger } from 'gsap-trial/ScrollTrigger';
+import { ScrollSmoother } from 'gsap-trial/ScrollSmoother';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Float, Environment, ContactShadows, useProgress } from '@react-three/drei';
 import './App.css';
@@ -107,7 +107,7 @@ const LoadingScreen = () => {
   return (
     <motion.div className="loading-screen" exit={{ opacity: 0, filter: "blur(10px)" }} transition={{ duration: 0.8 }}>
       <div className="loader-content">
-        <div className="loader-text custom-font">{progress.toFixed(0)}<span className="accent">%</span></div>
+        <div className="loader-text">{progress.toFixed(0)}<span className="accent">%</span></div>
         <div className="loader-bar-container">
           <motion.div className="loader-bar-fill" initial={{ width: 0 }} animate={{ width: `${progress}%` }} />
         </div>
@@ -210,14 +210,14 @@ const SkillsHorizontal = ({ lang, dict }) => {
   return (
     <section ref={containerRef} className="horizontal-section" id="expertise">
       <div className="horizontal-sticky">
-        <h2 className="horizontal-bg-text custom-font">{dict.expTitle}</h2>
+        <h2 className="horizontal-bg-text">{dict.expTitle}</h2>
       </div>
       <div ref={scrollRef} className="horizontal-scroll-container">
         {dict.skills.map((skill, i) => (
           <div key={i} className="horizontal-panel">
             <div className="panel-content">
               <span className="panel-num">0{i + 1}</span>
-              <h3 className="custom-font">{skill.title}</h3>
+              <h3>{skill.title}</h3>
               <p>{skill.desc}</p>
               <div className="panel-glass-effect" />
             </div>
@@ -266,6 +266,7 @@ export default function App() {
       <motion.nav className="navbar" initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
         <div className="nav-logo">
           <div className="logo-dot" />
+          {/* ЗДЕСЬ ОСТАВЛЕН КАСТОМНЫЙ ШРИФТ ДЛЯ ВАШЕГО ИМЕНИ */}
           <span className="name custom-font">Atayev Kemal</span>
         </div>
         
@@ -297,7 +298,7 @@ export default function App() {
                 <motion.span className="hero-badge" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
                   {dict.heroBadge}
                 </motion.span>
-                <motion.h1 className="custom-font" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2, duration: 1 }}>
+                <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2, duration: 1 }}>
                   {dict.heroTitle1} <br/>
                   <span className="text-gradient">{dict.heroTitle2}</span> <br/>
                   {dict.heroTitle3}.
@@ -327,7 +328,7 @@ export default function App() {
             <div className="container">
               <div className="section-title-wrapper">
                 <span className="section-subtitle">{dict.bentoSub}</span>
-                <h2 className="section-title custom-font">{dict.bentoTitle}</h2>
+                <h2 className="section-title">{dict.bentoTitle}</h2>
               </div>
               <div className="tech-grid">
                 {techStack.map((tech, i) => (
@@ -335,7 +336,7 @@ export default function App() {
                     <div className="tech-card-glow" />
                     <div className="tech-icon">{tech.icon}</div>
                     <div className="tech-info">
-                      <h4 className="custom-font">{tech.name}</h4>
+                      <h4>{tech.name}</h4>
                       <span className="tech-level">{tech.level}</span>
                     </div>
                   </div>
@@ -353,7 +354,7 @@ export default function App() {
           {/* FOOTER */}
           <footer className="footer-premium" id="contact">
             <div className="container">
-              <h2 className="custom-font">{dict.footerTitle1} <br/><span className="text-gradient">{dict.footerTitle2}</span></h2>
+              <h2>{dict.footerTitle1} <br/><span className="text-gradient">{dict.footerTitle2}</span></h2>
               <Magnetic>
                 <button className="cta-huge">{dict.footerBtn}</button>
               </Magnetic>
