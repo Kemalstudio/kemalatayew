@@ -1,14 +1,14 @@
-import React, { useRef, useEffect, useState, useMemo, Suspense, useLayoutEffect } from 'react';
+import React, { useRef, useEffect, useState, Suspense, useLayoutEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { gsap } from 'gsap-trial';
-import { ScrollTrigger } from 'gsap-trial/ScrollTrigger';
-import { ScrollSmoother } from 'gsap-trial/ScrollSmoother';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from '@studio-freight/lenis';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Float, Environment, ContactShadows, useProgress } from '@react-three/drei';
 import './App.css';
 
-// Регистрация премиум плагинов GSAP
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+// Регистрация бесплатного плагина ScrollTrigger
+gsap.registerPlugin(ScrollTrigger);
 
 // ==========================================
 // МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ (i18n)
@@ -56,6 +56,39 @@ const translations = {
     ],
     footerTitle1: "Mümkin däl zady", footerTitle2: "döredeliň.", footerBtn: "Taslama Başla", rights: "Ähli hukuklar goralan."
   }
+};
+
+// ==========================================
+// ПРЕМИАЛЬНЫЙ ПЛАВНЫЙ СКРОЛЛ (LENIS)
+// ==========================================
+const SmoothScroll = ({ children }) => {
+  useLayoutEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    // Интеграция Lenis с GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      lenis.destroy();
+      gsap.ticker.remove((time) => lenis.raf(time * 1000));
+    };
+  }, []);
+
+  return <>{children}</>;
 };
 
 // ==========================================
@@ -235,18 +268,6 @@ export default function App() {
   const [lang, setLang] = useState('en');
   const dict = translations[lang];
 
-  // Инициализация ScrollSmoother
-  useLayoutEffect(() => {
-    let smoother = ScrollSmoother.create({
-      wrapper: '#smooth-wrapper',
-      content: '#smooth-content',
-      smooth: 1.5,
-      effects: true,
-      smoothTouch: 0.1,
-    });
-    return () => smoother.kill();
-  }, []);
-
   const techStack = [
     { name: "React", icon: "⚛️", level: "Expert" },
     { name: "Next.js", icon: "▲", level: "Advanced" },
@@ -259,14 +280,14 @@ export default function App() {
   ];
 
   return (
-    <>
+    <SmoothScroll>
       <LoadingScreen />
       
       {/* NAVBAR */}
       <motion.nav className="navbar" initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
         <div className="nav-logo">
           <div className="logo-dot" />
-          {/* ЗДЕСЬ ОСТАВЛЕН КАСТОМНЫЙ ШРИФТ ДЛЯ ВАШЕГО ИМЕНИ */}
+          {/* ЗДЕСЬ ОСТАВЛЕН КАСТОМНЫЙ ШРИФТ ТОЛЬКО ДЛЯ ВАШЕГО ИМЕНИ */}
           <span className="name custom-font">Atayev Kemal</span>
         </div>
         
@@ -286,91 +307,86 @@ export default function App() {
         </div>
       </motion.nav>
 
-      {/* Обертки для GSAP ScrollSmoother */}
-      <div id="smooth-wrapper">
-        <div id="smooth-content">
-          
-          {/* HERO SECTION */}
-          <section className="hero-premium">
-            <div className="noise-overlay" />
-            <div className="container hero-container">
-              <div className="hero-text-block">
-                <motion.span className="hero-badge" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
-                  {dict.heroBadge}
-                </motion.span>
-                <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2, duration: 1 }}>
-                  {dict.heroTitle1} <br/>
-                  <span className="text-gradient">{dict.heroTitle2}</span> <br/>
-                  {dict.heroTitle3}.
-                </motion.h1>
-                <motion.p className="hero-desc" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>
-                  {dict.heroDesc}
-                </motion.p>
-              </div>
-              
-              <div className="model-viewer-canvas">
-                <Canvas camera={{ position: [0, 1, 12], fov: 40 }} dpr={[1, 2]} gl={{ alpha: true }}>
-                  <Suspense fallback={null}>
-                    <Environment preset="studio" />
-                    <ambientLight intensity={0.5} />
-                    <spotLight position={[10, 10, 10]} intensity={2} color="#8a2be2" />
-                    <Float speed={2.5} rotationIntensity={0.2} floatIntensity={0.5}><HeroModel /></Float>
-                    <ContactShadows position={[0, -3, 0]} opacity={0.6} scale={15} blur={2} />
-                    <OrbitControls enableZoom={false} enablePan={false} autoRotate />
-                  </Suspense>
-                </Canvas>
-              </div>
+      <main>
+        {/* HERO SECTION */}
+        <section className="hero-premium">
+          <div className="noise-overlay" />
+          <div className="container hero-container">
+            <div className="hero-text-block">
+              <motion.span className="hero-badge" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
+                {dict.heroBadge}
+              </motion.span>
+              <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2, duration: 1 }}>
+                {dict.heroTitle1} <br/>
+                <span className="text-gradient">{dict.heroTitle2}</span> <br/>
+                {dict.heroTitle3}.
+              </motion.h1>
+              <motion.p className="hero-desc" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>
+                {dict.heroDesc}
+              </motion.p>
             </div>
-          </section>
+            
+            <div className="model-viewer-canvas">
+              <Canvas camera={{ position: [0, 1, 12], fov: 40 }} dpr={[1, 2]} gl={{ alpha: true }}>
+                <Suspense fallback={null}>
+                  <Environment preset="studio" />
+                  <ambientLight intensity={0.5} />
+                  <spotLight position={[10, 10, 10]} intensity={2} color="#8a2be2" />
+                  <Float speed={2.5} rotationIntensity={0.2} floatIntensity={0.5}><HeroModel /></Float>
+                  <ContactShadows position={[0, -3, 0]} opacity={0.6} scale={15} blur={2} />
+                  <OrbitControls enableZoom={false} enablePan={false} autoRotate />
+                </Suspense>
+              </Canvas>
+            </div>
+          </div>
+        </section>
 
-          {/* TECH BENTO GRID */}
-          <section className="tech-bento-section">
-            <div className="container">
-              <div className="section-title-wrapper">
-                <span className="section-subtitle">{dict.bentoSub}</span>
-                <h2 className="section-title">{dict.bentoTitle}</h2>
-              </div>
-              <div className="tech-grid">
-                {techStack.map((tech, i) => (
-                  <div key={i} className="tech-card">
-                    <div className="tech-card-glow" />
-                    <div className="tech-icon">{tech.icon}</div>
-                    <div className="tech-info">
-                      <h4>{tech.name}</h4>
-                      <span className="tech-level">{tech.level}</span>
-                    </div>
+        {/* TECH BENTO GRID */}
+        <section className="tech-bento-section">
+          <div className="container">
+            <div className="section-title-wrapper">
+              <span className="section-subtitle">{dict.bentoSub}</span>
+              <h2 className="section-title">{dict.bentoTitle}</h2>
+            </div>
+            <div className="tech-grid">
+              {techStack.map((tech, i) => (
+                <div key={i} className="tech-card">
+                  <div className="tech-card-glow" />
+                  <div className="tech-icon">{tech.icon}</div>
+                  <div className="tech-info">
+                    <h4>{tech.name}</h4>
+                    <span className="tech-level">{tech.level}</span>
                   </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* АНИМАЦИЯ ПАНЕЛЕЙ (ONE, TWO, THREE, FOUR) */}
-          <GsapPanelsShowcase />
-
-          {/* HORIZONTAL SKILLS */}
-          <SkillsHorizontal lang={lang} dict={dict} />
-
-          {/* FOOTER */}
-          <footer className="footer-premium" id="contact">
-            <div className="container">
-              <h2>{dict.footerTitle1} <br/><span className="text-gradient">{dict.footerTitle2}</span></h2>
-              <Magnetic>
-                <button className="cta-huge">{dict.footerBtn}</button>
-              </Magnetic>
-              <div className="footer-bottom">
-                <p>© 2024 Kemal Atayev. {dict.rights}</p>
-                <div className="socials">
-                  <a href="#">Twitter</a>
-                  <a href="#">LinkedIn</a>
-                  <a href="#">GitHub</a>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* АНИМАЦИЯ ПАНЕЛЕЙ (ONE, TWO, THREE, FOUR) */}
+        <GsapPanelsShowcase />
+
+        {/* HORIZONTAL SKILLS */}
+        <SkillsHorizontal lang={lang} dict={dict} />
+
+        {/* FOOTER */}
+        <footer className="footer-premium" id="contact">
+          <div className="container">
+            <h2>{dict.footerTitle1} <br/><span className="text-gradient">{dict.footerTitle2}</span></h2>
+            <Magnetic>
+              <button className="cta-huge">{dict.footerBtn}</button>
+            </Magnetic>
+            <div className="footer-bottom">
+              <p>© 2024 Kemal Atayev. {dict.rights}</p>
+              <div className="socials">
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">GitHub</a>
               </div>
             </div>
-          </footer>
-
-        </div>
-      </div>
-    </>
+          </div>
+        </footer>
+      </main>
+    </SmoothScroll>
   );
 }
