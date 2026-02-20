@@ -27,7 +27,7 @@ const translations = {
       { title: "UI/UX Design", desc: "Figma prototyping and user-centric design flows." }
     ],
     footerTitle1: "Let's build the", footerTitle2: "impossible.", footerBtn: "Start a Project", rights: "All rights reserved.",
-    scrollTop: "Back to Top"
+    a11yTooltip: "Toggle Accessibility Mode"
   },
   ru: {
     navWork: "Работы", navExpertise: "Навыки", navAbout: "Обо мне", navContact: "Контакты", navBtn: "Обсудить проект",
@@ -42,7 +42,7 @@ const translations = {
       { title: "UI/UX Дизайн", desc: "Прототипирование в Figma и удобный дизайн." }
     ],
     footerTitle1: "Давайте создадим", footerTitle2: "невозможное.", footerBtn: "Начать проект", rights: "Все права защищены.",
-    scrollTop: "Наверх"
+    a11yTooltip: "Режим для слабовидящих"
   },
   tk: {
     navWork: "Işler", navExpertise: "Başarnyklar", navAbout: "Barada", navContact: "Habarlaşmak", navBtn: "Gürleşeliň",
@@ -57,7 +57,7 @@ const translations = {
       { title: "UI/UX Dizaýn", desc: "Figma we ulanyjy üçin amatly dizaýnlar." }
     ],
     footerTitle1: "Mümkin däl zady", footerTitle2: "döredeliň.", footerBtn: "Taslama Başla", rights: "Ähli hukuklar goralan.",
-    scrollTop: "Ýokaryk"
+    a11yTooltip: "Elýeterlilik düzgüni"
   }
 };
 
@@ -163,12 +163,13 @@ const HeroModel = () => {
 };
 
 // ==========================================
-// ПОЛЕЗНЫЙ 3D ПОМОЩНИК (ДРОН КНОПКА "НАВЕРХ")
+// 🚀 ЛЕТАЮЩИЙ ДРОН-ПОМОЩНИК (С РЕЖИМОМ ДОСТУПНОСТИ)
 // ==========================================
-const ScrollHelperDrone = ({ hovered }) => {
-  const meshRef = useRef();
-  const materialRef = useRef();
+const FlyingDroneCompanion = ({ a11yMode, toggleA11y, tooltipText }) => {
+  const droneRef = useRef(null);
+  const [hovered, setHovered] = useState(false);
 
+  // GSAP Анимация полета по экрану (не мешая центру)
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -176,39 +177,51 @@ const ScrollHelperDrone = ({ hovered }) => {
           trigger: "body",
           start: "top top",
           end: "bottom bottom",
-          scrub: 1, // Привязка к скроллу
+          scrub: 1.5, // Привязка к скроллу для эффекта 3D пчелы
         }
       });
 
-      // Объект не летает по экрану, он плавно вращается и меняет цвет в углу!
-      tl.to(meshRef.current.rotation, { x: Math.PI * 4, y: Math.PI * 6 }, 0)
-        .to(materialRef.current.color, { r: 0, g: 1, b: 1 }, 0.25) // Cyan
-        .to(materialRef.current.color, { r: 1, g: 0.2, b: 0.8 }, 0.5) // Magenta
-        .to(materialRef.current.color, { r: 0.5, g: 1, b: 0.2 }, 0.75) // Green
-        .to(materialRef.current.color, { r: 1, g: 0.5, b: 0 }, 1); // Orange
+      // Перемещения: Летает строго по краям, меняя вращение
+      tl.to(droneRef.current, { top: "15%", left: "5%", rotation: 15 }, 0.25) // К Bento (Левый верх)
+        .to(droneRef.current, { top: "85%", left: "80%", rotation: -20 }, 0.5) // К Панелям (Правый низ)
+        .to(droneRef.current, { top: "65%", left: "5%", rotation: 10 }, 0.75) // К Навыкам (Левый низ)
+        .to(droneRef.current, { top: "10%", left: "50%", xPercent: -50, rotation: 360 }, 1); // К Футеру (Верх центр)
     });
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <Float speed={hovered ? 6 : 2} rotationIntensity={hovered ? 3 : 1} floatIntensity={hovered ? 3 : 1}>
-      <mesh ref={meshRef} scale={hovered ? 1.7 : 1.4}>
-        <torusKnotGeometry args={[1, 0.35, 128, 16]} />
-        <meshPhysicalMaterial 
-          ref={materialRef}
-          color="#8a2be2" 
-          metalness={0.9} 
-          roughness={0.1} 
-          transmission={0.9} 
-          thickness={1}
-          envMapIntensity={2}
-          clearcoat={1}
-          emissive={hovered ? "#ffffff" : "#000000"} 
-          emissiveIntensity={hovered ? 0.3 : 0}
-        />
-      </mesh>
-    </Float>
+    <div 
+      id="drone-wrapper"
+      ref={droneRef}
+      className="flying-drone-wrapper"
+      onClick={toggleA11y}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className={`drone-tooltip ${hovered ? 'visible' : ''}`}>{tooltipText}</div>
+      <Canvas camera={{ position: [0, 0, 5], fov: 45 }} gl={{ alpha: true }}>
+        <Environment preset="studio" />
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[10, 10, 10]} intensity={2} color="#ffffff" />
+        <Float speed={hovered ? 6 : 2} rotationIntensity={hovered ? 3 : 1.5} floatIntensity={hovered ? 2 : 1}>
+          <mesh scale={hovered ? 1.5 : 1.2}>
+            <torusKnotGeometry args={[1, 0.35, 128, 16]} />
+            <meshPhysicalMaterial 
+              color={a11yMode ? "#ffff00" : "#8a2be2"} // Желтый если включен режим, иначе Фиолетовый
+              metalness={0.9} 
+              roughness={0.1} 
+              transmission={0.9} 
+              thickness={1}
+              envMapIntensity={2}
+              clearcoat={1}
+              emissive={a11yMode ? "#ffff00" : (hovered ? "#ffffff" : "#000000")} 
+              emissiveIntensity={a11yMode ? 0.6 : (hovered ? 0.3 : 0)}
+            />
+          </mesh>
+        </Float>
+      </Canvas>
+    </div>
   );
 };
 
@@ -363,12 +376,12 @@ const TechBentoGrid = ({ dict, techStack }) => {
   );
 };
 
-// ======================================
+// ==========================================
 // MAIN APP КОМПОНЕНТ
-// =====================================
+// ==========================================
 export default function App() {
   const [lang, setLang] = useState('en');
-  const [droneHovered, setDroneHovered] = useState(false);
+  const [a11yMode, setA11yMode] = useState(false); // Состояние Режима Доступности
   const dict = translations[lang];
 
   const techStack = [
@@ -382,116 +395,105 @@ export default function App() {
     { name: "PostgreSQL", icon: "🐘", level: "Pro" },
   ];
 
-  // Функция для 3D помощника (Скролл наверх)
-  const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <SmoothScroll>
-      <LoadingScreen />
+      {/* Главный контейнер реагирует на режим A11y */}
+      <div className={`app-wrapper ${a11yMode ? 'a11y-active' : ''}`}>
+        <LoadingScreen />
 
-      {/* ПОЛЕЗНЫЙ 3D ПОМОЩНИК - КНОПКА НАВЕРХ В ПРАВОМ НИЖНЕМ УГЛУ */}
-      <div 
-        className="drone-companion" 
-        onClick={handleScrollToTop}
-        onMouseEnter={() => setDroneHovered(true)}
-        onMouseLeave={() => setDroneHovered(false)}
-      >
-        <div className="drone-tooltip">{dict.scrollTop}</div>
-        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} gl={{ alpha: true }}>
-          <Environment preset="studio" />
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 10]} intensity={2} color="#ffffff" />
-          <ScrollHelperDrone hovered={droneHovered} />
-        </Canvas>
-      </div>
-      
-      {/* NAVBAR */}
-      <motion.nav className="navbar" initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
-        <div className="nav-logo">
-          <div className="logo-dot" />
-          {/* ЗДЕСЬ ОСТАВЛЕН КАСТОМНЫЙ ШРИФТ ТОЛЬКО ДЛЯ ВАШЕГО ИМЕНИ */}
-          <span className="name custom-font">Atayev Kemal</span>
-        </div>
+        {/* НАШ ЛЕТАЮЩИЙ И ПОЛЕЗНЫЙ 3D АССИСТЕНТ */}
+        <FlyingDroneCompanion 
+          a11yMode={a11yMode} 
+          toggleA11y={() => setA11yMode(!a11yMode)} 
+          tooltipText={dict.a11yTooltip} 
+        />
         
-        <ul className="nav-links">
-          <li><a href="#work">{dict.navWork}</a></li>
-          <li><a href="#expertise">{dict.navExpertise}</a></li>
-          <li><a href="#about">{dict.navAbout}</a></li>
-        </ul>
-
-        <div className="nav-right">
-          <div className="lang-switcher">
-            <span className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>EN</span>
-            <span className={lang === 'ru' ? 'active' : ''} onClick={() => setLang('ru')}>RU</span>
-            <span className={lang === 'tk' ? 'active' : ''} onClick={() => setLang('tk')}>TK</span>
+        {/* NAVBAR */}
+        <motion.nav className="navbar" initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
+          <div className="nav-logo">
+            <div className="logo-dot" />
+            {/* ЗДЕСЬ ОСТАВЛЕН КАСТОМНЫЙ ШРИФТ ТОЛЬКО ДЛЯ ВАШЕГО ИМЕНИ */}
+            <span className="name custom-font">Atayev Kemal</span>
           </div>
-          <Magnetic><button className="nav-cta">{dict.navBtn}</button></Magnetic>
-        </div>
-      </motion.nav>
+          
+          <ul className="nav-links">
+            <li><a href="#work">{dict.navWork}</a></li>
+            <li><a href="#expertise">{dict.navExpertise}</a></li>
+            <li><a href="#about">{dict.navAbout}</a></li>
+          </ul>
 
-      <main>
-        {/* HERO SECTION */}
-        <section className="hero-premium">
-          <div className="noise-overlay" />
-          <div className="container hero-container">
-            <div className="hero-text-block">
-              <motion.span className="hero-badge" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
-                {dict.heroBadge}
-              </motion.span>
-              <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2, duration: 1 }}>
-                {dict.heroTitle1} <br/>
-                <span className="text-gradient">{dict.heroTitle2}</span> <br/>
-                {dict.heroTitle3}.
-              </motion.h1>
-              <motion.p className="hero-desc" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>
-                {dict.heroDesc}
-              </motion.p>
+          <div className="nav-right">
+            <div className="lang-switcher">
+              <span className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>EN</span>
+              <span className={lang === 'ru' ? 'active' : ''} onClick={() => setLang('ru')}>RU</span>
+              <span className={lang === 'tk' ? 'active' : ''} onClick={() => setLang('tk')}>TK</span>
             </div>
-            
-            <div className="model-viewer-canvas">
-              <Canvas camera={{ position: [0, 1, 12], fov: 40 }} dpr={[1, 2]} gl={{ alpha: true }}>
-                <Suspense fallback={null}>
-                  <Environment preset="studio" />
-                  <ambientLight intensity={0.5} />
-                  <spotLight position={[10, 10, 10]} intensity={2} color="#8a2be2" />
-                  <Float speed={2.5} rotationIntensity={0.2} floatIntensity={0.5}><HeroModel /></Float>
-                  <ContactShadows position={[0, -3, 0]} opacity={0.6} scale={15} blur={2} />
-                  <OrbitControls enableZoom={false} enablePan={false} autoRotate />
-                </Suspense>
-              </Canvas>
-            </div>
+            <Magnetic><button className="nav-cta">{dict.navBtn}</button></Magnetic>
           </div>
-        </section>
+        </motion.nav>
 
-        {/* TECH BENTO GRID */}
-        <TechBentoGrid dict={dict} techStack={techStack} />
-
-        {/* АНИМАЦИЯ ПАНЕЛЕЙ (ONE, TWO, THREE, FOUR) */}
-        <GsapPanelsShowcase />
-
-        {/* HORIZONTAL SKILLS */}
-        <SkillsHorizontal lang={lang} dict={dict} />
-
-        {/* FOOTER */}
-        <footer className="footer-premium" id="contact">
-          <div className="container">
-            <h2>{dict.footerTitle1} <br/><span className="text-gradient">{dict.footerTitle2}</span></h2>
-            <Magnetic>
-              <button className="cta-huge">{dict.footerBtn}</button>
-            </Magnetic>
-            <div className="footer-bottom">
-              <p>© 2024 Kemal Atayev. {dict.rights}</p>
-              <div className="socials">
-                <a href="#">Twitter</a>
-                <a href="#">LinkedIn</a>
-                <a href="#">GitHub</a>
+        <main>
+          {/* HERO SECTION */}
+          <section className="hero-premium">
+            <div className="noise-overlay" />
+            <div className="container hero-container">
+              <div className="hero-text-block">
+                <motion.span className="hero-badge" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
+                  {dict.heroBadge}
+                </motion.span>
+                <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2, duration: 1 }}>
+                  {dict.heroTitle1} <br/>
+                  <span className="text-gradient">{dict.heroTitle2}</span> <br/>
+                  {dict.heroTitle3}.
+                </motion.h1>
+                <motion.p className="hero-desc" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>
+                  {dict.heroDesc}
+                </motion.p>
+              </div>
+              
+              <div className="model-viewer-canvas">
+                <Canvas camera={{ position: [0, 1, 12], fov: 40 }} dpr={[1, 2]} gl={{ alpha: true }}>
+                  <Suspense fallback={null}>
+                    <Environment preset="studio" />
+                    <ambientLight intensity={0.5} />
+                    <spotLight position={[10, 10, 10]} intensity={2} color="#8a2be2" />
+                    <Float speed={2.5} rotationIntensity={0.2} floatIntensity={0.5}><HeroModel /></Float>
+                    <ContactShadows position={[0, -3, 0]} opacity={0.6} scale={15} blur={2} />
+                    <OrbitControls enableZoom={false} enablePan={false} autoRotate />
+                  </Suspense>
+                </Canvas>
               </div>
             </div>
-          </div>
-        </footer>
-      </main>
+          </section>
+
+          {/* TECH BENTO GRID */}
+          <TechBentoGrid dict={dict} techStack={techStack} />
+
+          {/* АНИМАЦИЯ ПАНЕЛЕЙ (ONE, TWO, THREE, FOUR) */}
+          <GsapPanelsShowcase />
+
+          {/* HORIZONTAL SKILLS */}
+          <SkillsHorizontal lang={lang} dict={dict} />
+
+          {/* FOOTER */}
+          <footer className="footer-premium" id="contact">
+            <div className="container">
+              <h2>{dict.footerTitle1} <br/><span className="text-gradient">{dict.footerTitle2}</span></h2>
+              <Magnetic>
+                <button className="cta-huge">{dict.footerBtn}</button>
+              </Magnetic>
+              <div className="footer-bottom">
+                <p>© 2024 Kemal Atayev. {dict.rights}</p>
+                <div className="socials">
+                  <a href="#">Twitter</a>
+                  <a href="#">LinkedIn</a>
+                  <a href="#">GitHub</a>
+                </div>
+              </div>
+            </div>
+          </footer>
+        </main>
+      </div>
     </SmoothScroll>
   );
 }
