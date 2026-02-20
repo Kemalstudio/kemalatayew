@@ -305,5 +305,5 @@ body {
     .horizontal-panel { width: 85vw; margin-right: 10vw; }
     .panel-text { font-size: 4rem; }
     .footer-bottom { flex-direction: column; gap: 20px; }
-    .flying-drone-wrapper { display: none; /* Убираем дрона на мобилках чтобы не мешал */ }
+    .flying-drone-wrapper { display: none; /* Убираем дрона на мобилках чтобы не мешал */ 
 }
