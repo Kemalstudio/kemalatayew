@@ -13,7 +13,6 @@
     --accent-1: #8a2be2; 
     --accent-2: #00ffff; 
     
-    /* Установлен Nunito для всего сайта */
     --font-body: 'Nunito', sans-serif;
 }
 
@@ -26,8 +25,7 @@
 
 /* Этот класс применяется ТОЛЬКО к имени в шапке */
 .custom-font {
-    font-family: 'Nunito';
-    font-weight: bold;
+    font-family: 'Amsterdam', cursive, sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -52,6 +50,19 @@ body {
 .text-gradient {
     background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================
+   ГЛОБАЛЬНЫЙ 3D CANVAS (ЭФФЕКТ ПЧЕЛЫ)
+   ========================================== */
+.global-3d-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* ЧТОБЫ КНОПКИ НАЖИМАЛИСЬ СКВОЗЬ КАНВАС */
+    z-index: 50; /* ПОВЕРХ ВСЕГО ФОНА */
 }
 
 /* ==========================================
@@ -80,7 +91,6 @@ body {
 }
 .nav-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
 .logo-dot { width: 12px; height: 12px; background: var(--accent-2); border-radius: 50%; box-shadow: 0 0 15px var(--accent-2); }
-/* Размер для кастомного шрифта в шапке */
 .name { font-size: 2.2rem; letter-spacing: 1px; }
 
 .nav-links { display: flex; gap: 40px; list-style: none; }
@@ -126,11 +136,11 @@ body {
 /* ==========================================
    TECH BENTO
    ========================================== */
-.tech-bento-section { padding: 150px 0; border-top: 1px solid var(--border-light); }
+.tech-bento-section { padding: 150px 0; border-top: 1px solid var(--border-light); perspective: 1000px; }
 .section-subtitle { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.2em; color: var(--accent-2); display: block; margin-bottom: 15px; }
 .section-title { font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom: 60px; font-weight: 900; }
 
-.tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; transform-style: preserve-3d; }
 .tech-card {
     position: relative; background: var(--bg-panel); border: 1px solid var(--border-light);
     border-radius: 24px; padding: 40px 30px; display: flex; align-items: center; gap: 20px;
@@ -165,7 +175,6 @@ body {
     top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;
 }
 
-/* Цвета как на скриншотах */
 .panel-one { background-color: #d14949; z-index: 1; }
 .panel-two { background-color: #e68a2e; z-index: 2; }
 .panel-three { background-color: #8c55a3; z-index: 3; }
