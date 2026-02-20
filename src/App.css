@@ -53,16 +53,42 @@ body {
 }
 
 /* ==========================================
-   ГЛОБАЛЬНЫЙ 3D CANVAS (ЭФФЕКТ ПЧЕЛЫ)
+   ПОЛЕЗНЫЙ ДРОН (КНОПКА НАВЕРХ)
    ========================================== */
-.global-3d-canvas {
+.drone-companion {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none; /* ЧТОБЫ КНОПКИ НАЖИМАЛИСЬ СКВОЗЬ КАНВАС */
-    z-index: 50; /* ПОВЕРХ ВСЕГО ФОНА */
+    bottom: 30px;
+    right: 30px;
+    width: 130px;
+    height: 130px;
+    z-index: 9000;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.drone-tooltip {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #fff;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.drone-companion:hover .drone-tooltip {
+    opacity: 1;
+    top: -35px;
 }
 
 /* ==========================================
@@ -78,7 +104,7 @@ body {
 .loader-text .accent { color: var(--accent-1); font-family: var(--font-body); }
 .loader-bar-container { width: 100%; height: 2px; background: var(--border-light); overflow: hidden; }
 .loader-bar-fill { height: 100%; background: var(--accent-2); width: 0%; }
-.loader-subtext { margin-top: 15px; font-size: 0.85rem; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+.loader-subtext { margin-top: 15px; font-size: 0.85rem; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; font-weight: 800; }
 
 /* ==========================================
    NAVBAR & LANG SWITCHER
@@ -228,4 +254,5 @@ body {
     .horizontal-panel { width: 85vw; margin-right: 10vw; }
     .panel-text { font-size: 4rem; }
     .footer-bottom { flex-direction: column; gap: 20px; }
+    .drone-companion { bottom: 15px; right: 15px; width: 90px; height: 90px; }
 }
