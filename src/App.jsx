@@ -26,7 +26,8 @@ const translations = {
       { title: "Creative Development", desc: "Award-winning WebGL & GSAP animations." },
       { title: "UI/UX Design", desc: "Figma prototyping and user-centric design flows." }
     ],
-    footerTitle1: "Let's build the", footerTitle2: "impossible.", footerBtn: "Start a Project", rights: "All rights reserved."
+    footerTitle1: "Let's build the", footerTitle2: "impossible.", footerBtn: "Start a Project", rights: "All rights reserved.",
+    scrollTop: "Back to Top"
   },
   ru: {
     navWork: "Работы", navExpertise: "Навыки", navAbout: "Обо мне", navContact: "Контакты", navBtn: "Обсудить проект",
@@ -40,7 +41,8 @@ const translations = {
       { title: "Креативная Разработка", desc: "Премиальные WebGL и GSAP анимации." },
       { title: "UI/UX Дизайн", desc: "Прототипирование в Figma и удобный дизайн." }
     ],
-    footerTitle1: "Давайте создадим", footerTitle2: "невозможное.", footerBtn: "Начать проект", rights: "Все права защищены."
+    footerTitle1: "Давайте создадим", footerTitle2: "невозможное.", footerBtn: "Начать проект", rights: "Все права защищены.",
+    scrollTop: "Наверх"
   },
   tk: {
     navWork: "Işler", navExpertise: "Başarnyklar", navAbout: "Barada", navContact: "Habarlaşmak", navBtn: "Gürleşeliň",
@@ -54,7 +56,8 @@ const translations = {
       { title: "Kreatiw Ösüş", desc: "Ýokary hilli WebGL we GSAP animasiýalary." },
       { title: "UI/UX Dizaýn", desc: "Figma we ulanyjy üçin amatly dizaýnlar." }
     ],
-    footerTitle1: "Mümkin däl zady", footerTitle2: "döredeliň.", footerBtn: "Taslama Başla", rights: "Ähli hukuklar goralan."
+    footerTitle1: "Mümkin däl zady", footerTitle2: "döredeliň.", footerBtn: "Taslama Başla", rights: "Ähli hukuklar goralan.",
+    scrollTop: "Ýokaryk"
   }
 };
 
@@ -160,9 +163,9 @@ const HeroModel = () => {
 };
 
 // ==========================================
-// ГЛОБАЛЬНЫЙ СКРОЛЛЯЩИЙСЯ 3D-ОБЪЕКТ (Эффект "Пчелы")
+// ПОЛЕЗНЫЙ 3D ПОМОЩНИК (ДРОН КНОПКА "НАВЕРХ")
 // ==========================================
-const GlobalScrollCompanion = () => {
+const ScrollHelperDrone = ({ hovered }) => {
   const meshRef = useRef();
   const materialRef = useRef();
 
@@ -170,51 +173,39 @@ const GlobalScrollCompanion = () => {
     let ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: "main",
+          trigger: "body",
           start: "top top",
           end: "bottom bottom",
-          scrub: 1, // Привязка к скроллу (как на видео)
+          scrub: 1, // Привязка к скроллу
         }
       });
 
-      // 1. Анимация перелета к секции Bento
-      tl.to(meshRef.current.position, { x: 3.5, y: -1, z: 2 }, 0)
-        .to(meshRef.current.rotation, { x: Math.PI, y: Math.PI / 2 }, 0)
-        .to(materialRef.current.color, { r: 0, g: 1, b: 1 }, 0) // Перекраска в Cyan
-
-      // 2. Перелет к секции ONE, TWO, THREE, FOUR (GSAP Panels)
-        .to(meshRef.current.position, { x: -3, y: 0, z: 4 }, 0.25)
-        .to(meshRef.current.rotation, { x: Math.PI * 2, y: Math.PI }, 0.25)
-        .to(materialRef.current.color, { r: 1, g: 0.2, b: 0.8 }, 0.25) // Перекраска в Magenta
-
-      // 3. Перелет к горизонтальному скроллу
-        .to(meshRef.current.position, { x: 0, y: 1.5, z: 0 }, 0.5)
-        .to(meshRef.current.rotation, { x: Math.PI * 3, y: Math.PI * 2 }, 0.5)
-        .to(materialRef.current.color, { r: 0.5, g: 1, b: 0.2 }, 0.5) // Перекраска в Зеленый
-
-      // 4. Перелет в Футер
-        .to(meshRef.current.position, { x: 0, y: -1, z: 5 }, 0.8)
-        .to(meshRef.current.rotation, { x: Math.PI * 4, y: Math.PI * 3 }, 0.8)
-        .to(materialRef.current.color, { r: 1, g: 0.5, b: 0 }, 0.8); // Перекраска в Оранжевый
+      // Объект не летает по экрану, он плавно вращается и меняет цвет в углу!
+      tl.to(meshRef.current.rotation, { x: Math.PI * 4, y: Math.PI * 6 }, 0)
+        .to(materialRef.current.color, { r: 0, g: 1, b: 1 }, 0.25) // Cyan
+        .to(materialRef.current.color, { r: 1, g: 0.2, b: 0.8 }, 0.5) // Magenta
+        .to(materialRef.current.color, { r: 0.5, g: 1, b: 0.2 }, 0.75) // Green
+        .to(materialRef.current.color, { r: 1, g: 0.5, b: 0 }, 1); // Orange
     });
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <Float speed={2} rotationIntensity={1.5} floatIntensity={2}>
-      {/* Вы можете заменить torusKnotGeometry на вашу 3D модель пчелы (primitive object) */}
-      <mesh ref={meshRef} position={[-4, 2, -5]} scale={0.7}>
-        <torusKnotGeometry args={[1, 0.3, 128, 16]} />
+    <Float speed={hovered ? 6 : 2} rotationIntensity={hovered ? 3 : 1} floatIntensity={hovered ? 3 : 1}>
+      <mesh ref={meshRef} scale={hovered ? 1.7 : 1.4}>
+        <torusKnotGeometry args={[1, 0.35, 128, 16]} />
         <meshPhysicalMaterial 
           ref={materialRef}
           color="#8a2be2" 
-          metalness={0.8} 
+          metalness={0.9} 
           roughness={0.1} 
           transmission={0.9} 
           thickness={1}
           envMapIntensity={2}
           clearcoat={1}
+          emissive={hovered ? "#ffffff" : "#000000"} 
+          emissiveIntensity={hovered ? 0.3 : 0}
         />
       </mesh>
     </Float>
@@ -326,7 +317,6 @@ const TechBentoGrid = ({ dict, techStack }) => {
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
-      // Использование GSAP Timeline с эффектом back.inOut как вы просили!
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -342,7 +332,7 @@ const TechBentoGrid = ({ dict, techStack }) => {
         rotationX: 45,
         stagger: 0.1,
         duration: 0.8,
-        ease: "back.out(1.5)" // Красивый пружинистый эффект
+        ease: "back.out(1.5)" 
       });
     }, sectionRef);
 
@@ -378,6 +368,7 @@ const TechBentoGrid = ({ dict, techStack }) => {
 // ==========================================
 export default function App() {
   const [lang, setLang] = useState('en');
+  const [droneHovered, setDroneHovered] = useState(false);
   const dict = translations[lang];
 
   const techStack = [
@@ -391,17 +382,28 @@ export default function App() {
     { name: "PostgreSQL", icon: "🐘", level: "Pro" },
   ];
 
+  // Функция для 3D помощника (Скролл наверх)
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <SmoothScroll>
       <LoadingScreen />
 
-      {/* ГЛОБАЛЬНЫЙ 3D CANVAS ДЛЯ "ПЧЕЛЫ" */}
-      <div className="global-3d-canvas">
-        <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ alpha: true }}>
+      {/* ПОЛЕЗНЫЙ 3D ПОМОЩНИК - КНОПКА НАВЕРХ В ПРАВОМ НИЖНЕМ УГЛУ */}
+      <div 
+        className="drone-companion" 
+        onClick={handleScrollToTop}
+        onMouseEnter={() => setDroneHovered(true)}
+        onMouseLeave={() => setDroneHovered(false)}
+      >
+        <div className="drone-tooltip">{dict.scrollTop}</div>
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} gl={{ alpha: true }}>
           <Environment preset="studio" />
           <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 10]} intensity={1} color="#ffffff" />
-          <GlobalScrollCompanion />
+          <directionalLight position={[10, 10, 10]} intensity={2} color="#ffffff" />
+          <ScrollHelperDrone hovered={droneHovered} />
         </Canvas>
       </div>
       
@@ -463,7 +465,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* TECH BENTO GRID (Анимация переписана на чистый GSAP Timelin
+        {/* TECH BENTO GRID */}
         <TechBentoGrid dict={dict} techStack={techStack} />
 
         {/* АНИМАЦИЯ ПАНЕЛЕЙ (ONE, TWO, THREE, FOUR) */}
@@ -493,5 +495,3 @@ export default function App() {
     </SmoothScroll>
   );
 }
-
-// smoothScroll<GithubLinkedInTwitter>
