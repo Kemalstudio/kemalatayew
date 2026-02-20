@@ -463,7 +463,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* TECH BENTO GRID (Анимация переписана на чистый GSAP Timeline) */
+        {/* TECH BENTO GRID (Анимация переписана на чистый GSAP Timeline) *
         <TechBentoGrid dict={dict} techStack={techStack} />
 
         {/* АНИМАЦИЯ ПАНЕЛЕЙ (ONE, TWO, THREE, FOUR) */}
