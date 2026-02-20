@@ -27,7 +27,7 @@ const translations = {
       { title: "UI/UX Design", desc: "Figma prototyping and user-centric design flows." }
     ],
     footerTitle1: "Let's build the", footerTitle2: "impossible.", footerBtn: "Start a Project", rights: "All rights reserved.",
-    a11yTooltip: "Toggle Accessibility Mode"
+    a11yTooltip: "Accessibility Mode"
   },
   ru: {
     navWork: "Работы", navExpertise: "Навыки", navAbout: "Обо мне", navContact: "Контакты", navBtn: "Обсудить проект",
@@ -42,7 +42,7 @@ const translations = {
       { title: "UI/UX Дизайн", desc: "Прототипирование в Figma и удобный дизайн." }
     ],
     footerTitle1: "Давайте создадим", footerTitle2: "невозможное.", footerBtn: "Начать проект", rights: "Все права защищены.",
-    a11yTooltip: "Режим для слабовидящих"
+    a11yTooltip: "Версия для слабовидящих"
   },
   tk: {
     navWork: "Işler", navExpertise: "Başarnyklar", navAbout: "Barada", navContact: "Habarlaşmak", navBtn: "Gürleşeliň",
@@ -57,7 +57,7 @@ const translations = {
       { title: "UI/UX Dizaýn", desc: "Figma we ulanyjy üçin amatly dizaýnlar." }
     ],
     footerTitle1: "Mümkin däl zady", footerTitle2: "döredeliň.", footerBtn: "Taslama Başla", rights: "Ähli hukuklar goralan.",
-    a11yTooltip: "Elýeterlilik düzgüni"
+    a11yTooltip: "Gözüň görşüni ýeňilleşdiriş"
   }
 };
 
@@ -160,69 +160,6 @@ useGLTF.preload('/images/gaming_desktop_pc.glb');
 const HeroModel = () => {
   const { scene } = useGLTF('/images/gaming_desktop_pc.glb');
   return <primitive object={scene} scale={0.8} position={[0, -2.5, 0]} rotation={[0, -0.4, 0]} />;
-};
-
-// ==========================================
-// 🚀 ЛЕТАЮЩИЙ ДРОН-ПОМОЩНИК (С РЕЖИМОМ ДОСТУПНОСТИ)
-// ==========================================
-const FlyingDroneCompanion = ({ a11yMode, toggleA11y, tooltipText }) => {
-  const droneRef = useRef(null);
-  const [hovered, setHovered] = useState(false);
-
-  // GSAP Анимация полета по экрану (не мешая центру)
-  useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: "body",
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1.5, // Привязка к скроллу для эффекта 3D пчелы
-        }
-      });
-
-      // Перемещения: Летает строго по краям, меняя вращение
-      tl.to(droneRef.current, { top: "15%", left: "5%", rotation: 15 }, 0.25) // К Bento (Левый верх)
-        .to(droneRef.current, { top: "85%", left: "80%", rotation: -20 }, 0.5) // К Панелям (Правый низ)
-        .to(droneRef.current, { top: "65%", left: "5%", rotation: 10 }, 0.75) // К Навыкам (Левый низ)
-        .to(droneRef.current, { top: "10%", left: "50%", xPercent: -50, rotation: 360 }, 1); // К Футеру (Верх центр)
-    });
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <div 
-      id="drone-wrapper"
-      ref={droneRef}
-      className="flying-drone-wrapper"
-      onClick={toggleA11y}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div className={`drone-tooltip ${hovered ? 'visible' : ''}`}>{tooltipText}</div>
-      <Canvas camera={{ position: [0, 0, 5], fov: 45 }} gl={{ alpha: true }}>
-        <Environment preset="studio" />
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 10]} intensity={2} color="#ffffff" />
-        <Float speed={hovered ? 6 : 2} rotationIntensity={hovered ? 3 : 1.5} floatIntensity={hovered ? 2 : 1}>
-          <mesh scale={hovered ? 1.5 : 1.2}>
-            <torusKnotGeometry args={[1, 0.35, 128, 16]} />
-            <meshPhysicalMaterial 
-              color={a11yMode ? "#ffff00" : "#8a2be2"} // Желтый если включен режим, иначе Фиолетовый
-              metalness={0.9} 
-              roughness={0.1} 
-              transmission={0.9} 
-              thickness={1}
-              envMapIntensity={2}
-              clearcoat={1}
-              emissive={a11yMode ? "#ffff00" : (hovered ? "#ffffff" : "#000000")} 
-              emissiveIntensity={a11yMode ? 0.6 : (hovered ? 0.3 : 0)}
-            />
-          </mesh>
-        </Float>
-      </Canvas>
-    </div>
-  );
 };
 
 // ==========================================
@@ -400,13 +337,6 @@ export default function App() {
       {/* Главный контейнер реагирует на режим A11y */}
       <div className={`app-wrapper ${a11yMode ? 'a11y-active' : ''}`}>
         <LoadingScreen />
-
-        {/* НАШ ЛЕТАЮЩИЙ И ПОЛЕЗНЫЙ 3D АССИСТЕНТ */}
-        <FlyingDroneCompanion 
-          a11yMode={a11yMode} 
-          toggleA11y={() => setA11yMode(!a11yMode)} 
-          tooltipText={dict.a11yTooltip} 
-        />
         
         {/* NAVBAR */}
         <motion.nav className="navbar" initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
@@ -428,6 +358,20 @@ export default function App() {
               <span className={lang === 'ru' ? 'active' : ''} onClick={() => setLang('ru')}>RU</span>
               <span className={lang === 'tk' ? 'active' : ''} onClick={() => setLang('tk')}>TK</span>
             </div>
+            
+            {/* КНОПКА ДЛЯ СЛАБОВИДЯЩИХ (ИКОНКА ГЛАЗА) */}
+            <button 
+              className={`a11y-toggle-btn ${a11yMode ? 'active' : ''}`} 
+              onClick={() => setA11yMode(!a11yMode)}
+              title={dict.a11yTooltip}
+              aria-label={dict.a11yTooltip}
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+
             <Magnetic><button className="nav-cta">{dict.navBtn}</button></Magnetic>
           </div>
         </motion.nav>
