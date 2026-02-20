@@ -365,7 +365,7 @@ const TechBentoGrid = ({ dict, techStack }) => {
 
 // =========================================
 // MAIN APP КОМПОНЕНТ
-// ==========================================
+// =========================================
 export default function App() {
   const [lang, setLang] = useState('en');
   const [droneHovered, setDroneHovered] = useState(false);
