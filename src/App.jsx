@@ -7,7 +7,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Float, Environment, ContactShadows, useProgress } from '@react-three/drei';
 import './App.css';
 
-// Регистрация бесплатного плагина ScrollTrigge
+// Регистрация бесплатного плагина ScrollTrigg
 gsap.registerPlugin(ScrollTrigger);
 
 // ==========================================
