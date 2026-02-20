@@ -79,18 +79,18 @@ body {
 }
 .nav-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
 .logo-dot { width: 12px; height: 12px; background: var(--accent-2); border-radius: 50%; box-shadow: 0 0 15px var(--accent-2); }
-/* Размер для кастомного шрифта в шапке увеличен для лучшей читаемости */
+/* Размер для кастомного шрифта в шапке */
 .name { font-size: 2.2rem; letter-spacing: 1px; }
 
 .nav-links { display: flex; gap: 40px; list-style: none; }
-.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 1rem; font-weight: 600; transition: color 0.3s; }
+.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 1rem; font-weight: 700; transition: color 0.3s; }
 .nav-links a:hover { color: var(--text-main); }
 
 .nav-right { display: flex; align-items: center; gap: 30px; }
 
 .lang-switcher { display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 20px; }
 .lang-switcher span { 
-    font-size: 0.85rem; font-weight: 700; padding: 5px 10px; border-radius: 15px; 
+    font-size: 0.85rem; font-weight: 800; padding: 5px 10px; border-radius: 15px; 
     cursor: pointer; color: var(--text-muted); transition: 0.3s;
 }
 .lang-switcher span.active { background: var(--text-main); color: var(--bg-dark); }
@@ -98,7 +98,7 @@ body {
 .nav-cta {
     background: transparent; border: 1px solid var(--border-light);
     color: var(--text-main); padding: 12px 24px; border-radius: 30px;
-    font-weight: 700; cursor: pointer; transition: 0.3s; font-family: var(--font-body);
+    font-weight: 800; cursor: pointer; transition: 0.3s; font-family: var(--font-body);
 }
 .nav-cta:hover { background: var(--text-main); color: var(--bg-dark); }
 
@@ -114,12 +114,12 @@ body {
 }
 .hero-badge {
     display: inline-block; padding: 8px 16px; border: 1px solid var(--border-light);
-    border-radius: 30px; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 30px; font-weight: 700;
+    border-radius: 30px; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 30px; font-weight: 800;
 }
 .hero-text-block h1 {
-    font-size: clamp(3.5rem, 6vw, 6.5rem); line-height: 1.1; margin-bottom: 30px; font-weight: 800;
+    font-size: clamp(3.5rem, 6vw, 6.5rem); line-height: 1.1; margin-bottom: 30px; font-weight: 900;
 }
-.hero-desc { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; max-width: 500px; font-weight: 400; }
+.hero-desc { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; max-width: 500px; font-weight: 600; }
 .model-viewer-canvas { width: 100%; height: 80vh; pointer-events: none; }
 
 /* ==========================================
@@ -127,7 +127,7 @@ body {
    ========================================== */
 .tech-bento-section { padding: 150px 0; border-top: 1px solid var(--border-light); }
 .section-subtitle { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.2em; color: var(--accent-2); display: block; margin-bottom: 15px; }
-.section-title { font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom: 60px; font-weight: 800; }
+.section-title { font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom: 60px; font-weight: 900; }
 
 .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
 .tech-card {
@@ -137,7 +137,7 @@ body {
 }
 .tech-card:hover { border-color: var(--accent-1); transform: translateY(-5px); }
 .tech-icon { font-size: 2.5rem; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
-.tech-info h4 { font-size: 1.8rem; margin-bottom: 5px; font-weight: 700; }
+.tech-info h4 { font-size: 1.8rem; margin-bottom: 5px; font-weight: 800; }
 .tech-level { font-size: 0.85rem; color: var(--accent-2); text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
 
 /* ==========================================
@@ -191,7 +191,7 @@ body {
 }
 .panel-num { font-size: 4rem; color: var(--border-light); font-weight: 900; margin-bottom: auto; }
 .panel-content h3 { font-size: 3rem; margin-bottom: 20px; line-height: 1.2; color: var(--accent-2); font-weight: 800; }
-.panel-content p { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; font-weight: 400; }
+.panel-content p { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; font-weight: 600; }
 
 /* ==========================================
    FOOTER
@@ -199,7 +199,7 @@ body {
 .footer-premium { padding: 150px 0 50px; background: #000; text-align: center; }
 .footer-premium h2 { font-size: clamp(3rem, 6vw, 5rem); line-height: 1.2; margin-bottom: 60px; font-weight: 900; }
 .cta-huge {
-    background: var(--text-main); color: #000; font-size: 1.5rem; font-weight: 800; font-family: var(--font-body);
+    background: var(--text-main); color: #000; font-size: 1.5rem; font-weight: 900; font-family: var(--font-body);
     padding: 25px 60px; border-radius: 50px; border: none; cursor: pointer; transition: 0.3s;
 }
 .footer-bottom {
