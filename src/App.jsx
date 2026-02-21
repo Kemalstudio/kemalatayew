@@ -334,7 +334,6 @@ export default function App() {
 
   return (
     <SmoothScroll>
-      {/* Главный контейнер реагирует на режим A11y */}
       <div className={`app-wrapper ${a11yMode ? 'a11y-active' : ''}`}>
         <LoadingScreen />
         
