@@ -242,7 +242,7 @@ body {
 .panel-three { background-color: #8c55a3; z-index: 3; }
 .panel-four { background-color: #559e45; z-index: 4; }
 
-/* ======================================
+/* =====================================
    HORIZONTAL SCROLL
    ========================================= */
 .horizontal-section { height: 100vh; position: relative; overflow: hidden; background: var(--bg-dark); }
