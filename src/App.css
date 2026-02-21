@@ -196,9 +196,9 @@ body {
 
 /* ОБНОВЛЕННЫЕ СТИЛИ ДЛЯ РОБОТА (ЧТОБЫ РАБОТАЛА МЫШКА) */
 .model-viewer-canvas { 
-    width: 100%; 
-    height: 80vh; 
-    pointer-events: auto; /* Обязательно auto, чтобы реагировал на мышь */
+    width: 150%; 
+    height: 94vh; 
+    pointer-events: auto; 
     z-index: 10;
 }
 
