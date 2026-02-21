@@ -58,8 +58,6 @@ const translations = {
     ],
     footerTitle1: "Mümkin däl zady", footerTitle2: "döredeliň.", footerBtn: "Taslama Başla", rights: "Ähli hukuklar goralan.",
     a11yTooltip: "Gözüň görşüni ýeňilleşdiriş"
-    // a11Tooltip: Gozun gorsnisu yenillsdiris
-    title" Atayew kemal - kreatiw programmist, web dizaner
   }
 };
 
