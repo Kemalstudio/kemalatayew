@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap');
 
-/* ==========================================
+/* ===============================
    CSS VARIABLES & GLOBAL SETTINGS
-   ========================================== */
+   ==========================================
+   
+    */
 :root {
     --bg-dark: #050507;
     --bg-panel: rgba(255, 255, 255, 0.03);
@@ -23,7 +25,6 @@
     font-style: normal;
 }
 
-/* Этот класс применяется ТОЛЬКО к имени в шапке */
 .custom-font {
     font-family: 'Amsterdam', cursive, sans-serif;
 }
@@ -134,7 +135,7 @@ body {
 .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 1rem; font-weight: 700; transition: color 0.3s; }
 .nav-links a:hover { color: var(--text-main); }
 
-.nav-right { display: flex; align-items: center; gap: 30px; }
+.nav-right { display: flex; align-items: center; gap: 20px; }
 
 .lang-switcher { display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 20px; }
 .lang-switcher span { 
@@ -172,11 +173,7 @@ body {
     color: var(--text-main); padding: 12px 24px; border-radius: 30px;
     font-weight: 800; cursor: pointer; transition: 0.3s; font-family: var(--font-body);
 }
-.nav-cta:hover { 
-    background: var(--text-main); 
-    color: var(--bg-dark); 
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* Неоновое свечение при наведении */
-}
+.nav-cta:hover { background: var(--text-main); color: var(--bg-dark); }
 
 /* ==========================================
    HERO SECTION
@@ -191,18 +188,12 @@ body {
 .hero-badge {
     display: inline-block; padding: 8px 16px; border: 1px solid var(--border-light);
     border-radius: 30px; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 30px; font-weight: 800;
-    background: rgba(255,255,255,0.03);
 }
 .hero-text-block h1 {
     font-size: clamp(3.5rem, 6vw, 6.5rem); line-height: 1.1; margin-bottom: 30px; font-weight: 900;
 }
 .hero-desc { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; max-width: 500px; font-weight: 600; }
-
-/* Холст для 3D Робота */
-.model-viewer-canvas { 
-    width: 100%; 
-    height: 80vh; 
-}
+.model-viewer-canvas { width: 100%; height: 80vh; pointer-events: none; }
 
 /* ==========================================
    TECH BENTO
@@ -215,13 +206,9 @@ body {
 .tech-card {
     position: relative; background: var(--bg-panel); border: 1px solid var(--border-light);
     border-radius: 24px; padding: 40px 30px; display: flex; align-items: center; gap: 20px;
-    overflow: hidden; transition: 0.4s; backdrop-filter: blur(20px); cursor: pointer;
+    overflow: hidden; transition: 0.4s; backdrop-filter: blur(20px);
 }
-.tech-card:hover { 
-    border-color: var(--accent-1); 
-    transform: translateY(-5px); 
-    box-shadow: 0 10px 30px rgba(138, 43, 226, 0.2); /* Неоновая тень карточек */
-}
+.tech-card:hover { border-color: var(--accent-1); transform: translateY(-5px); }
 .tech-icon { font-size: 2.5rem; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
 .tech-info h4 { font-size: 1.8rem; margin-bottom: 5px; font-weight: 800; }
 .tech-level { font-size: 0.85rem; color: var(--accent-2); text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
@@ -255,9 +242,9 @@ body {
 .panel-three { background-color: #8c55a3; z-index: 3; }
 .panel-four { background-color: #559e45; z-index: 4; }
 
-/* ==========================================
+/* =====================================
    HORIZONTAL SCROLL
-   ========================================== */
+   ========================================= */
 .horizontal-section { height: 100vh; position: relative; overflow: hidden; background: var(--bg-dark); }
 .horizontal-sticky {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -270,14 +257,9 @@ body {
 }
 .horizontal-panel { width: 600px; height: 500px; margin-right: 5vw; flex-shrink: 0; }
 .panel-content {
-    width: 100%; height: 100%; background: var(--bg-panel); border: 1px solid var(--border-light);
+    width: 100%; height:  100%; background: var(--bg-panel); border: 1px solid var(--border-light);
     border-radius: 40px; padding: 60px; display: flex; flex-direction: column; justify-content: center;
     backdrop-filter: blur(20px); position: relative; overflow: hidden;
-    transition: 0.3s;
-}
-.panel-content:hover {
-    border-color: var(--accent-2);
-    box-shadow: 0 0 40px rgba(0, 255, 255, 0.1);
 }
 .panel-num { font-size: 4rem; color: var(--border-light); font-weight: 900; margin-bottom: auto; }
 .panel-content h3 { font-size: 3rem; margin-bottom: 20px; line-height: 1.2; color: var(--accent-2); font-weight: 800; }
@@ -292,17 +274,13 @@ body {
     background: var(--text-main); color: #000; font-size: 1.5rem; font-weight: 900; font-family: var(--font-body);
     padding: 25px 60px; border-radius: 50px; border: none; cursor: pointer; transition: 0.3s;
 }
-.cta-huge:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
-}
 .footer-bottom {
     margin-top: 150px; display: flex; justify-content: space-between; align-items: center;
     border-top: 1px solid var(--border-light); padding-top: 30px; color: var(--text-muted); font-weight: 600;
 }
 .socials { display: flex; gap: 30px; }
 .socials a { color: var(--text-muted); text-decoration: none; transition: 0.3s; }
-.socials a:hover { color: var(--accent-1); text-shadow: 0 0 10px var(--accent-1); }
+.socials a:hover { color: var(--accent-1); }
 
 /* RESPONSIVE */
 @media (max-width: 1024px) {
