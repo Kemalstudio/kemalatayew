@@ -346,9 +346,15 @@ export default function App() {
           </div>
           
           <ul className="nav-links">
-            <li><a href="#work">{dict.navWork}</a></li>
-            <li><a href="#expertise">{dict.navExpertise}</a></li>
-            <li><a href="#about">{dict.navAbout}</a></li>
+            <li>
+              <a href="#work">{dict.navWork}</a>
+              </li>
+            <li>
+              <a href="#expertise">{dict.navExpertise}</a>
+              </li>
+            <li>
+              <a href="#about">{dict.navAbout}</a>
+              </li>
           </ul>
 
           <div className="nav-right">
