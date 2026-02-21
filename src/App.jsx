@@ -3,16 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Float, Environment, ContactShadows, useProgress } from '@react-three/drei';
+import Spline from '@splinetool/react-spline'; // Добавлен Spline для робота
 import './App.css';
 
 // Регистрация бесплатного плагина ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
-// ========================================
-// МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ (i18n)
 // =========================================
+// МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ (i18n)
+// ==========================================
 const translations = {
   en: {
     navWork: "Work", navExpertise: "Expertise", navAbout: "About", navContact: "Contact", navBtn: "Let's Talk",
@@ -53,7 +52,7 @@ const translations = {
     skills: [
       { title: "Frontend Ösüşi", desc: "React ekosistemasy bilen kämil we çalt interfeýsler." },
       { title: "Backend Arhitekturasy", desc: "Giňeldip bolýan API-ler we maglumatlar bazasy." },
-      { title: "Kreatiw Ösüş", desc: "Ýokary hilli WebGL we GSAP animasiýalary." },
+      { title: "Kreatiw Ösüş", desc: "Ýokary hilli WebGL и GSAP animasiýalary." },
       { title: "UI/UX Dizaýn", desc: "Figma we ulanyjy üçin amatly dizaýnlar." }
     ],
     footerTitle1: "Mümkin däl zady", footerTitle2: "döredeliň.", footerBtn: "Taslama Başla", rights: "Ähli hukuklar goralan.",
@@ -127,8 +126,23 @@ const Magnetic = ({ children }) => {
 // PRELOADER
 // ==========================================
 const LoadingScreen = () => {
-  const { progress } = useProgress();
+  const [progress, setProgress] = useState(0);
   const [finished, setFinished] = useState(false);
+
+  useEffect(() => {
+    // Симуляция загрузки для плавного прелоадера
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + 3;
+      });
+    }, 40);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (progress === 100) {
@@ -150,16 +164,6 @@ const LoadingScreen = () => {
       </div>
     </motion.div>
   );
-};
-
-// ==========================================
-// HERO 3D MODEL
-// ==========================================
-useGLTF.preload('/images/gaming_desktop_pc.glb');
-
-const HeroModel = () => {
-  const { scene } = useGLTF('/images/gaming_desktop_pc.glb');
-  return <primitive object={scene} scale={0.8} position={[0, -2.5, 0]} rotation={[0, -0.4, 0]} />;
 };
 
 // ==========================================
@@ -399,18 +403,11 @@ export default function App() {
                 </motion.p>
               </div>
               
+              {/* СЮДА ДОБАВЛЕН РОБОТ ИЗ ВАШЕГО HTML КОДА */}
               <div className="model-viewer-canvas">
-                <Canvas camera={{ position: [0, 1, 12], fov: 40 }} dpr={[1, 2]} gl={{ alpha: true }}>
-                  <Suspense fallback={null}>
-                    <Environment preset="studio" />
-                    <ambientLight intensity={0.5} />
-                    <spotLight position={[10, 10, 10]} intensity={2} color="#8a2be2" />
-                    <Float speed={2.5} rotationIntensity={0.2} floatIntensity={0.5}><HeroModel /></Float>
-                    <ContactShadows position={[0, -3, 0]} opacity={0.6} scale={15} blur={2} />
-                    <OrbitControls enableZoom={false} enablePan={false} autoRotate />
-                  </Suspense>
-                </Canvas>
+                <Spline scene="https://prod.spline.design/Qr2knMM4aKElH8x7/scene.splinecode" />
               </div>
+
             </div>
           </section>
 
