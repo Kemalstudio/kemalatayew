@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, reverseEasing } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
@@ -430,7 +430,7 @@ const TechBentoGrid = ({ dict, techStack }) => {
         ease: "power4.out"
       });
 
-      // Анимация ка
+      // Анимация ка0
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -439,6 +439,7 @@ const TechBentoGrid = ({ dict, techStack }) => {
         }
       });
 
+     
       tl.from(".tech-card", {
         y: 100,
         opacity: 0,
