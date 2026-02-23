@@ -322,7 +322,7 @@ const TechBentoGrid = ({ dict, techStack }) => {
 // ==========================================
 export default function App() {
   const [lang, setLang] = useState('en');
-  const [a11yMode, setA11yMode] = useState(false); // Состояние Режима Доступ
+  const [a11yMode, setA11yMode] = useState(false); // Состояние Режима Досту
   const dict = translations[lang];
 
   const techStack = [
