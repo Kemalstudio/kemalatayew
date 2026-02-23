@@ -594,13 +594,13 @@ export default function App() {
             </div>
           </section>
 
-          {/* Дополнительная Интерактивная 3D Секция (Абстрактные формы) */}
-          <section className="spline-divider-section">
+          {/* Ненужная секция (3D) */}
+          {/* <section className="spline-divider-section">
             <h2 className="spline-divider-text">INTERACTIVE DESIGN</h2>
             <div className="spline-divider-canvas">
                <Spline scene="https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode" />
             </div>
-          </section>
+          </section> */}
 
           {/* TECH BENTO GRID */}
           <TechBentoGrid dict={dict} techStack={techStack} />
