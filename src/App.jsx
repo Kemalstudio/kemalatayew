@@ -345,7 +345,7 @@ export default function App() {
         <motion.nav className="navbar" initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
           <div className="nav-logo">
             <div className="logo-dot" />
-            <span className="name custom-font">Atayev Kemal</span>
+            <span style={{ fontSize: "30px" }} className="name custom-font">Atayev Kemal</span>
           </div>
           
           <ul className="nav-links">
