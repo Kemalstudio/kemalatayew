@@ -194,10 +194,11 @@ body {
 }
 .hero-desc { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; max-width: 500px; font-weight: 600; }
 
+
 /* ОБНОВЛЕННЫЕ СТИЛИ ДЛЯ РОБОТА (ЧТОБЫ РАБОТАЛА МЫШКА) */
 .model-viewer-canvas { 
     width: 150%; 
-    height: 94vh; 
+    height: 105vh; 
     pointer-events: auto; 
     z-index: 10;
 }
