@@ -489,7 +489,7 @@ export default function App() {
     { name: "PostgreSQL", icon: "🐘", level: "Pro" },
   ];
 
-  // Эффект параллакса для мыши в Hero секции
+  // Эффект параллакса для мыши в Hero секци
   const handleHeroMouseMove = (e) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 40;
     const y = (e.clientY / window.innerHeight - 0.5) * 40;
