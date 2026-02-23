@@ -438,7 +438,6 @@ const TechBentoGrid = ({ dict, techStack }) => {
           toggleActions: "play none none reverse"
         }
       });
-
      
       tl.from(".tech-card", {
         y: 100,
