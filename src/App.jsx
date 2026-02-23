@@ -265,7 +265,7 @@ const SkillsHorizontal = ({ lang, dict }) => {
 
 // ========================================
 // TECH BENTO GRID С ИСПОЛЬЗОВАНИЕМ GSAP TIMELINE
-// =========================================
+// ========================================
 const TechBentoGrid = ({ dict, techStack }) => {
   const sectionRef = useRef(null);
 
