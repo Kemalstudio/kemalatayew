@@ -269,19 +269,19 @@ const GsapPanelsShowcase = () => {
     <section ref={containerRef} className="gsap-panels-container">
       <div className="gsap-panel panel-one">
         <div className="bg-circle" />
-        <h2 className="panel-text">CREATIVE</h2>
+        <h2 className="panel-text">Aura Computers</h2>
       </div>
       <div className="gsap-panel panel-two">
         <div className="bg-circle" />
-        <h2 className="panel-text">DIGITAL</h2>
+        <h2 className="panel-text">Atam Store</h2>
       </div>
       <div className="gsap-panel panel-three">
         <div className="bg-circle" />
-        <h2 className="panel-text">EXPERIENCE</h2>
+        <h2 className="panel-text">Sonus Music</h2>
       </div>
       <div className="gsap-panel panel-four">
         <div className="bg-circle" />
-        <h2 className="panel-text">NOW</h2>
+        <h2 className="panel-text">Turkmen Store</h2>
       </div>
     </section>
   );
