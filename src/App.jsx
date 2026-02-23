@@ -430,7 +430,7 @@ const TechBentoGrid = ({ dict, techStack }) => {
         ease: "power4.out"
       });
 
-      // Ан
+      // Анимация каrtochki
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
