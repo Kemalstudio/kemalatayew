@@ -13,11 +13,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 // ========================================
 // МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ (i18n)
+// (Исправлен текст для красивого отображения в 3 строки)
 // ==========================================
 const translations = {
   en: {
     navWork: "Work", navExpertise: "Expertise", navAbout: "About", navContact: "Contact", navBtn: "Let's Talk",
-    heroBadge: "AVAILABLE FOR HIRE", heroTitle1: "Full Stack", heroTitle2: "Stack", heroTitle3: "Developer",
+    heroBadge: "AVAILABLE FOR HIRE", heroTitle1: "Creative", heroTitle2: "Full Stack", heroTitle3: "Developer",
     heroDesc: "Kemal Atayev — Creative Developer bridging the gap between exceptional design and flawless engineering.",
     bentoSub: "01 // ARSENAL", bentoTitle: "Technologies & Tools",
     expTitle: "EXPERTISE",
@@ -33,7 +34,7 @@ const translations = {
   },
   ru: {
     navWork: "Работы", navExpertise: "Навыки", navAbout: "Обо мне", navContact: "Контакты", navBtn: "Обсудить",
-    heroBadge: "ОТКРЫТ ДЛЯ ПРЕДЛОЖЕНИЙ", heroTitle1: "Создаю", heroTitle2: "Цифровые", heroTitle3: "Шедевры",
+    heroBadge: "ОТКРЫТ ДЛЯ ПРЕДЛОЖЕНИЙ", heroTitle1: "Креативный", heroTitle2: "Full Stack", heroTitle3: "Разработчик",
     heroDesc: "Кемаль Атаев — Креативный разработчик, объединяющий исключительный дизайн и безупречный код.",
     bentoSub: "01 // АРСЕНАЛ", bentoTitle: "Технологии и Инструменты",
     expTitle: "ЭКСПЕРТИЗА",
@@ -49,7 +50,7 @@ const translations = {
   },
   tk: {
     navWork: "Işler", navExpertise: "Başarnyklar", navAbout: "Barada", navContact: "Habarlaşmak", navBtn: "Gürleşeliň",
-    heroBadge: "IŞLEMÄGE TAÝÝAR", heroTitle1: "Sanly", heroTitle2: "Taslamalary", heroTitle3: "Döredýärin",
+    heroBadge: "IŞLEMÄGE TAÝÝAR", heroTitle1: "Kreatiw", heroTitle2: "Full Stack", heroTitle3: "Programmist",
     heroDesc: "Kemal Ataýew — Ajaýyp dizaýny we kämil inženerçiligi birleşdirýän kreatiw programmist.",
     bentoSub: "01 // GURALLAR", bentoTitle: "Tehnologiýalar we Gurallar",
     expTitle: "HÜNÄR",
@@ -181,6 +182,37 @@ const SplitText = ({ children, className }) => {
 };
 
 // ==========================================
+// ПАРЯЩИЕ ЧАСТИЦЫ ДЛЯ ГЛАВНОГО ЭКРАНА (НОВОЕ)
+// ==========================================
+const FloatingParticles = () => {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const particles = gsap.utils.toArray('.floating-particle');
+    particles.forEach(p => {
+      gsap.to(p, {
+        y: "random(-20, 20)",
+        x: "random(-20, 20)",
+        rotation: "random(-15, 15)",
+        duration: "random(2, 4)",
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut"
+      });
+    });
+  }, []);
+
+  return (
+    <div ref={containerRef} className="particles-container">
+      <span className="floating-particle p-1">{"{ }"}</span>
+      <span className="floating-particle p-2">{"</>"}</span>
+      <span className="floating-particle p-3">✦</span>
+      <span className="floating-particle p-4">{"#"}</span>
+    </div>
+  );
+};
+
+// ==========================================
 // PRELOADER
 // ==========================================
 const LoadingScreen = ({ onComplete }) => {
@@ -302,9 +334,8 @@ const PhysicsPlayground = ({ dict }) => {
 const GsapPanelsShowcase = () => {
   const containerRef = useRef(null);
 
-  // ИСПОЛЬЗУЕМ setTimeout внутри useLayoutEffect для устранения бага с черным экраном
   useLayoutEffect(() => {
-    let ctx = gsap.context(() => {}); // Пустой контекст
+    let ctx = gsap.context(() => {}); 
     
     const timer = setTimeout(() => {
       ctx.add(() => {
@@ -315,7 +346,7 @@ const GsapPanelsShowcase = () => {
             pin: true,
             scrub: 1,
             end: () => "+=" + window.innerHeight * 4, 
-            invalidateOnRefresh: true, // ВАЖНО ДЛЯ РЕСАЙЗА И СМЕНЫ ЯЗЫКА
+            invalidateOnRefresh: true, 
           }
         });
 
@@ -324,7 +355,7 @@ const GsapPanelsShowcase = () => {
           .fromTo(panels[3], { xPercent: -100, rotation: -10 }, { xPercent: 0, rotation: 0, ease: "power2.inOut" });
       });
       ScrollTrigger.refresh();
-    }, 100); // Миллисекунды задержки для расчетов DOM
+    }, 100); 
 
     return () => {
       clearTimeout(timer);
@@ -375,7 +406,7 @@ const SkillsHorizontal = ({ lang, dict }) => {
             pin: true,
             scrub: 1,
             end: `+=${scrollWidth}`,
-            invalidateOnRefresh: true // ВАЖНО!
+            invalidateOnRefresh: true 
           }
         });
         
@@ -502,7 +533,9 @@ export default function App() {
   const [lang, setLang] = useState('en');
   const [a11yMode, setA11yMode] = useState(false);
   const [loadingEnded, setLoadingEnded] = useState(false);
+  
   const heroTextRef = useRef(null);
+  const heroTextBlockRef = useRef(null); // Ссылка для 3D наклона всего текстового блока
 
   const dict = translations[lang];
 
@@ -517,18 +550,46 @@ export default function App() {
     { name: "PostgreSQL", icon: "🐘", level: "Pro" },
   ];
 
+  // Премиальная анимация появления текста с эффектом Blur
   useLayoutEffect(() => {
     if (!loadingEnded) return;
     let ctx = gsap.context(() => {
-      gsap.from(".split-char", { y: 100, opacity: 0, rotateX: -90, stagger: 0.03, duration: 1, ease: "back.out(1.7)", delay: 0.2 });
+      gsap.fromTo(".split-char", 
+        { y: 100, opacity: 0, rotateX: -90, filter: "blur(10px)" },
+        { y: 0, opacity: 1, rotateX: 0, filter: "blur(0px)", stagger: 0.02, duration: 1.2, ease: "power4.out", delay: 0.2 }
+      );
     }, heroTextRef);
     return () => ctx.revert();
   }, [loadingEnded, lang]);
 
   const handleHeroMouseMove = (e) => {
+    // Движение шаров (света) на фоне
     const x = (e.clientX / window.innerWidth - 0.5) * 40;
     const y = (e.clientY / window.innerHeight - 0.5) * 40;
     gsap.to(".parallax-orb", { x: x, y: y, duration: 1, ease: "power2.out", stagger: 0.1 });
+
+    // Интерактивный 3D-наклон самого текстового блока!
+    if (heroTextBlockRef.current) {
+      const rect = heroTextBlockRef.current.getBoundingClientRect();
+      const moveX = e.clientX - rect.left - rect.width / 2;
+      const moveY = e.clientY - rect.top - rect.height / 2;
+      gsap.to(heroTextBlockRef.current, {
+        rotateX: -(moveY / 40), // Чем больше число, тем слабее наклон
+        rotateY: (moveX / 40),
+        transformPerspective: 1000,
+        duration: 1,
+        ease: "power2.out"
+      });
+    }
+  };
+
+  const handleHeroMouseLeave = () => {
+    // Возвращаем текст в исходное положение
+    if (heroTextBlockRef.current) {
+      gsap.to(heroTextBlockRef.current, {
+        rotateX: 0, rotateY: 0, duration: 1.5, ease: "elastic.out(1, 0.3)"
+      });
+    }
   };
 
   return (
@@ -569,12 +630,6 @@ export default function App() {
           </div>
         </motion.nav>
 
-        {/* 
-          ФИКС ЧЕРНОГО ЭКРАНА: 
-          Убрали transform (y: 50) и filter из анимации AnimatePresence.
-          Оставили ТОЛЬКО opacity. 
-          Добавили onAnimationComplete={() => ScrollTrigger.refresh()}
-        */}
         <AnimatePresence mode="wait">
           <motion.div 
             key={lang}
@@ -583,28 +638,38 @@ export default function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
             onAnimationComplete={() => {
-              // Принудительно заставляем GSAP пересчитать высоты, 
-              // чтобы черный экран и
               setTimeout(() => ScrollTrigger.refresh(), 100); 
             }}
           >
             <main>
               {/* HERO SECTION */}
-              <section className="hero-premium" onMouseMove={handleHeroMouseMove}>
+              <section 
+                className="hero-premium" 
+                onMouseMove={handleHeroMouseMove}
+                onMouseLeave={handleHeroMouseLeave}
+              >
                 <div className="noise-overlay" />
                 <div className="parallax-orb orb-1"></div>
                 <div className="parallax-orb orb-2"></div>
+                
+                {/* Парящие микро-элементы */}
+                <FloatingParticles />
 
                 <div className="container hero-container" ref={heroTextRef}>
-                  <div className="hero-text-block">
+                  
+                  {/* Обернул весь текст в ref для 3D наклона */}
+                  <div className="hero-text-block" ref={heroTextBlockRef}>
                     <motion.span className="hero-badge" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1, type: "spring" }}>
                       {dict.heroBadge}
                     </motion.span>
+                    
+                    {/* Исправленная структура для уменьшения отступов */}
                     <h1 className="hero-h1">
-                      <SplitText>{dict.heroTitle1}</SplitText> <br/>
-                      <span className="text-gradient"><SplitText>{dict.heroTitle2}</SplitText></span> <br/>
-                      <SplitText>{dict.heroTitle3}</SplitText><span className="split-char">.</span>
+                      <div className="line-wrap"><SplitText>{dict.heroTitle1}</SplitText></div>
+                      <div className="line-wrap text-gradient"><SplitText>{dict.heroTitle2}</SplitText></div>
+                      <div className="line-wrap"><SplitText>{dict.heroTitle3}</SplitText><span className="split-char">.</span></div>
                     </h1>
+
                     <motion.p className="hero-desc" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5, duration: 1 }}>
                       {dict.heroDesc}
                     </motion.p>
