@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap');
 
-/* ==============================
+/* ===============================
    CSS VARIABLES & GLOBAL SETTINGS
    =============================== */
 :root {
@@ -18,7 +18,6 @@
 
 @font-face {
     font-family: 'Amsterdam';
-
     src: url('/fonts/Amsterdam-ZVGqm.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
@@ -36,10 +35,9 @@ body {
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    cursor: none; /* Скрываем стандартный курсор для кастомного */
+    cursor: none; 
 }
 
-/* На мобильных возвращаем обычный курсор */
 @media (pointer: coarse) {
     body { cursor: auto; }
     .custom-cursor-dot, .custom-cursor-follower { display: none !important; }
@@ -83,7 +81,7 @@ body {
    ========================================== */
 .a11y-active p,
 .a11y-active a,
-.a11y-active span:not(.custom-font),
+.a11y-active span:not(.custom-font):not(.split-char),
 .a11y-active .tech-level,
 .a11y-active .loader-subtext,
 .a11y-active .section-subtitle {
@@ -180,28 +178,18 @@ body {
 .nav-cta {
     background: transparent; border: 1px solid var(--border-light); position: relative; overflow: hidden;
     color: var(--text-main); padding: 12px 24px; border-radius: 30px;
-    font-weight: 800; cursor: pointer; transition: 0.3s; font-family: var(--font-body);
+    font-weight: 800; cursor: pointer; transition: background-color 0.3s, color 0.3s; font-family: var(--font-body);
 }
-.nav-cta:hover { background: var(--text-main); color: var(--bg-dark); box-shadow: 0 0 20px rgba(255,255,255,0.2); }
-
-/* Эффект волны при клике (Ripple) */
-.btn-ripple {
-    position: absolute; border-radius: 50%; transform: scale(0);
-    animation: ripple-anim 0.6s linear; background: rgba(255, 255, 255, 0.4);
-}
-@keyframes ripple-anim {
-    to { transform: scale(4); opacity: 0; }
-}
+.nav-cta:hover { background: var(--text-main); color: var(--bg-dark); }
 
 /* ==========================================
-   HERO SECTION
+   HERO SECTION & LOTTIE
    ========================================== */
 .hero-premium {
     min-height: 100vh; position: relative;
     display: flex; align-items: center; padding-top: 80px; overflow: hidden;
 }
 
-/* Parallax Background Elements */
 .parallax-orb {
     position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; z-index: 0;
 }
@@ -216,8 +204,9 @@ body {
     border-radius: 30px; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 30px; font-weight: 800;
     backdrop-filter: blur(10px); background: rgba(255,255,255,0.02);
 }
-.hero-text-block h1 {
+.hero-h1 {
     font-size: clamp(3.5rem, 6vw, 6.5rem); line-height: 1.1; margin-bottom: 30px; font-weight: 900;
+    perspective: 1000px; /* Для 3D Splitting эффекта */
 }
 .hero-desc { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; max-width: 500px; font-weight: 600; }
 
@@ -225,21 +214,10 @@ body {
     width: 150%; height: 105vh; pointer-events: auto; margin-top: -110px; z-index: 10;
 }
 
-/* ==========================================
-   SPLINE DIVIDER SECTION (NEW)
-   ========================================== */
-.spline-divider-section {
-    position: relative; width: 100%; height: 60vh; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-    border-top: 1px solid var(--border-light); background: #000;
-}
-.spline-divider-text {
-    position: absolute; z-index: 2; font-size: clamp(4rem, 8vw, 10rem);
-    font-weight: 900; color: rgba(255,255,255,0.05); pointer-events: none;
-    white-space: nowrap; letter-spacing: -2px;
-}
-.spline-divider-canvas {
-    width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; pointer-events: auto;
+.lottie-scroll-wrapper {
+    margin-top: 40px;
+    opacity: 0.7;
+    pointer-events: none;
 }
 
 /* ==========================================
@@ -255,7 +233,6 @@ body {
     border-radius: 24px; padding: 40px 30px; display: flex; align-items: center; gap: 20px;
     backdrop-filter: blur(20px); transform-style: preserve-3d; cursor: pointer;
 }
-/* Свечение внутри карточки */
 .tech-card::before {
     content: ''; position: absolute; inset: 0; border-radius: 24px;
     box-shadow: inset 0 0 20px rgba(255,255,255,0.02); pointer-events: none;
@@ -316,6 +293,20 @@ body {
 .panel-content p { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; font-weight: 600; }
 
 /* ==========================================
+   MATTER.JS PHYSICS SECTION
+   ========================================== */
+.physics-section {
+    padding: 100px 0; border-top: 1px solid var(--border-light); position: relative;
+    background: linear-gradient(to bottom, var(--bg-dark), #000); overflow: hidden;
+}
+.physics-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 900; text-align: center; }
+.physics-sub { text-align: center; color: var(--accent-2); letter-spacing: 3px; font-weight: 800; margin-top: 10px;}
+.physics-canvas-container {
+    width: 100%; height: 500px; margin-top: 50px; cursor: grab;
+}
+.physics-canvas-container:active { cursor: grabbing; }
+
+/* ==========================================
    FOOTER
    ========================================== */
 .footer-premium { padding: 150px 0 50px; background: #000; text-align: center; position: relative; overflow: hidden; }
@@ -324,11 +315,12 @@ body {
     width: 1000px; height: 1000px; background: radial-gradient(circle, rgba(138,43,226,0.1) 0%, transparent 70%); pointer-events: none;
 }
 .footer-premium h2 { font-size: clamp(3rem, 6vw, 6rem); line-height: 1.1; margin-bottom: 60px; font-weight: 900; position: relative; z-index: 2;}
+
 .cta-huge {
     background: var(--text-main); color: #000; font-size: 1.5rem; font-weight: 900; font-family: var(--font-body); position: relative; overflow: hidden;
-    padding: 25px 60px; border-radius: 50px; border: none; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 2;
+    padding: 25px 60px; border-radius: 50px; border: none; cursor: pointer; z-index: 2; display: inline-block;
 }
-.cta-huge:hover { transform: scale(1.05); box-shadow: 0 20px 40px rgba(255,255,255,0.2); }
+
 .footer-bottom {
     margin-top: 150px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2;
     border-top: 1px solid var(--border-light); padding-top: 30px; color: var(--text-muted); font-weight: 600;
@@ -345,5 +337,4 @@ body {
     .horizontal-panel { width: 85vw; margin-right: 10vw; }
     .panel-text { font-size: 4rem; }
     .footer-bottom { flex-direction: column; gap: 20px; }
-    .spline-divider-section { height: 40vh; }
 }
