@@ -417,7 +417,7 @@ const TechBentoGrid = ({ dict, techStack }) => {
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
-      // Анимация заголовка (Clip-path reve
+      // Анимация заголовка (Clip-path reverse)
       gsap.from(titleRef.current, {
         scrollTrigger: {
           trigger: sectionRef.current,
