@@ -71,9 +71,19 @@ body {
     opacity: 0.04; pointer-events: none; mix-blend-mode: overlay;
 }
 
+/* АНИМИРОВАННЫЙ ГРАДИЕНТ */
 .text-gradient {
-    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2), #8a2be2, var(--accent-2));
+    background-size: 300% 300%;
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent;
+    animation: gradient-flow 6s ease infinite;
+}
+
+@keyframes gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* ==========================================
@@ -183,11 +193,12 @@ body {
 .nav-cta:hover { background: var(--text-main); color: var(--bg-dark); }
 
 /* ==========================================
-   HERO SECTION & LOTTIE
+   HERO SECTION, LOTTIE & PARTICLES
    ========================================== */
 .hero-premium {
     min-height: 100vh; position: relative;
     display: flex; align-items: center; padding-top: 80px; overflow: hidden;
+    perspective: 1000px;
 }
 
 .parallax-orb {
@@ -196,19 +207,52 @@ body {
 .orb-1 { width: 300px; height: 300px; background: var(--accent-1); top: 20%; left: 10%; }
 .orb-2 { width: 400px; height: 400px; background: var(--accent-2); bottom: 10%; right: 5%; }
 
+/* Контейнер частиц */
+.particles-container {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+}
+.floating-particle {
+    position: absolute; color: var(--text-muted); font-weight: 900; opacity: 0.2; font-size: 1.5rem;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.3); font-family: monospace;
+}
+.p-1 { top: 25%; left: 15%; font-size: 2rem; }
+.p-2 { bottom: 30%; left: 45%; }
+.p-3 { top: 15%; right: 35%; color: var(--accent-2); opacity: 0.5; }
+.p-4 { bottom: 20%; right: 10%; font-size: 3rem; }
+
 .hero-container {
     display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 50px; z-index: 2; position: relative;
 }
+
+/* Обертка текста для 3D наклона */
+.hero-text-block {
+    transform-style: preserve-3d;
+}
+
 .hero-badge {
     display: inline-block; padding: 8px 16px; border: 1px solid var(--border-light);
     border-radius: 30px; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 30px; font-weight: 800;
-    backdrop-filter: blur(10px); background: rgba(255,255,255,0.02);
+    backdrop-filter: blur(10px); background: rgba(255,255,255,0.02); transform: translateZ(30px);
 }
+
+/* 🔥 ИСПРАВЛЕННЫЕ ОТСТУПЫ МЕЖДУ СТРОКАМИ 🔥 */
 .hero-h1 {
-    font-size: clamp(3.5rem, 6vw, 6.5rem); line-height: 1.1; margin-bottom: 30px; font-weight: 900;
-    perspective: 1000px; /* Для 3D Splitting эффекта */
+    font-size: clamp(3.5rem, 6.5vw, 7.5rem); 
+    line-height: 0.95; /* Максимально плотно */
+    margin-bottom: 30px; 
+    font-weight: 900;
+    display: flex;
+    flex-direction: column;
+    gap: 0px; /* Убрал лишнее расстояние полностью */
+    transform: translateZ(50px);
 }
-.hero-desc { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; max-width: 500px; font-weight: 600; }
+
+.line-wrap {
+    display: block;
+    padding-bottom: 10px; /* Место под хвосты букв (g, y, p) */
+}
+
+.hero-desc { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; max-width: 500px; font-weight: 600; transform: translateZ(20px);}
 
 .model-viewer-canvas { 
     width: 150%; height: 105vh; pointer-events: auto; margin-top: -110px; z-index: 10;
@@ -218,6 +262,7 @@ body {
     margin-top: 40px;
     opacity: 0.7;
     pointer-events: none;
+    transform: translateZ(20px);
 }
 
 /* ==========================================
@@ -244,7 +289,7 @@ body {
 .tech-level { font-size: 0.85rem; color: var(--accent-2); text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
 
 /* ==========================================
-   GSAP PANELS SHOWCASE (ONE, TWO, THREE, FOUR)
+   GSAP PANELS SHOWCASE
    ========================================== */
 .gsap-panels-container {
     width: 100%; height: 100vh; position: relative; overflow: hidden;
@@ -332,6 +377,7 @@ body {
 /* RESPONSIVE */
 @media (max-width: 1024px) {
     .hero-container { grid-template-columns: 1fr; text-align: center; padding-top: 10vh; }
+    .hero-text-block { transform: none !important; } /* Отключаем 3D наклон на мобильных */
     .hero-desc { margin: 0 auto; }
     .nav-links, .nav-cta { display: none; }
     .horizontal-panel { width: 85vw; margin-right: 10vw; }
