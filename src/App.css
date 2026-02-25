@@ -377,7 +377,7 @@ body {
 /* RESPONSIVE */
 @media (max-width: 1024px) {
     .hero-container { grid-template-columns: 1fr; text-align: center; padding-top: 10vh; }
-    .hero-text-block { transform: none !important; } /* Отключаем 3D наклон на мобильных */
+    .hero-text-block { transform: none !important; } /* Отключаем 3D наклон на мобильных *
     .hero-desc { margin: 0 auto; }
     .nav-links, .nav-cta { display: none; }
     .horizontal-panel { width: 85vw; margin-right: 10vw; }
