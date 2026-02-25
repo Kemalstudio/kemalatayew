@@ -584,7 +584,7 @@ export default function App() {
             transition={{ duration: 0.6 }}
             onAnimationComplete={() => {
               // Принудительно заставляем GSAP пересчитать высоты, 
-              // чтобы черный экран исче
+              // чтобы черный экран исч
               setTimeout(() => ScrollTrigger.refresh(), 100); 
             }}
           >
