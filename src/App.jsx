@@ -13,7 +13,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 // ========================================
 // МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ (i18n)
-// (Исправлен текст для красивого отображения в 3 строки)
 // ==========================================
 const translations = {
   en: {
@@ -58,7 +57,7 @@ const translations = {
       { title: "Frontend Ösüşi", desc: "React ekosistemasy bilen kämil we çalt interfeýsler." },
       { title: "Backend Arhitekturasy", desc: "Giňeldip bolýan API-ler calculations maglumatlar bazasy." },
       { title: "Kreatiw Ösüş", desc: "Ýokary hilli WebGL we GSAP animasiýalary." },
-      { title: "UI/UX Dizaýn", desc: "Figma we ulanyjy üçin amatly dizaýnlar." }
+      { title: "UI/UX Dizaýn", desc: "Figma we ulanyjy কাশী üçin amatly dizaýnlar." }
     ],
     physicsTitle: "Başarnyklarym bilen oýnaň", physicsSub: "ÇEK WE ZYŇ",
     footerTitle1: "Mümkin däl zady", footerTitle2: "döredeliň.", footerBtn: "Taslama Başla", rights: "Ähli hukuklar goralan.",
@@ -182,7 +181,7 @@ const SplitText = ({ children, className }) => {
 };
 
 // ==========================================
-// ПАРЯЩИЕ ЧАСТИЦЫ ДЛЯ ГЛАВНОГО ЭКРАНА (НОВОЕ)
+// ПАРЯЩИЕ ЧАСТИЦЫ ДЛЯ ГЛАВНОГО ЭКРАНА
 // ==========================================
 const FloatingParticles = () => {
   const containerRef = useRef(null);
@@ -535,7 +534,7 @@ export default function App() {
   const [loadingEnded, setLoadingEnded] = useState(false);
   
   const heroTextRef = useRef(null);
-  const heroTextBlockRef = useRef(null); // Ссылка для 3D наклона всего текстового блока
+  const heroTextBlockRef = useRef(null); 
 
   const dict = translations[lang];
 
@@ -551,30 +550,33 @@ export default function App() {
   ];
 
   // Премиальная анимация появления текста с эффектом Blur
+  // ИСПРАВЛЕНИЕ: Добавлен clearProps: "filter", чтобы текст не исчезал!
   useLayoutEffect(() => {
     if (!loadingEnded) return;
     let ctx = gsap.context(() => {
       gsap.fromTo(".split-char", 
         { y: 100, opacity: 0, rotateX: -90, filter: "blur(10px)" },
-        { y: 0, opacity: 1, rotateX: 0, filter: "blur(0px)", stagger: 0.02, duration: 1.2, ease: "power4.out", delay: 0.2 }
+        { 
+          y: 0, opacity: 1, rotateX: 0, filter: "blur(0px)", 
+          stagger: 0.02, duration: 1.2, ease: "power4.out", delay: 0.2,
+          clearProps: "filter" // ОЧЕНЬ ВАЖНО ДЛЯ ГРАДИЕНТНОГО ТЕКСТА
+        }
       );
     }, heroTextRef);
     return () => ctx.revert();
   }, [loadingEnded, lang]);
 
   const handleHeroMouseMove = (e) => {
-    // Движение шаров (света) на фоне
     const x = (e.clientX / window.innerWidth - 0.5) * 40;
     const y = (e.clientY / window.innerHeight - 0.5) * 40;
     gsap.to(".parallax-orb", { x: x, y: y, duration: 1, ease: "power2.out", stagger: 0.1 });
 
-    // Интерактивный 3D-наклон самого текстового блока!
     if (heroTextBlockRef.current) {
       const rect = heroTextBlockRef.current.getBoundingClientRect();
       const moveX = e.clientX - rect.left - rect.width / 2;
       const moveY = e.clientY - rect.top - rect.height / 2;
       gsap.to(heroTextBlockRef.current, {
-        rotateX: -(moveY / 40), // Чем больше число, тем слабее наклон
+        rotateX: -(moveY / 40), 
         rotateY: (moveX / 40),
         transformPerspective: 1000,
         duration: 1,
@@ -584,7 +586,6 @@ export default function App() {
   };
 
   const handleHeroMouseLeave = () => {
-    // Возвращаем текст в исходное положение
     if (heroTextBlockRef.current) {
       gsap.to(heroTextBlockRef.current, {
         rotateX: 0, rotateY: 0, duration: 1.5, ease: "elastic.out(1, 0.3)"
@@ -652,21 +653,21 @@ export default function App() {
                 <div className="parallax-orb orb-1"></div>
                 <div className="parallax-orb orb-2"></div>
                 
-                {/* Парящие микро-элементы */}
                 <FloatingParticles />
 
                 <div className="container hero-container" ref={heroTextRef}>
                   
-                  {/* Обернул весь текст в ref для 3D наклона */}
                   <div className="hero-text-block" ref={heroTextBlockRef}>
                     <motion.span className="hero-badge" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1, type: "spring" }}>
                       {dict.heroBadge}
                     </motion.span>
                     
-                    {/* Исправленная структура для уменьшения отступов */}
+                    {/* ИСПРАВЛЕНИЕ: span вокруг SplitText решает проблему невидимого градиента */}
                     <h1 className="hero-h1">
                       <div className="line-wrap"><SplitText>{dict.heroTitle1}</SplitText></div>
-                      <div className="line-wrap text-gradient"><SplitText>{dict.heroTitle2}</SplitText></div>
+                      <div className="line-wrap">
+                        <span className="text-gradient"><SplitText>{dict.heroTitle2}</SplitText></span>
+                      </div>
                       <div className="line-wrap"><SplitText>{dict.heroTitle3}</SplitText><span className="split-char">.</span></div>
                     </h1>
 
