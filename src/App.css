@@ -10,7 +10,7 @@
     --text-main: #f4f4f5;
     --text-muted: #a1a1aa;
     
-    --accent-1: #8a2be2; 
+    --accent-1: #251c2e; 
     --accent-2: #00ffff; 
     
     --font-body: 'Nunito', sans-serif;
@@ -19,7 +19,7 @@
 
 @font-face {
     font-family: 'Amsterdam';
-    
+
     src: url('/fonts/Amsterdam-ZVGqm.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
