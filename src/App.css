@@ -381,7 +381,7 @@ body {
     pointer-events: none; /* События идут на контейнер, чтобы Matter.js работал идеально */
 }
 
-/* Светящийся hover-эффект (косвенный через мышь над контейн */
+/* Светящийся hover-эффект (косвенный через мышь над контей */
 .physics-dom-container:hover .physics-skill-pill {
     border-color: rgba(0, 255, 255, 0.2);
 }
