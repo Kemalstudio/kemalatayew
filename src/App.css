@@ -319,7 +319,7 @@ body {
 
 /* =====================================
    HORIZONTAL SCROLL
-   ======================================= */
+   ====================================== */
 .horizontal-section { height: 100vh; position: relative; overflow: hidden; background: var(--bg-dark); }
 .horizontal-sticky {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
