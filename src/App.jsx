@@ -104,7 +104,7 @@ const SmoothScroll = ({ children }) => {
 
 // ==========================================
 // CUSTOM CURSOR
-// ==========================================
+// =========================================
 const CustomCursor = () => {
   const cursorDotRef = useRef(null);
   const cursorFollowerRef = useRef(null);
