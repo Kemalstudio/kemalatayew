@@ -348,6 +348,7 @@ body {
     padding: 100px 0; border-top: 1px solid var(--border-light); position: relative;
     background: linear-gradient(to bottom, var(--bg-dark), #000); overflow: hidden;
 }
+
 .physics-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 900; text-align: center; }
 .physics-sub { text-align: center; color: var(--accent-2); letter-spacing: 3px; font-weight: 800; margin-top: 10px;}
 
