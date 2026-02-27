@@ -27,7 +27,7 @@ const translations = {
       { title: "Creative Development", desc: "Award-winning WebGL & GSAP animations." },
       { title: "UI/UX Design", desc: "Figma prototyping and user-centric design flows." }
     ],
-    physicsTitle: "Play with my skills", physicsSub: "DRAG & THROW",
+    physicsTitle: "Play with my skills", physicsSub: "DRAG, THROW & CLICK",
     footerTitle1: "Let's build the", footerTitle2: "impossible.", footerBtn: "Start a Project", rights: "All rights reserved.",
     a11yTooltip: "Accessibility Mode"
   },
@@ -43,7 +43,7 @@ const translations = {
       { title: "Креативная Разработка", desc: "Премиальные WebGL и GSAP анимации." },
       { title: "UI/UX Дизайн", desc: "Прототипирование в Figma и удобный дизайн." }
     ],
-    physicsTitle: "Поиграйте с моими навыками", physicsSub: "ТЯНИ И БРОСАЙ",
+    physicsTitle: "Поиграйте с моими навыками", physicsSub: "ТЯНИ, БРОСАЙ И КЛИКАЙ",
     footerTitle1: "Давайте создадим", footerTitle2: "невозможное.", footerBtn: "Начать проект", rights: "Все права защищены.",
     a11yTooltip: "Версия для слабовидящих"
   },
@@ -57,9 +57,9 @@ const translations = {
       { title: "Frontend Ösüşi", desc: "React ekosistemasy bilen kämil we çalt interfeýsler." },
       { title: "Backend Arhitekturasy", desc: "Giňeldip bolýan API-ler calculations maglumatlar bazasy." },
       { title: "Kreatiw Ösüş", desc: "Ýokary hilli WebGL we GSAP animasiýalary." },
-      { title: "UI/UX Dizaýn", desc: "Figma we ulanyjy কাশী üçin amatly dizaýnlar." }
+      { title: "UI/UX Dizaýn", desc: "Figma we ulanyjy üçin amatly dizaýnlar." }
     ],
-    physicsTitle: "Başarnyklarym bilen oýnaň", physicsSub: "ÇEK WE ZYŇ",
+    physicsTitle: "Başarnyklarym bilen oýnaň", physicsSub: "ÇEK, ZYŇ WE BAS",
     footerTitle1: "Mümkin däl zady", footerTitle2: "döredeliň.", footerBtn: "Taslama Başla", rights: "Ähli hukuklar goralan.",
     a11yTooltip: "Gözüň görşüni ýeňilleşdiriş"
   }
@@ -250,71 +250,136 @@ const LoadingScreen = ({ onComplete }) => {
 };
 
 // ==========================================
-// MATTER.JS - 2D ФИЗИКА
+// 🔥 ИСПРАВЛЕНО: MATTER.JS - ПРЕМИАЛЬНАЯ DOM 2D ФИЗИКА
 // ==========================================
 const PhysicsPlayground = ({ dict }) => {
   const sceneRef = useRef(null);
-  
+  const elementsRef = useRef([]);
+  const engineRef = useRef(null);
+  const bodiesRef = useRef([]);
+
+  const skills = [
+    "HTML", "CSS", "SASS", "Bootstrap", "TailwindCSS", "JavaScript", 
+    "jQuery", "AJAX", "ReactJS", "Python", "Django", "PHP", 
+    "Laravel", "MySQL", "API", "Postman", "PostgreSQL", "GitHub", 
+    "Git", "GSAP", "Three.js", "Figma"
+  ];
+
   useEffect(() => {
-    const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint, Composite } = Matter;
+    const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint, Events, Composite } = Matter;
+    
+    // 1. Создаем движок
     const engine = Engine.create();
-    const width = window.innerWidth;
+    engineRef.current = engine;
+    engine.world.gravity.y = 0.8; // Приятная гравитация
+
+    const container = sceneRef.current;
+    const width = container.clientWidth;
     const height = 500;
 
-    const render = Render.create({
-      element: sceneRef.current, engine: engine,
-      options: { width, height, wireframes: false, background: 'transparent', pixelRatio: window.devicePixelRatio }
+    // 2. Создаем границы (невидимые стены)
+    const wallOptions = { isStatic: true, render: { visible: false } };
+    const ground = Bodies.rectangle(width / 2, height + 25, width * 2, 50, wallOptions);
+    const leftWall = Bodies.rectangle(-25, height / 2, 50, height * 2, wallOptions);
+    const rightWall = Bodies.rectangle(width + 25, height / 2, 50, height * 2, wallOptions);
+    const ceiling = Bodies.rectangle(width / 2, -500, width * 2, 50, wallOptions); // Чтобы не улетали высоко
+    
+    World.add(engine.world, [ground, leftWall, rightWall, ceiling]);
+
+    // 3. Создаем физические тела для каждого навыка (рассчитываем ширину на основе текста)
+    const newBodies = skills.map((skill) => {
+      // Примерная формула ширины: 10px на букву + 50px паддингов (соответствует CSS)
+      const w = skill.length * 10 + 50; 
+      const h = 50; 
+      return Bodies.rectangle(
+        Math.random() * (width - 100) + 50, // Спавн в случайных местах X
+        Math.random() * -800 - 100,         // Спавн ВЫШЕ экрана, чтобы они падали
+        w, h, 
+        {
+          chamfer: { radius: 25 }, // Скругление как у капсулы
+          restitution: 0.6,        // Прыгучесть
+          friction: 0.1,           // Трение
+          frictionAir: 0.02,       // Сопротивление воздуха (плавность падения)
+        }
+      );
     });
+    
+    bodiesRef.current = newBodies;
+    World.add(engine.world, newBodies);
 
-    const ground = Bodies.rectangle(width / 2, height + 25, width, 50, { isStatic: true });
-    const leftWall = Bodies.rectangle(-25, height / 2, 50, height, { isStatic: true });
-    const rightWall = Bodies.rectangle(width + 25, height / 2, 50, height, { isStatic: true });
-
-    const skills = ["HTML", "CSS", "SASS", "Bootstrap", "TailwindCSS", "Javascript", "JQuery", "AJAX", "ReactJS", "Python", "Django", "PHP", "Laravel", "MySQL", "API", "Postman", "PostqreSQL", "Github", "Git", "GSAP", "Three.js", "Figma"];
-    const skillBodies = skills.map((skill) => {
-      return Bodies.rectangle(Math.random() * width, Math.random() * -500, 140, 60, {
-          chamfer: { radius: 30 }, restitution: 0.8, friction: 0.5,
-          render: { fillStyle: '#251c2e', strokeStyle: '#00ffff', lineWidth: 2 },
-          label: skill
-      });
-    });
-
-    World.add(engine.world, [ground, leftWall, rightWall, ...skillBodies]);
-
-    const mouse = Mouse.create(render.canvas);
+    // 4. Интерактивность с мышью (Drag & Drop)
+    const mouse = Mouse.create(container);
     const mouseConstraint = MouseConstraint.create(engine, {
-      mouse: mouse, constraint: { stiffness: 0.2, render: { visible: false } }
+      mouse: mouse,
+      constraint: {
+        stiffness: 0.2,
+        render: { visible: false }
+      }
     });
     World.add(engine.world, mouseConstraint);
-    render.mouse = mouse;
 
-    Render.run(render);
+    // 5. 🔥 МАГНИТНОЕ ОТТАЛКИВАНИЕ (Wow Effect) 🔥
+    Events.on(engine, "beforeUpdate", () => {
+      if (mouse.position.x !== 0 && mouse.position.y !== 0) {
+        newBodies.forEach(body => {
+          const dx = body.position.x - mouse.position.x;
+          const dy = body.position.y - mouse.position.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          // Если курсор близко (< 120px), применяем силу отталкивания
+          if (dist < 120) {
+            const force = 0.00015 * (120 - dist) / 120;
+            Matter.Body.applyForce(body, body.position, {
+              x: dx * force,
+              y: dy * force
+            });
+          }
+        });
+      }
+    });
+
+    // 6. Запускаем физику (БЕЗ РЕНДЕРА CANVAS!)
     const runner = Runner.create();
     Runner.run(runner, engine);
 
-    const canvas = render.canvas;
-    const ctx = canvas.getContext('2d');
-    
-    Matter.Events.on(render, 'afterRender', () => {
-      ctx.font = 'bold 18px Nunito'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#ffffff';
-      skillBodies.forEach(body => {
-        ctx.save(); ctx.translate(body.position.x, body.position.y); ctx.rotate(body.angle);
-        ctx.fillText(body.label, 0, 0); ctx.restore();
+    // 7. СИНХРОНИЗАЦИЯ ФИЗИКИ И DOM (HTML DIV элементов)
+    Events.on(engine, 'afterUpdate', () => {
+      newBodies.forEach((body, index) => {
+        const el = elementsRef.current[index];
+        if (el) {
+          // Идеально центрируем div по координатам body
+          el.style.transform = `translate(calc(-50% + ${body.position.x}px), calc(-50% + ${body.position.y}px)) rotate(${body.angle}rad)`;
+        }
       });
     });
 
+    // Обновление стен при ресайзе
     const handleResize = () => {
-      render.canvas.width = window.innerWidth;
-      Matter.Body.setPosition(ground, { x: window.innerWidth / 2, y: height + 25 });
+      const newWidth = container.clientWidth;
+      Matter.Body.setPosition(ground, { x: newWidth / 2, y: height + 25 });
+      Matter.Body.setPosition(rightWall, { x: newWidth + 25, y: height / 2 });
+      Matter.Body.setPosition(ceiling, { x: newWidth / 2, y: -500 });
     };
     window.addEventListener('resize', handleResize);
 
     return () => {
-      Render.stop(render); Runner.stop(runner);
-      Composite.clear(engine.world); Engine.clear(engine);
-      render.canvas.remove(); window.removeEventListener('resize', handleResize);
+      Runner.stop(runner);
+      Engine.clear(engine);
+      Composite.clear(engine.world);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  // Функция взрыва при клике на контейнер
+  const handleExplodeClick = () => {
+    if (!bodiesRef.current.length) return;
+    bodiesRef.current.forEach(body => {
+      Matter.Body.applyForce(body, body.position, {
+        x: (Math.random() - 0.5) * 0.1, // Влево/Вправо
+        y: -Math.random() * 0.25 - 0.1 // Вверх
+      });
+    });
+  };
 
   return (
     <section className="physics-section">
@@ -322,7 +387,26 @@ const PhysicsPlayground = ({ dict }) => {
         <h2 className="physics-title">{dict.physicsTitle}</h2>
         <p className="physics-sub">{dict.physicsSub}</p>
       </div>
-      <div ref={sceneRef} className="physics-canvas-container" />
+      
+      {/* Контейнер для DOM-элементов и событий мыши */}
+      <div 
+        ref={sceneRef} 
+        className="physics-dom-container" 
+        onClick={handleExplodeClick}
+      >
+        {/* Инструкция для юзера */}
+        <div className="physics-hint">Click anywhere to explode! 💥</div>
+
+        {skills.map((skill, i) => (
+          <div
+            key={skill}
+            ref={(el) => (elementsRef.current[i] = el)}
+            className="physics-skill-pill"
+          >
+            {skill}
+          </div>
+        ))}
+      </div>
     </section>
   );
 };
@@ -550,7 +634,6 @@ export default function App() {
   ];
 
   // Премиальная анимация появления текста с эффектом Blur
-  // ИСПРАВЛЕНИЕ: Добавлен clearProps: "filter", чтобы текст не исчезал!
   useLayoutEffect(() => {
     if (!loadingEnded) return;
     let ctx = gsap.context(() => {
@@ -662,7 +745,6 @@ export default function App() {
                       {dict.heroBadge}
                     </motion.span>
                     
-                    {/* ИСПРАВЛЕНИЕ: span вокруг SplitText решает проблему невидимого градиента */}
                     <h1 className="hero-h1">
                       <div className="line-wrap"><SplitText>{dict.heroTitle1}</SplitText></div>
                       <div className="line-wrap">
@@ -694,7 +776,7 @@ export default function App() {
               {/* HORIZONTAL SKILLS */}
               <SkillsHorizontal lang={lang} dict={dict} />
 
-              {/* РЕАЛЬНАЯ ФИЗИКА (MATTER.JS) */}
+              {/* РЕАЛЬНАЯ ФИЗИКА (MATTER.JS - ОБНОВЛЕННАЯ ВЕРСИЯ) */}
               <PhysicsPlayground dict={dict} />
 
               {/* FOOTER */}
