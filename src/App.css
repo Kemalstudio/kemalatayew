@@ -71,9 +71,8 @@ body {
     opacity: 0.04; pointer-events: none; mix-blend-mode: overlay;
 }
 
-/* 🔥 ИСПРАВЛЕННЫЙ АНИМИРОВАННЫЙ ГРАДИЕНТ 🔥 */
+/* АНИМИРОВАННЫЙ ГРАДИЕНТ */
 .text-gradient {
-    /* Сделал цвета ярче, чтобы они не сливались с черным фоном */
     background: linear-gradient(135deg, #a855f7, var(--accent-2), #8a2be2, var(--accent-2));
     background-size: 300% 300%;
     -webkit-background-clip: text; 
@@ -84,7 +83,6 @@ body {
     display: inline-block;
 }
 
-/* Хак для дочерних элементов (нужен для GSAP) */
 .text-gradient * {
     -webkit-text-fill-color: transparent;
 }
@@ -344,7 +342,7 @@ body {
 .panel-content p { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; font-weight: 600; }
 
 /* ==========================================
-   MATTER.JS PHYSICS SECTION
+   🔥 ОБНОВЛЕНО: MATTER.JS ФИЗИЧЕСКАЯ СЕКЦИЯ (DOM UI) 🔥
    ========================================== */
 .physics-section {
     padding: 100px 0; border-top: 1px solid var(--border-light); position: relative;
@@ -352,10 +350,41 @@ body {
 }
 .physics-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 900; text-align: center; }
 .physics-sub { text-align: center; color: var(--accent-2); letter-spacing: 3px; font-weight: 800; margin-top: 10px;}
-.physics-canvas-container {
+
+.physics-dom-container {
     width: 100%; height: 500px; margin-top: 50px; cursor: grab;
+    position: relative; overflow: hidden; 
 }
-.physics-canvas-container:active { cursor: grabbing; }
+.physics-dom-container:active { cursor: grabbing; }
+
+/* Подсказка для клика */
+.physics-hint {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 2rem; font-weight: 900; opacity: 0.05; text-transform: uppercase;
+    letter-spacing: 10px; pointer-events: none; text-align: center; width: 100%;
+}
+
+/* 🔥 Дизайн физической плашки-навыка (HTML DOM вместо Canvas) 🔥 */
+.physics-skill-pill {
+    position: absolute; top: 0; left: 0;
+    height: 50px; padding: 0 25px; /* Задает ширину вместе с текстом */
+    display: flex; justify-content: center; align-items: center;
+    background: rgba(37, 28, 46, 0.85); /* Полупрозрачный фон */
+    border: 1px solid var(--border-light);
+    border-radius: 25px; /* Идеальная капсула */
+    color: var(--text-main); font-weight: 800; font-size: 1rem;
+    white-space: nowrap; user-select: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s;
+    will-change: transform; /* Оптимизация анимации для 60 FPS */
+    pointer-events: none; /* События идут на контейнер, чтобы Matter.js работал идеально */
+}
+
+/* Светящийся hover-эффект (косвенный через мышь над контейнером) */
+.physics-dom-container:hover .physics-skill-pill {
+    border-color: rgba(0, 255, 255, 0.2);
+}
 
 /* ==========================================
    FOOTER
