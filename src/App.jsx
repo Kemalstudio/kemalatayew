@@ -695,7 +695,9 @@ export default function App() {
             </li>
             <li>
               <Magnetic>
-                <a href="#expertise">{dict.navExpertise}</a></Magnetic></li>
+                <a href="#expertise">{dict.navExpertise}</a>
+                </Magnetic>
+            </li>
             <li>
               <Magnetic>
                 <a href="#contact">{dict.navContact}</a></Magnetic></li>
