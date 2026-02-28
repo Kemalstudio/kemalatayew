@@ -372,7 +372,7 @@ body {
     display: flex; justify-content: center; align-items: center;
     background: rgba(37, 28, 46, 0.85); /* Полупрозрачный фон */
     border: 1px solid var(--border-light);
-    border-radius: 25px; /* Идеальна */
+    border-radius: 25px; /* Идеальн */
     color: var(--text-main); font-weight: 800; font-size: 1rem;
     white-space: nowrap; user-select: none;
     box-shadow: 0 4px 15px rgba(0,0,0,0.5);
