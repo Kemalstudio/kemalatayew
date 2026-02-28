@@ -98,6 +98,8 @@ const SmoothScroll = ({ children }) => {
       gsap.ticker.remove((time) => lenis.raf(time * 1000));
     };
   }, []);
+  
+  
 
   return <>{children}</>;
 };
