@@ -743,7 +743,8 @@ export default function App() {
                     
                     <h1 className="hero-h1">
                       <div className="line-wrap">
-                        <SplitText>{dict.heroTitle1}</SplitText></div>
+                        <SplitText>{dict.heroTitle1}</SplitText>
+                        </div>
                       <div className="line-wrap">
                         <span className="text-gradient"><SplitText>{dict.heroTitle2}</SplitText></span>
                       </div>
