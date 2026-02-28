@@ -378,7 +378,7 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     backdrop-filter: blur(10px);
     transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s;
-    will-change: transform; /* Оптимизация анимации для 60 FPS */
+    will-change: transform; /* Оптимизация анимации для 60 FP */
     pointer-events: none; /* События идут на контейнер, чтобы Matter.js работал идеально */
 }
 
