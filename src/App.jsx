@@ -690,7 +690,8 @@ export default function App() {
           <ul className="nav-links">
             <li>
               <Magnetic>
-                <a href="#work">{dict.navWork}</a></Magnetic></li>
+                <a href="#work">{dict.navWork}</a>
+                </Magnetic></li>
             <li>
               <Magnetic>
                 <a href="#expertise">{dict.navExpertise}</a></Magnetic></li>
