@@ -688,9 +688,15 @@ export default function App() {
             <span style={{ fontSize: "30px" }} className="name custom-font">Atayev Kemal</span>
           </div>
           <ul className="nav-links">
-            <li><Magnetic><a href="#work">{dict.navWork}</a></Magnetic></li>
-            <li><Magnetic><a href="#expertise">{dict.navExpertise}</a></Magnetic></li>
-            <li><Magnetic><a href="#contact">{dict.navContact}</a></Magnetic></li>
+            <li>
+              <Magnetic>
+                <a href="#work">{dict.navWork}</a></Magnetic></li>
+            <li>
+              <Magnetic>
+                <a href="#expertise">{dict.navExpertise}</a></Magnetic></li>
+            <li>
+              <Magnetic>
+                <a href="#contact">{dict.navContact}</a></Magnetic></li>
           </ul>
           <div className="nav-right">
             <div className="lang-switcher">
