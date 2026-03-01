@@ -373,13 +373,11 @@ body {
     background: rgba(37, 28, 46, 0.85); /* Полупрозрачный фон */
     border: 1px solid var(--border-light);
     border-radius: 25px; 
-
-    color: var(--text-main); font-weight: 80.00; font-size: 1rem;
+    color: var(--text-main); font-weight: 800; font-size: 1rem;
     white-space: nowrap; user-select: none;
     box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     backdrop-filter: blur(10px);
-    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, c
-    olor 0.3s;
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s;
     will-change: transform; /* Оптимизация анимации  */
     pointer-events: none; /* События идут на контейнер, чтобы Matter.js работал идеально */
 }
