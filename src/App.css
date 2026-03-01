@@ -380,7 +380,7 @@ body {
     backdrop-filter: blur(10px);
     transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, c
     olor 0.3s;
-    will-change: transform; /* Оптимизация анимации д */
+    will-change: transform; /* Оптимизация анимации  */
     pointer-events: none; /* События идут на контейнер, чтобы Matter.js работал идеально */
 }
 
