@@ -261,31 +261,38 @@ const GigabyteScrollEffect = () => {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=300%", 
+          end: "+=400%", // Увеличено, чтобы эффект заливки текста был более долгим и плавным
           scrub: 1,      
           pin: true,     
         }
       });
 
-      // 1. Прячем начальный текст
+      // 1. Анимация заливки текста (Apple style scroll text reveal)
+      tl.to(".g-text-reveal", { 
+        backgroundPositionX: "0%", 
+        duration: 2.5, 
+        ease: "none" 
+      }, 0);
+
+      // 2. Прячем начальный текст ПОСЛЕ того как он закрасился
       tl.to(".giga-front-text", { 
         opacity: 0, 
         scale: 0.9,
         y: -50, 
-        duration: 2 
-      }, 0);
+        duration: 1.5 
+      }, 2.8);
 
-      // 2. Фокус гигантского текста (Масштаб, прозрачность, блюр)
+      // 3. Фокус гигантского текста
       tl.fromTo(".giga-bg-huge-text", 
         { scale: 4, opacity: 0.15, filter: "blur(20px)" },
-        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 3, ease: "power2.inOut" },
-        0 
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 2, ease: "power2.inOut" },
+        2.8 
       );
 
-      // 3. Появление слов по очереди
-      tl.fromTo(".giga-word-1", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, 2.5);
-      tl.fromTo(".giga-word-2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, 3.2);
-      tl.fromTo(".giga-word-3", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, 3.9);
+      // 4. Появление слов по очереди
+      tl.fromTo(".giga-word-1", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 4.5);
+      tl.fromTo(".giga-word-2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 5.0);
+      tl.fromTo(".giga-word-3", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 5.5);
 
     }, containerRef);
 
@@ -307,7 +314,8 @@ const GigabyteScrollEffect = () => {
           </h1>
           <p className="giga-subtext-old">
             <span className="g-text-white">Code that's </span>
-            <span className="g-text-grey">Clean, Responsive, Dynamic, Reliable, User-centric</span>
+            {/* Вот этот спан будет плавно заливаться белым */}
+            <span className="g-text-reveal">Clean, Responsive, Dynamic, Reliable, User-centric</span>
           </p>
         </div>
 
