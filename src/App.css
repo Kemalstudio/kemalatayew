@@ -534,7 +534,7 @@ body {
     opacity: 0; 
     display: inline-block;
     margin-right: 8px;
-    will-change: transform, opacity; /* Оптимизация плавности */
+    will-change: transform, opacity; /* Оптимизация плавнос */
 }
 
 /* 3. Кнопки внизу экрана адаптированы под темную тему */
