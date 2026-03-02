@@ -856,7 +856,7 @@ export default function App() {
                 </div>
               </section>
 
-              {/* === НОВАЯ СЕКЦИЯ GIGABYTE СРАЗУ ПОСЛЕ ГЛАВНОГО ЭКРАНА === */}
+              {/* === СЕКЦИЯ GIGABYTE === */}
               <GigabyteScrollEffect />
 
               {/* TECH BENTO GRID */}
