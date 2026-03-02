@@ -543,7 +543,7 @@ body {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255,255,255,0.15);
     font-size: 1.15rem;
     font-weight: 600;
-    color: #ffffff; /* Белый текст для видимос */
+    color: #ffffff; /* Белый текст для видимо */
     cursor: pointer;
     transition: all 0.3s ease;
 }
