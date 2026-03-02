@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // ========================================
 // МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ (i18n)
-// ========================================
+// =======================================
 const translations = {
   en: {
     navWork: "Work", navExpertise: "Expertise", navAbout: "About", navContact: "Contact", navBtn: "Let's Talk",
