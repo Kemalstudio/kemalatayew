@@ -460,7 +460,7 @@ body {
 
 /* Эффект заливки текста Cyan/Голубым при скролле */
 .g-text-reveal {
-    background: linear-gradient(to right, #ffffff 50%, #8e959c 50%); /* Яркий голубой  */
+    background: linear-gradient(to right, #ffffff 50%, #8e959c 50%); /* Яркий голубой */
     background-size: 200% 100%;
     background-position: 100% 0;
     -webkit-background-clip: text;
