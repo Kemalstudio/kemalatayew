@@ -464,6 +464,7 @@ body {
     background-size: 200% 100%;
     background-position: 100% 0;
     -webkit-background-clip: text;
+    font-weight: bold;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
