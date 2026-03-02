@@ -458,9 +458,9 @@ body {
 .g-text-cyan { color: #00e0ff; font-weight: 800; text-shadow: 0 0 15px rgba(0, 224, 255, 0.5); }
 .g-text-grey { color: var(--text-muted); }
 
-/* Эффект заливки текста белым при скролле */
+/* Эффект заливки текста Cyan/Голубым при скролле */
 .g-text-reveal {
-    background: linear-gradient(to right, #ffffff 50%, #8e959c 50%);
+    background: linear-gradient(to right, #00e0ff 50%, #8e959c 50%); /* Яркий голубой цвет */
     background-size: 200% 100%;
     background-position: 100% 0;
     -webkit-background-clip: text;
@@ -534,10 +534,10 @@ body {
     opacity: 0; 
     display: inline-block;
     margin-right: 8px;
-    will-change: transform, opacity; /* Оптимизация плавно */
+    will-change: transform, opacity; /* Оптимизация плавности */
 }
 
-/* 3. Кнопки внизу экрана адаптированы под темную тему */
+/* 3. Кнопки внизу экрана (Используют класс cta-huge для полного сходства с футером) */
 .giga-buttons {
     position: absolute;
     bottom: 20%;
@@ -546,22 +546,8 @@ body {
     z-index: 4;
 }
 
-.giga-btn {
-    padding: 16px 45px;
-    border-radius: 40px;
-    border: none;
-    background: rgba(255, 255, 255, 0.05); /* Полупрозрачный темный стекло-эффект */
-    backdrop-filter: blur(15px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255,255,255,0.15);
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: #ffffff; /* Белый текст для ви */
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.giga-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-4px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+/* Модификатор для кнопок, чтобы они не были СЛИШКОМ гигантскими рядом друг с другом, но сохраняли стиль */
+.giga-cta {
+    padding: 20px 50px !important; /* Чуть меньше чем в футере, чтобы две кнопки поместились красиво */
+    font-size: 1.2rem !important;
 }
