@@ -314,7 +314,7 @@ const GigabyteScrollEffect = () => {
           </h1>
           <p className="giga-subtext-old">
             <span className="g-text-white">Code that's </span>
-            {/* Вот этот спан будет плавно заливаться белым */}
+            {/* Вот этот спан будет плавно заливаться голубым цветом */}
             <span className="g-text-reveal">Clean, Responsive, Dynamic, Reliable, User-centric</span>
           </p>
         </div>
@@ -335,20 +335,25 @@ const GigabyteScrollEffect = () => {
           </div>
         </div>
 
-        {/* Кнопки */}
+        {/* Кнопки (Теперь со стилем как у Start a Project и магнитом) */}
         <div className="giga-buttons">
-          <button 
-            className="giga-btn" 
-            onClick={() => window.open('https://github.com', '_blank')}
-          >
-            My GitHub
-          </button>
-          <button 
-            className="giga-btn" 
-            onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
-          >
-            Hire Me
-          </button>
+          <Magnetic>
+            <SpringButton 
+              className="cta-huge giga-cta" 
+              onClick={() => window.open('https://github.com', '_blank')}
+            >
+              My GitHub
+            </SpringButton>
+          </Magnetic>
+          
+          <Magnetic>
+            <SpringButton 
+              className="cta-huge giga-cta" 
+              onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
+            >
+              Hire Me
+            </SpringButton>
+          </Magnetic>
         </div>
 
       </div>
