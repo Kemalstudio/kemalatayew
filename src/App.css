@@ -420,25 +420,24 @@ body {
 }
 
 /* ==========================================
-   GIGABYTE SCROLL EFFECT SECTION
+   GIGABYTE SCROLL EFFECT SECTION (DARK THEME)
    ========================================== */
 .gigabyte-section {
     position: relative;
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    /* У вашего сайта темная тема, но эта секция из скриншотов имеет светлый голубой фон */
-    background-color: #d1ecfc; 
+    background-color: var(--bg-dark); /* Темный фон */
 }
 
-/* Светлый голубой градиент как на картинках */
+/* Легкое тёмное свечение для атмосферы */
 .giga-background {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #c3e2fd 0%, #e0f2fe 50%, #b2dffc 100%);
+    background: radial-gradient(circle at 50% 50%, rgba(0, 224, 255, 0.05) 0%, transparent 60%);
     z-index: 0;
 }
 
@@ -453,11 +452,11 @@ body {
     z-index: 1;
 }
 
-/* Цветовые утилиты из скринш */
-.g-text-black { color: #1c2125; }
-.g-text-blue { color: #0d5cff; font-weight: 800; }
-.g-text-cyan { color: #00e0ff; font-weight: 800; text-shadow: 0 0 10px rgba(0, 224, 255, 0.5); }
-.g-text-grey { color: #8e959c; }
+/* Цветовые утилиты адаптированы под тёмный фон */
+.g-text-white { color: #ffffff; } 
+.g-text-blue { color: #0d5cff; font-weight: 800; text-shadow: 0 0 15px rgba(13, 92, 255, 0.4); }
+.g-text-cyan { color: #00e0ff; font-weight: 800; text-shadow: 0 0 15px rgba(0, 224, 255, 0.5); }
+.g-text-grey { color: var(--text-muted); }
 
 /* Градиент для слова Empower */
 .g-text-empower {
@@ -480,6 +479,7 @@ body {
     text-align: center;
     z-index: 3;
     width: 100%;
+    will-change: transform, opacity; /* Оптимизация плавности */
 }
 
 .giga-main-title {
@@ -498,12 +498,12 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    /* Изначально GSAP установит scale(4) и blur(20px) в самом JS */
     transform: translate(-50%, -100%); 
     text-align: center;
     z-index: 2;
     width: 100%;
     white-space: nowrap;
+    will-change: transform, opacity, filter; /* Оптимизация плавности */
 }
 
 .giga-final-title {
@@ -515,16 +515,17 @@ body {
 .giga-subtext-new {
     font-size: clamp(1.5rem, 2.5vw, 2.2rem);
     font-weight: 600;
-    color: #40464c;
+    color: #ffffff;
 }
 
 .giga-subtext-new .giga-word {
-    opacity: 0;
+    opacity: 0; 
     display: inline-block;
     margin-right: 8px;
+    will-change: transform, opacity; /* Оптимизация плавности */
 }
 
-/* 3. Кнопки внизу экрана */
+/* 3. Кнопки внизу экрана адаптированы под темную тему */
 .giga-buttons {
     position: absolute;
     bottom: 20%;
@@ -537,18 +538,18 @@ body {
     padding: 16px 45px;
     border-radius: 40px;
     border: none;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.05); /* Полупрозрачный темный стекло-эффект */
     backdrop-filter: blur(15px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03), inset 0 0 0 1px rgba(255,255,255,0.8);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255,255,255,0.15);
     font-size: 1.15rem;
     font-weight: 600;
-    color: #1c2125;
+    color: #ffffff; /* Белый текст для видимости */
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .giga-btn:hover {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.15);
     transform: translateY(-4px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
