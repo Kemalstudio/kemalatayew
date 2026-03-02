@@ -458,6 +458,18 @@ body {
 .g-text-cyan { color: #00e0ff; font-weight: 800; text-shadow: 0 0 15px rgba(0, 224, 255, 0.5); }
 .g-text-grey { color: var(--text-muted); }
 
+/* Эффект заливки текста белым при скролле */
+.g-text-reveal {
+    background: linear-gradient(to right, #ffffff 50%, #8e959c 50%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    will-change: background-position;
+}
+
 /* Градиент для слова Empower */
 .g-text-empower {
     background: linear-gradient(90deg, #0d5cff 0%, #0099ff 50%, #00e0ff 100%);
@@ -543,7 +555,7 @@ body {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255,255,255,0.15);
     font-size: 1.15rem;
     font-weight: 600;
-    color: #ffffff; /* Белый текст для видим */
+    color: #ffffff; /* Белый текст для видимости */
     cursor: pointer;
     transition: all 0.3s ease;
 }
