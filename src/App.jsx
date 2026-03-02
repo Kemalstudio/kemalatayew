@@ -250,7 +250,7 @@ const LoadingScreen = ({ onComplete }) => {
 };
 
 // ==========================================
-// GIGABYTE TEXT MORPH SCROLL EFFECT
+// GIGABYTE TEXT MORPH SCROLL EFFECT (DARK THEME)
 // ==========================================
 const GigabyteScrollEffect = () => {
   const containerRef = useRef(null);
@@ -261,13 +261,13 @@ const GigabyteScrollEffect = () => {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=300%", // Увеличено для более плавного эффекта скролла
+          end: "+=300%", 
           scrub: 1,      
           pin: true,     
         }
       });
 
-      // 1. Прячем начальный текст (We Empower...)
+      // 1. Прячем начальный текст
       tl.to(".giga-front-text", { 
         opacity: 0, 
         scale: 0.9,
@@ -275,14 +275,14 @@ const GigabyteScrollEffect = () => {
         duration: 2 
       }, 0);
 
-      // 2. Фокус гигантского текста (GIGABYTE is All in...)
+      // 2. Фокус гигантского текста (Масштаб, прозрачность, блюр)
       tl.fromTo(".giga-bg-huge-text", 
         { scale: 4, opacity: 0.15, filter: "blur(20px)" },
         { scale: 1, opacity: 1, filter: "blur(0px)", duration: 3, ease: "power2.inOut" },
-        0 // Запускаем одновременно с исчезновением первого текста
+        0 
       );
 
-      // 3. Появление слов по очереди (to Inspire, Create, Advance.)
+      // 3. Появление слов по очереди
       tl.fromTo(".giga-word-1", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, 2.5);
       tl.fromTo(".giga-word-2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, 3.2);
       tl.fromTo(".giga-word-3", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, 3.9);
@@ -301,12 +301,12 @@ const GigabyteScrollEffect = () => {
         {/* Текст который исчезает */}
         <div className="giga-front-text">
           <h1 className="giga-main-title">
-            <span className="g-text-black">We </span>
+            <span className="g-text-white">We </span>
             <span className="g-text-empower">Empower </span>
-            <span className="g-text-black">the World</span>
+            <span className="g-text-white">the World</span>
           </h1>
           <p className="giga-subtext-old">
-            <span className="g-text-black">Computing that's </span>
+            <span className="g-text-white">Computing that's </span>
             <span className="g-text-grey">Robust, Optimized, Trustworthy, Versatile, Accessible</span>
           </p>
         </div>
@@ -314,7 +314,7 @@ const GigabyteScrollEffect = () => {
         {/* Текст который фокусируется и становится заголовком */}
         <div className="giga-bg-huge-text">
           <h1 className="giga-final-title">
-            <span className="g-text-black giga-bold">GIGABYTE </span>
+            <span className="g-text-white giga-bold">GIGABYTE </span>
             <span className="g-text-blue">is All In </span>
             <span className="g-text-cyan">on AI</span>
           </h1>
@@ -856,14 +856,14 @@ export default function App() {
                 </div>
               </section>
 
+              {/* === НОВАЯ СЕКЦИЯ GIGABYTE СРАЗУ ПОСЛЕ ГЛАВНОГО ЭКРАНА === */}
+              <GigabyteScrollEffect />
+
               {/* TECH BENTO GRID */}
               <TechBentoGrid dict={dict} techStack={techStack} />
 
               {/* АНИМАЦИЯ ПАНЕЛЕЙ GSAP */}
               <GsapPanelsShowcase />
-
-              {/* НОВАЯ СЕКЦИЯ GIGABYTE SCROLL MORPH */}
-              <GigabyteScrollEffect />
 
               {/* HORIZONTAL SKILLS */}
               <SkillsHorizontal lang={lang} dict={dict} />
