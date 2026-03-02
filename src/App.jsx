@@ -57,7 +57,7 @@ const translations = {
       { title: "Frontend Ösüşi", desc: "React ekosistemasy bilen kämil we çalt interfeýsler." },
       { title: "Backend Arhitekturasy", desc: "Giňeldip bolýan API-ler calculations maglumatlar bazasy." },
       { title: "Kreatiw Ösüş", desc: "Ýokary hilli WebGL we GSAP animasiýalary." },
-      { title: "UI/UX Dizaýn", desc: "Figma we ulanyjy üçin amatly dizaýnlar." }
+      { title: "UI/UX Dizaýn", desc: "Figma we ulanyjy touchin amatly dizaýnlar." }
     ],
     physicsTitle: "Başarnyklarym bilen oýnaň", physicsSub: "ÇEK, ZYŇ WE BAS",
     footerTitle1: "Mümkin däl zady", footerTitle2: "döredeliň.", footerBtn: "Taslama Başla", rights: "Ähli hukuklar goralan.",
@@ -301,36 +301,46 @@ const GigabyteScrollEffect = () => {
         {/* Текст который исчезает */}
         <div className="giga-front-text">
           <h1 className="giga-main-title">
-            <span className="g-text-white">We </span>
-            <span className="g-text-empower">Empower </span>
-            <span className="g-text-white">the World</span>
+            <span className="g-text-white">I </span>
+            <span className="g-text-empower">Develop </span>
+            <span className="g-text-white">Applications</span>
           </h1>
           <p className="giga-subtext-old">
-            <span className="g-text-white">Computing that's </span>
-            <span className="g-text-grey">Robust, Optimized, Trustworthy, Versatile, Accessible</span>
+            <span className="g-text-white">Code that's </span>
+            <span className="g-text-grey">Clean, Responsive, Dynamic, Reliable, User-centric</span>
           </p>
         </div>
 
         {/* Текст который фокусируется и становится заголовком */}
         <div className="giga-bg-huge-text">
           <h1 className="giga-final-title">
-            <span className="g-text-white giga-bold">GIGABYTE </span>
-            <span className="g-text-blue">is All In </span>
-            <span className="g-text-cyan">on AI</span>
+            <span className="g-text-white giga-bold">FULL STACK </span>
+            <span className="g-text-blue">is My </span>
+            <span className="g-text-cyan">Playground</span>
           </h1>
           
           {/* Появляющиеся слова */}
           <div className="giga-subtext-new">
-            <span className="giga-word giga-word-1">to Inspire, </span>
-            <span className="giga-word giga-word-2">Create, </span>
-            <span className="giga-word giga-word-3">Advance.</span>
+            <span className="giga-word giga-word-1">to Learn, </span>
+            <span className="giga-word giga-word-2">Build, </span>
+            <span className="giga-word giga-word-3">Deploy.</span>
           </div>
         </div>
 
         {/* Кнопки */}
         <div className="giga-buttons">
-          <button className="giga-btn">For You</button>
-          <button className="giga-btn">For Business</button>
+          <button 
+            className="giga-btn" 
+            onClick={() => window.open('https://github.com', '_blank')}
+          >
+            My GitHub
+          </button>
+          <button 
+            className="giga-btn" 
+            onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
+          >
+            Hire Me
+          </button>
         </div>
 
       </div>
@@ -868,7 +878,7 @@ export default function App() {
               {/* HORIZONTAL SKILLS */}
               <SkillsHorizontal lang={lang} dict={dict} />
 
-              {/* ФИЗИКА (MATTER.JS - ОБНОВЛЕННАЯ ВЕРСИЯ) */}
+              {/* РЕАЛЬНАЯ ФИЗИКА (MATTER.JS - ОБНОВЛЕННАЯ ВЕРСИЯ) */}
               <PhysicsPlayground dict={dict} />
 
               {/* FOOTER */}
