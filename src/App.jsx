@@ -213,7 +213,7 @@ const FloatingParticles = () => {
 
 // =========================================
 // PRELOADER
-// ==========================================
+// =========================================
 const LoadingScreen = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
 
