@@ -11,9 +11,9 @@ import './App.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ======================================
+// ========================================
 // МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ (i18n)
-// ======================================
+// ========================================
 const translations = {
   en: {
     navWork: "Work", navExpertise: "Expertise", navAbout: "About", navContact: "Contact", navBtn: "Let's Talk",
@@ -250,7 +250,97 @@ const LoadingScreen = ({ onComplete }) => {
 };
 
 // ==========================================
-// 🔥 ИСПРАВЛЕНО: MATTER.JS - НАДЕЖНЫЕ СТЕНЫ И СПАВН
+// GIGABYTE TEXT MORPH SCROLL EFFECT
+// ==========================================
+const GigabyteScrollEffect = () => {
+  const containerRef = useRef(null);
+
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "+=300%", // Увеличено для более плавного эффекта скролла
+          scrub: 1,      
+          pin: true,     
+        }
+      });
+
+      // 1. Прячем начальный текст (We Empower...)
+      tl.to(".giga-front-text", { 
+        opacity: 0, 
+        scale: 0.9,
+        y: -50, 
+        duration: 2 
+      }, 0);
+
+      // 2. Фокус гигантского текста (GIGABYTE is All in...)
+      tl.fromTo(".giga-bg-huge-text", 
+        { scale: 4, opacity: 0.15, filter: "blur(20px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 3, ease: "power2.inOut" },
+        0 // Запускаем одновременно с исчезновением первого текста
+      );
+
+      // 3. Появление слов по очереди (to Inspire, Create, Advance.)
+      tl.fromTo(".giga-word-1", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, 2.5);
+      tl.fromTo(".giga-word-2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, 3.2);
+      tl.fromTo(".giga-word-3", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, 3.9);
+
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={containerRef} className="gigabyte-section">
+      <div className="giga-background"></div>
+
+      <div className="giga-content-wrapper">
+        
+        {/* Текст который исчезает */}
+        <div className="giga-front-text">
+          <h1 className="giga-main-title">
+            <span className="g-text-black">We </span>
+            <span className="g-text-empower">Empower </span>
+            <span className="g-text-black">the World</span>
+          </h1>
+          <p className="giga-subtext-old">
+            <span className="g-text-black">Computing that's </span>
+            <span className="g-text-grey">Robust, Optimized, Trustworthy, Versatile, Accessible</span>
+          </p>
+        </div>
+
+        {/* Текст который фокусируется и становится заголовком */}
+        <div className="giga-bg-huge-text">
+          <h1 className="giga-final-title">
+            <span className="g-text-black giga-bold">GIGABYTE </span>
+            <span className="g-text-blue">is All In </span>
+            <span className="g-text-cyan">on AI</span>
+          </h1>
+          
+          {/* Появляющиеся слова */}
+          <div className="giga-subtext-new">
+            <span className="giga-word giga-word-1">to Inspire, </span>
+            <span className="giga-word giga-word-2">Create, </span>
+            <span className="giga-word giga-word-3">Advance.</span>
+          </div>
+        </div>
+
+        {/* Кнопки */}
+        <div className="giga-buttons">
+          <button className="giga-btn">For You</button>
+          <button className="giga-btn">For Business</button>
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+
+// ==========================================
+// MATTER.JS - НАДЕЖНЫЕ СТЕНЫ И СПАВН
 // ==========================================
 const PhysicsPlayground = ({ dict }) => {
   const sceneRef = useRef(null);
@@ -276,26 +366,22 @@ const PhysicsPlayground = ({ dict }) => {
     const width = container.clientWidth;
     const height = 500;
 
-    // 1. СОЗДАЕМ НЕПРОБИВАЕМЫЕ СТЕНЫ (Толщина 1000px)
     const wallOptions = { isStatic: true, render: { visible: false } };
     const wallThickness = 1000;
     
     const ground = Bodies.rectangle(width / 2, height + wallThickness / 2, width * 3, wallThickness, wallOptions);
     const leftWall = Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height * 3, wallOptions);
     const rightWall = Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height * 3, wallOptions);
-    
-    // Крышка находится ВЫСОКО над экраном (Y: -500), чтобы элементы не вылетали при сильном броске
     const ceiling = Bodies.rectangle(width / 2, -wallThickness / 2 - 500, width * 3, wallThickness, wallOptions); 
     
     World.add(engine.world, [ground, leftWall, rightWall, ceiling]);
 
-    // 2. СПАВНИМ ЭЛЕМЕНТЫ СТРОГО ПОД КРЫШКОЙ, чтобы они не застревали на ней сверху
     const newBodies = skills.map((skill) => {
       const w = skill.length * 10 + 50; 
       const h = 50; 
       return Bodies.rectangle(
-        Math.random() * (width - 150) + 75, // Случайный X
-        Math.random() * -400 - 50,          // Случайный Y от -50 до -450 (Элементы красиво падают вниз)
+        Math.random() * (width - 150) + 75, 
+        Math.random() * -400 - 50,          
         w, h, 
         {
           chamfer: { radius: 25 }, 
@@ -309,7 +395,6 @@ const PhysicsPlayground = ({ dict }) => {
     bodiesRef.current = newBodies;
     World.add(engine.world, newBodies);
 
-    // 3. Интерактивность с мышью
     const mouse = Mouse.create(container);
     const mouseConstraint = MouseConstraint.create(engine, {
       mouse: mouse,
@@ -320,7 +405,6 @@ const PhysicsPlayground = ({ dict }) => {
     });
     World.add(engine.world, mouseConstraint);
 
-    // 4. Магнитное отталкивание при наведении
     Events.on(engine, "beforeUpdate", () => {
       if (mouse.position.x !== 0 && mouse.position.y !== 0) {
         newBodies.forEach(body => {
@@ -342,7 +426,6 @@ const PhysicsPlayground = ({ dict }) => {
     const runner = Runner.create();
     Runner.run(runner, engine);
 
-    // 5. Синхронизация DOM и Physics
     Events.on(engine, 'afterUpdate', () => {
       newBodies.forEach((body, index) => {
         const el = elementsRef.current[index];
@@ -352,7 +435,6 @@ const PhysicsPlayground = ({ dict }) => {
       });
     });
 
-    // 6. Обновление координат стен при ресайзе
     const handleResize = () => {
       const newWidth = container.clientWidth;
       Matter.Body.setPosition(ground, { x: newWidth / 2, y: height + wallThickness / 2 });
@@ -369,7 +451,6 @@ const PhysicsPlayground = ({ dict }) => {
     };
   }, []);
 
-  // Красивый взрыв при клике
   const handleExplodeClick = () => {
     if (!bodiesRef.current.length) return;
     bodiesRef.current.forEach(body => {
@@ -780,6 +861,9 @@ export default function App() {
 
               {/* АНИМАЦИЯ ПАНЕЛЕЙ GSAP */}
               <GsapPanelsShowcase />
+
+              {/* НОВАЯ СЕКЦИЯ GIGABYTE SCROLL MORPH */}
+              <GigabyteScrollEffect />
 
               {/* HORIZONTAL SKILLS */}
               <SkillsHorizontal lang={lang} dict={dict} />
