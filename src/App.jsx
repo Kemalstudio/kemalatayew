@@ -868,7 +868,7 @@ export default function App() {
               {/* HORIZONTAL SKILLS */}
               <SkillsHorizontal lang={lang} dict={dict} />
 
-              {/* РЕАЛЬНАЯ ФИЗИКА (MATTER.JS - ОБНОВЛЕННАЯ ВЕРСИЯ) */}
+              {/* ФИЗИКА (MATTER.JS - ОБНОВЛЕННАЯ ВЕРСИЯ) */}
               <PhysicsPlayground dict={dict} />
 
               {/* FOOTER */}
