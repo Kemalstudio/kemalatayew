@@ -261,20 +261,18 @@ const GigabyteScrollEffect = () => {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=400%", // Увеличено, чтобы эффект заливки текста был более долгим и плавным
+          end: "+=400%", 
           scrub: 1,      
           pin: true,     
         }
       });
 
-      // 1. Анимация заливки текста (Apple style scroll text reveal)
       tl.to(".g-text-reveal", { 
         backgroundPositionX: "0%", 
         duration: 2.5, 
         ease: "none" 
       }, 0);
 
-      // 2. Прячем начальный текст ПОСЛЕ того как он закрасился
       tl.to(".giga-front-text", { 
         opacity: 0, 
         scale: 0.9,
@@ -282,14 +280,12 @@ const GigabyteScrollEffect = () => {
         duration: 1.5 
       }, 2.8);
 
-      // 3. Фокус гигантского текста
       tl.fromTo(".giga-bg-huge-text", 
         { scale: 4, opacity: 0.15, filter: "blur(20px)" },
         { scale: 1, opacity: 1, filter: "blur(0px)", duration: 2, ease: "power2.inOut" },
         2.8 
       );
 
-      // 4. Появление слов по очереди
       tl.fromTo(".giga-word-1", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 4.5);
       tl.fromTo(".giga-word-2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 5.0);
       tl.fromTo(".giga-word-3", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 5.5);
@@ -305,7 +301,6 @@ const GigabyteScrollEffect = () => {
 
       <div className="giga-content-wrapper">
         
-        {/* Текст который исчезает */}
         <div className="giga-front-text">
           <h1 className="giga-main-title">
             <span className="g-text-white">I </span>
@@ -314,12 +309,10 @@ const GigabyteScrollEffect = () => {
           </h1>
           <p className="giga-subtext-old">
             <span className="g-text-white">Code that's </span>
-            {/* Вот этот спан будет плавно заливаться голубым цветом */}
             <span className="g-text-reveal">Clean, Responsive, Dynamic, Reliable, User-centric</span>
           </p>
         </div>
 
-        {/* Текст который фокусируется и становится заголовком */}
         <div className="giga-bg-huge-text">
           <h1 className="giga-final-title">
             <span className="g-text-white giga-bold">FULL STACK </span>
@@ -327,7 +320,6 @@ const GigabyteScrollEffect = () => {
             <span className="g-text-cyan">Playground</span>
           </h1>
           
-          {/* Появляющиеся слова */}
           <div className="giga-subtext-new">
             <span className="giga-word giga-word-1">to Learn, </span>
             <span className="giga-word giga-word-2">Build, </span>
@@ -335,7 +327,6 @@ const GigabyteScrollEffect = () => {
           </div>
         </div>
 
-        {/* Кнопки (Теперь со стилем как у Start a Project и магнитом) */}
         <div className="giga-buttons">
           <Magnetic>
             <SpringButton 
@@ -357,6 +348,97 @@ const GigabyteScrollEffect = () => {
         </div>
 
       </div>
+    </section>
+  );
+};
+
+// ==========================================
+// НОВЫЙ ЭФФЕКТ: СИГНАТУРА + ФОТО + БЕГУЩИЙ ТЕКСТ (Как на референсах)
+// ==========================================
+const SignatureScrollEffect = () => {
+  const sectionRef = useRef(null);
+  const pathRef = useRef(null);
+  const marqueeRef = useRef(null);
+
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      // 1. Подготавливаем длину SVG-пути для эффекта рисования
+      const path = pathRef.current;
+      const length = path.getTotalLength();
+      
+      gsap.set(path, {
+        strokeDasharray: length,
+        strokeDashoffset: length,
+      });
+
+      // 2. Создаем ScrollTrigger таймлайн для всей секции
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "+=200%", // Пинним секцию на 2 экрана скролла
+          scrub: 1,
+          pin: true,
+        }
+      });
+
+      // Анимация рисования линии
+      tl.to(path, {
+        strokeDashoffset: 0,
+        duration: 2,
+        ease: "power1.inOut"
+      }, 0);
+
+      // Параллакс/Движение огромного фонового текста
+      tl.to(marqueeRef.current, {
+        xPercent: -30, // Двигаем текст влево при скролле
+        duration: 2.5,
+        ease: "none"
+      }, 0);
+
+      // Легкое приближение фотографии и возвращение цвета (опционально)
+      tl.to(".sig-image-wrapper img", {
+        scale: 1.1,
+        duration: 2,
+        ease: "none"
+      }, 0);
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={sectionRef} className="signature-section">
+      
+      {/* Огромный фоновый текст */}
+      <div className="sig-marquee" ref={marqueeRef}>
+        <div className="sig-marquee-inner">
+          KEMAL ATAYEV CREATIVE DEVELOPER KEMAL ATAYEV CREATIVE DEVELOPER KEMAL ATAYEV
+        </div>
+      </div>
+
+      {/* Центральная фотография (ЧБ по умолчанию) */}
+      <div className="sig-image-wrapper">
+        {/* Замените ссылку на свое фото */}
+        <img 
+          src="https://images.unsplash.com/photo-1618077360395-f3068be8e001?q=80&w=2000&auto=format&fit=crop" 
+          alt="Portrait" 
+        />
+      </div>
+
+      {/* SVG контейнер для неоновой подписи, которая рисуется поверх фото */}
+      <div className="sig-svg-wrapper">
+        <svg viewBox="0 0 600 600" className="sig-svg">
+          <path 
+            ref={pathRef}
+            className="sig-path"
+            // Это крутой абстрактный путь в стиле автографа / резких линий
+            d="M 50 400 L 250 150 L 200 450 L 350 250 L 280 480 L 450 200 C 480 150 500 100 400 100 C 300 100 200 200 150 300 L 400 450 C 450 480 550 350 500 250"
+          />
+        </svg>
+      </div>
+
     </section>
   );
 };
@@ -881,6 +963,9 @@ export default function App() {
 
               {/* === СЕКЦИЯ GIGABYTE === */}
               <GigabyteScrollEffect />
+
+              {/* === НОВАЯ СЕКЦИЯ: ПОДПИСЬ И ФОТО (Из ваших референсов) === */}
+              <SignatureScrollEffect />
 
               {/* TECH BENTO GRID */}
               <TechBentoGrid dict={dict} techStack={techStack} />
