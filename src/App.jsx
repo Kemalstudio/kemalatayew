@@ -261,20 +261,18 @@ const GigabyteScrollEffect = () => {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=400%", // Увеличено, чтобы эффект заливки текста был более долгим и плавным
+          end: "+=400%", 
           scrub: 1,      
           pin: true,     
         }
       });
 
-      // 1. Анимация заливки текста (Apple style scroll text reveal)
       tl.to(".g-text-reveal", { 
         backgroundPositionX: "0%", 
         duration: 2.5, 
         ease: "none" 
       }, 0);
 
-      // 2. Прячем начальный текст ПОСЛЕ того как он закрасился
       tl.to(".giga-front-text", { 
         opacity: 0, 
         scale: 0.9,
@@ -282,14 +280,12 @@ const GigabyteScrollEffect = () => {
         duration: 1.5 
       }, 2.8);
 
-      // 3. Фокус гигантского текста
       tl.fromTo(".giga-bg-huge-text", 
         { scale: 4, opacity: 0.15, filter: "blur(20px)" },
         { scale: 1, opacity: 1, filter: "blur(0px)", duration: 2, ease: "power2.inOut" },
         2.8 
       );
 
-      // 4. Появление слов по очереди
       tl.fromTo(".giga-word-1", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 4.5);
       tl.fromTo(".giga-word-2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 5.0);
       tl.fromTo(".giga-word-3", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 5.5);
@@ -304,8 +300,6 @@ const GigabyteScrollEffect = () => {
       <div className="giga-background"></div>
 
       <div className="giga-content-wrapper">
-        
-        {/* Текст который исчезает */}
         <div className="giga-front-text">
           <h1 className="giga-main-title">
             <span className="g-text-white">I </span>
@@ -314,20 +308,16 @@ const GigabyteScrollEffect = () => {
           </h1>
           <p className="giga-subtext-old">
             <span className="g-text-white">Code that's </span>
-            {/* Вот этот спан будет плавно заливаться голубым цветом */}
             <span className="g-text-reveal">Clean, Responsive, Dynamic, Reliable, User-centric</span>
           </p>
         </div>
 
-        {/* Текст который фокусируется и становится заголовком */}
         <div className="giga-bg-huge-text">
           <h1 className="giga-final-title">
             <span className="g-text-white giga-bold">FULL STACK </span>
             <span className="g-text-blue">is My </span>
             <span className="g-text-cyan">Playground</span>
           </h1>
-          
-          {/* Появляющиеся слова */}
           <div className="giga-subtext-new">
             <span className="giga-word giga-word-1">to Learn, </span>
             <span className="giga-word giga-word-2">Build, </span>
@@ -335,32 +325,251 @@ const GigabyteScrollEffect = () => {
           </div>
         </div>
 
-        {/* Кнопки (Теперь со стилем как у Start a Project и магнитом) */}
         <div className="giga-buttons">
           <Magnetic>
-            <SpringButton 
-              className="cta-huge giga-cta" 
-              onClick={() => window.open('https://github.com', '_blank')}
-            >
+            <SpringButton className="cta-huge giga-cta" onClick={() => window.open('https://github.com', '_blank')}>
               My GitHub
             </SpringButton>
           </Magnetic>
-          
           <Magnetic>
-            <SpringButton 
-              className="cta-huge giga-cta" 
-              onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
-            >
+            <SpringButton className="cta-huge giga-cta" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>
               Hire Me
             </SpringButton>
           </Magnetic>
         </div>
-
       </div>
     </section>
   );
 };
 
+// ==========================================
+// 🔥 AWWWARDS УРОВЕНЬ: INTERACTIVE HELMET REVEAL 🔥
+// Эффект, как у Lando Norris: Лицо, на которое по Hover слетается 3D-шлем
+// ==========================================
+const InteractiveHelmetReveal = () => {
+  const containerRef = useRef(null);
+  const faceContainerRef = useRef(null);
+  const partsRef = useRef([]);
+  const glareRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Сохраняем ссылки на части шлема
+  const setPartRef = (el, index) => {
+    partsRef.current[index] = el;
+  };
+
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      // Изначально "осколки" шлема разбросаны далеко за пределы лица и невидимы
+      gsap.set(partsRef.current, { 
+        opacity: 0, 
+        scale: 1.5,
+        rotationZ: () => gsap.utils.random(-45, 45),
+        rotationX: () => gsap.utils.random(-45, 45),
+        rotationY: () => gsap.utils.random(-45, 45),
+        x: () => gsap.utils.random(-400, 400),
+        y: () => gsap.utils.random(-400, 400),
+      });
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    // Когда мышка заходит, осколки эпично собираются в шлем на лице
+    gsap.to(partsRef.current, {
+      opacity: 1,
+      scale: 1,
+      x: 0,
+      y: 0,
+      rotationZ: 0,
+      rotationX: 0,
+      rotationY: 0,
+      duration: 1.2,
+      stagger: 0.1,
+      ease: "elastic.out(1, 0.6)",
+      overwrite: true
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    // Когда мышка уходит, осколки разлетаются и исчезают
+    gsap.to(partsRef.current, {
+      opacity: 0,
+      scale: 1.5,
+      rotationZ: () => gsap.utils.random(-45, 45),
+      rotationX: () => gsap.utils.random(-45, 45),
+      rotationY: () => gsap.utils.random(-45, 45),
+      x: () => gsap.utils.random(-400, 400),
+      y: () => gsap.utils.random(-400, 400),
+      duration: 0.8,
+      ease: "power3.inOut",
+      overwrite: true
+    });
+    
+    // Возвращаем лицо в центр
+    gsap.to(faceContainerRef.current, {
+      rotateX: 0, rotateY: 0, x: 0, y: 0, duration: 1, ease: "power2.out"
+    });
+  };
+
+  const handleMouseMove = (e) => {
+    if (!faceContainerRef.current) return;
+    const { clientX, clientY } = e;
+    const rect = containerRef.current.getBoundingClientRect();
+    
+    // Вычисляем позицию мыши от -1 до 1 относительно центра контейнера
+    const x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    const y = ((clientY - rect.top) / rect.height) * 2 - 1;
+
+    // Глубокий 3D параллакс лица
+    gsap.to(faceContainerRef.current, {
+      rotateX: -y * 15,
+      rotateY: x * 15,
+      x: x * 20,
+      y: y * 20,
+      duration: 0.6,
+      ease: "power2.out"
+    });
+
+    // Дополнительный параллакс для частей шлема (чтобы они казались "над" лицом)
+    if (isHovered) {
+      partsRef.current.forEach((part, i) => {
+        // У каждой детали свой коэффициент глубины (depth)
+        const depth = (i + 1) * 8; 
+        gsap.to(part, {
+          x: x * depth,
+          y: y * depth,
+          rotateX: -y * 20,
+          rotateY: x * 20,
+          duration: 0.6,
+          ease: "power2.out"
+        });
+      });
+
+      // Анимация блика на стекле (визоре) шлема
+      if (glareRef.current) {
+        gsap.to(glareRef.current, {
+          x: -x * 100,
+          y: -y * 100,
+          duration: 0.3,
+          ease: "none"
+        });
+      }
+    }
+  };
+
+  return (
+    <section 
+      ref={containerRef} 
+      className="cyber-helmet-section"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
+    >
+      {/* Декоративный UI по краям как на гоночном сайте */}
+      <div className="ch-ui-top-right">
+        <Magnetic>
+          <div className="ch-store-btn">
+            <span className="ch-dot"></span> EQUIP STORE
+          </div>
+        </Magnetic>
+      </div>
+      <div className="ch-ui-top-left">
+        <h2 className="ch-logo-text">ATAYEV<br/>KEMAL</h2>
+      </div>
+      <div className="ch-ui-bottom-left">
+        <p className="ch-status-label">NEXT UPGRADE</p>
+        <div className="ch-badge">FULL-STACK<br/>SINCE 2020</div>
+      </div>
+
+      {/* Центральный контейнер, который крутится в 3D */}
+      <div className="ch-3d-wrapper" ref={faceContainerRef}>
+        
+        {/* Фотография лица */}
+        <img 
+          src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1287&auto=format&fit=crop" 
+          alt="Portrait" 
+          className="ch-portrait"
+        />
+
+        {/* ШЛЕМ - Разбитый на 4 независимые части */}
+        <div className="ch-helmet-container">
+          
+          {/* 1. Верхняя часть (лоб/шлем) - Желтый камуфляж */}
+          <div className="ch-part ch-part-top" ref={(el) => setPartRef(el, 0)}>
+            <div className="ch-texture">
+              <span className="ch-sponsor">REACT</span>
+            </div>
+          </div>
+
+          {/* 2. Левая челюсть */}
+          <div className="ch-part ch-part-left" ref={(el) => setPartRef(el, 1)}>
+            <div className="ch-texture">
+               <span className="ch-sponsor-side">GSAP</span>
+            </div>
+          </div>
+
+          {/* 3. Правая челюсть */}
+          <div className="ch-part ch-part-right" ref={(el) => setPartRef(el, 2)}>
+            <div className="ch-texture">
+               <span className="ch-sponsor-side">NODE.JS</span>
+            </div>
+          </div>
+
+          {/* 4. Визор (Тонированное стекло на глазах) */}
+          <div className="ch-part ch-part-visor" ref={(el) => setPartRef(el, 3)}>
+             <div className="ch-visor-glass">
+                {/* Блик, реагирующий на мышь */}
+                <div className="ch-glare" ref={glareRef}></div>
+             </div>
+             <div className="ch-visor-trim">ATAYEV M-1</div>
+          </div>
+
+        </div>
+      </div>
+      
+      {/* Инструкция для пользователя */}
+      <p className={`ch-instruction ${isHovered ? 'hidden' : ''}`}>
+        [ HOVER TO EQUIP ]
+      </p>
+
+    </section>
+  );
+};
+
+
+// ==========================================
+// TECH BENTO GRID
+// ==============================================
+const TechBentoGrid = ({ dict, techStack }) => {
+  const sectionRef = useRef(null);
+  const titleRef = useRef(null);
+
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      gsap.from(titleRef.current, { scrollTrigger: { trigger: sectionRef.current, start: "top 80%" }, y: 100, opacity: 0, duration: 1.2, ease: "power4.out" });
+      const tl = gsap.timeline({ scrollTrigger: { trigger: sectionRef.current, start: "top 65%", toggleActions: "play none none reverse" } });
+      tl.from(".tech-card", { y: 100, opacity: 0, scale: 0.8, rotationX: 45, stagger: 0.1, duration: 0.8, ease: "back.out(1.5)" });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={sectionRef} className="tech-bento-section" id="work">
+      <div className="container">
+        <div className="section-title-wrapper" ref={titleRef}>
+          <span className="section-subtitle">{dict.bentoSub}</span>
+          <h2 className="section-title">{dict.bentoTitle}</h2>
+        </div>
+        <div className="tech-grid">
+          {techStack.map((tech, i) => <TiltCard key={i} tech={tech} />)}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 // ==========================================
 // MATTER.JS - НАДЕЖНЫЕ СТЕНЫ И СПАВН
@@ -632,85 +841,6 @@ const SkillsHorizontal = ({ lang, dict }) => {
 };
 
 // ==========================================
-// ИНТЕРАКТИВНАЯ КАРТОЧКА НАВЫКОВ 
-// ==========================================
-const TiltCard = ({ tech }) => {
-  const cardRef = useRef(null);
-  const handleMouseMove = (e) => {
-    const card = cardRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left; const y = e.clientY - rect.top;
-    const centerX = rect.width / 2; const centerY = rect.height / 2;
-    gsap.to(card, {
-      rotateX: ((y - centerY) / centerY) * -15, rotateY: ((x - centerX) / centerX) * 15,
-      transformPerspective: 1000, ease: "power2.out", duration: 0.5
-    });
-  };
-  const handleMouseLeave = () => gsap.to(cardRef.current, { rotateX: 0, rotateY: 0, ease: "elastic.out(1, 0.3)", duration: 1.2 });
-  const handleClick = () => gsap.timeline().to(cardRef.current, { scale: 0.9, duration: 0.1 }).to(cardRef.current, { scale: 1, duration: 0.6, ease: "elastic.out(1, 0.3)" });
-
-  return (
-    <div ref={cardRef} className="tech-card" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} onClick={handleClick}>
-      <div className="tech-card-glow" />
-      <div className="tech-icon">{tech.icon}</div>
-      <div className="tech-info">
-        <h4>{tech.name}</h4>
-        <span className="tech-level">{tech.level}</span>
-      </div>
-    </div>
-  );
-};
-
-// ==============================================
-// TECH BENTO GRID
-// ==============================================
-const TechBentoGrid = ({ dict, techStack }) => {
-  const sectionRef = useRef(null);
-  const titleRef = useRef(null);
-
-  useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
-      gsap.from(titleRef.current, { scrollTrigger: { trigger: sectionRef.current, start: "top 80%" }, y: 100, opacity: 0, duration: 1.2, ease: "power4.out" });
-      const tl = gsap.timeline({ scrollTrigger: { trigger: sectionRef.current, start: "top 65%", toggleActions: "play none none reverse" } });
-      tl.from(".tech-card", { y: 100, opacity: 0, scale: 0.8, rotationX: 45, stagger: 0.1, duration: 0.8, ease: "back.out(1.5)" });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <section ref={sectionRef} className="tech-bento-section" id="work">
-      <div className="container">
-        <div className="section-title-wrapper" ref={titleRef}>
-          <span className="section-subtitle">{dict.bentoSub}</span>
-          <h2 className="section-title">{dict.bentoTitle}</h2>
-        </div>
-        <div className="tech-grid">
-          {techStack.map((tech, i) => <TiltCard key={i} tech={tech} />)}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// ==========================================
-// REACT SPRING КНОПКА
-// ==========================================
-const SpringButton = ({ children, onClick, className }) => {
-  const [props, set] = useSpring(() => ({ scale: 1, boxShadow: "0px 0px 0px rgba(0, 255, 255, 0)", config: { tension: 400, friction: 15 } }));
-  return (
-    <animated.button className={className} onClick={onClick}
-      onMouseEnter={() => set({ scale: 1.05, boxShadow: "0px 10px 30px rgba(0, 255, 255, 0.4)" })}
-      onMouseLeave={() => set({ scale: 1, boxShadow: "0px 0px 0px rgba(0, 255, 255, 0)" })}
-      onMouseDown={() => set({ scale: 0.95 })}
-      onMouseUp={() => set({ scale: 1.05 })} style={props}
-    >
-      {children}
-    </animated.button>
-  );
-};
-
-// ==========================================
 // MAIN APP
 // ==========================================
 export default function App() {
@@ -882,6 +1012,9 @@ export default function App() {
               {/* === СЕКЦИЯ GIGABYTE === */}
               <GigabyteScrollEffect />
 
+              {/* === 🔥 УЛЬТРА СЕКЦИЯ: ИНТЕРАКТИВНЫЙ СБОРНЫЙ ШЛЕМ (Как у Lando Norris) 🔥 === */}
+              <InteractiveHelmetReveal />
+
               {/* TECH BENTO GRID */}
               <TechBentoGrid dict={dict} techStack={techStack} />
 
@@ -891,7 +1024,7 @@ export default function App() {
               {/* HORIZONTAL SKILLS */}
               <SkillsHorizontal lang={lang} dict={dict} />
 
-              {/* РЕАЛЬНАЯ ФИЗИКА (MATTER.JS - ОБНОВЛЕННАЯ ВЕРСИЯ) */}
+              {/* РЕАЛЬНАЯ ФИЗИКА (MATTER.JS) */}
               <PhysicsPlayground dict={dict} />
 
               {/* FOOTER */}
