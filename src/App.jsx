@@ -420,9 +420,8 @@ const SignatureScrollEffect = () => {
 
       {/* Центральная фотография (ЧБ по умолчанию) */}
       <div className="sig-image-wrapper">
-        {/* Замените ссылку на свое фото */}
         <img 
-          src="https://images.unsplash.com/photo-1618077360395-f3068be8e001?q=80&w=2000&auto=format&fit=crop" 
+          src="/images/kemalstudio.jpg" 
           alt="Portrait" 
         />
       </div>
