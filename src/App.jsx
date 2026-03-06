@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring as useFramerSpring } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
@@ -12,7 +12,7 @@ import './App.css';
 gsap.registerPlugin(ScrollTrigger);
 
 // ========================================
-// МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ (i18n)
+// МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ (i18n) - ОСТАВЛЕН БЕЗ ИЗМЕНЕНИЙ
 // ========================================
 const translations = {
   en: {
@@ -87,10 +87,7 @@ const SmoothScroll = ({ children }) => {
     });
 
     lenis.on('scroll', ScrollTrigger.update);
-
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
     gsap.ticker.lagSmoothing(0);
 
     return () => {
@@ -103,11 +100,13 @@ const SmoothScroll = ({ children }) => {
 };
 
 // =========================================
-// CUSTOM CURSOR
+// 🌟 ОБНОВЛЕНО: SMART CUSTOM CURSOR С ТЕКСТОМ
 // =========================================
 const CustomCursor = () => {
   const cursorDotRef = useRef(null);
   const cursorFollowerRef = useRef(null);
+  const [cursorText, setCursorText] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const dot = cursorDotRef.current;
@@ -123,6 +122,16 @@ const CustomCursor = () => {
       yToDot(e.clientY);
       xToFollower(e.clientX);
       yToFollower(e.clientY);
+
+      // Логика обнаружения дата-атрибута для смены состояния курсора
+      const target = e.target.closest('[data-cursor]');
+      if (target) {
+        setIsHovered(true);
+        setCursorText(target.getAttribute('data-cursor'));
+      } else {
+        setIsHovered(false);
+        setCursorText("");
+      }
     };
 
     window.addEventListener("mousemove", onMouseMove);
@@ -131,8 +140,10 @@ const CustomCursor = () => {
 
   return (
     <>
-      <div ref={cursorDotRef} className="custom-cursor-dot"></div>
-      <div ref={cursorFollowerRef} className="custom-cursor-follower"></div>
+      <div ref={cursorDotRef} className={`custom-cursor-dot ${isHovered ? 'hidden' : ''}`}></div>
+      <div ref={cursorFollowerRef} className={`custom-cursor-follower ${isHovered ? 'expanded' : ''}`}>
+        <span className="cursor-text">{cursorText}</span>
+      </div>
     </>
   );
 };
@@ -250,7 +261,7 @@ const LoadingScreen = ({ onComplete }) => {
 };
 
 // ==========================================
-// GIGABYTE TEXT MORPH SCROLL EFFECT (DARK THEME)
+// GIGABYTE TEXT MORPH SCROLL EFFECT
 // ==========================================
 const GigabyteScrollEffect = () => {
   const containerRef = useRef(null);
@@ -261,51 +272,31 @@ const GigabyteScrollEffect = () => {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=400%", // Увеличено, чтобы эффект заливки текста был более долгим и плавным
+          end: "+=400%",
           scrub: 1,      
           pin: true,     
         }
       });
 
-      // 1. Анимация заливки текста (Apple style scroll text reveal)
-      tl.to(".g-text-reveal", { 
-        backgroundPositionX: "0%", 
-        duration: 2.5, 
-        ease: "none" 
-      }, 0);
-
-      // 2. Прячем начальный текст ПОСЛЕ того как он закрасился
-      tl.to(".giga-front-text", { 
-        opacity: 0, 
-        scale: 0.9,
-        y: -50, 
-        duration: 1.5 
-      }, 2.8);
-
-      // 3. Фокус гигантского текста
+      tl.to(".g-text-reveal", { backgroundPositionX: "0%", duration: 2.5, ease: "none" }, 0);
+      tl.to(".giga-front-text", { opacity: 0, scale: 0.9, y: -50, duration: 1.5 }, 2.8);
       tl.fromTo(".giga-bg-huge-text", 
         { scale: 4, opacity: 0.15, filter: "blur(20px)" },
         { scale: 1, opacity: 1, filter: "blur(0px)", duration: 2, ease: "power2.inOut" },
         2.8 
       );
-
-      // 4. Появление слов по очереди
       tl.fromTo(".giga-word-1", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 4.5);
       tl.fromTo(".giga-word-2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 5.0);
       tl.fromTo(".giga-word-3", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, 5.5);
 
     }, containerRef);
-
     return () => ctx.revert();
   }, []);
 
   return (
     <section ref={containerRef} className="gigabyte-section">
       <div className="giga-background"></div>
-
       <div className="giga-content-wrapper">
-        
-        {/* Текст который исчезает */}
         <div className="giga-front-text">
           <h1 className="giga-main-title">
             <span className="g-text-white">I </span>
@@ -314,53 +305,29 @@ const GigabyteScrollEffect = () => {
           </h1>
           <p className="giga-subtext-old">
             <span className="g-text-white">Code that's </span>
-            {/* Вот этот спан будет плавно заливаться голубым цветом */}
             <span className="g-text-reveal">Clean, Responsive, Dynamic, Reliable, User-centric</span>
           </p>
         </div>
-
-        {/* Текст который фокусируется и становится заголовком */}
         <div className="giga-bg-huge-text">
           <h1 className="giga-final-title">
             <span className="g-text-white giga-bold">FULL STACK </span>
             <span className="g-text-blue">is My </span>
             <span className="g-text-cyan">Playground</span>
           </h1>
-          
-          {/* Появляющиеся слова */}
           <div className="giga-subtext-new">
             <span className="giga-word giga-word-1">to Learn, </span>
             <span className="giga-word giga-word-2">Build, </span>
             <span className="giga-word giga-word-3">Deploy.</span>
           </div>
         </div>
-
-        {/* Кнопки (Теперь со стилем как у Start a Project и магнитом) */}
         <div className="giga-buttons">
-          <Magnetic>
-            <SpringButton 
-              className="cta-huge giga-cta" 
-              onClick={() => window.open('https://github.com', '_blank')}
-            >
-              My GitHub
-            </SpringButton>
-          </Magnetic>
-          
-          <Magnetic>
-            <SpringButton 
-              className="cta-huge giga-cta" 
-              onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
-            >
-              Hire Me
-            </SpringButton>
-          </Magnetic>
+          <Magnetic><SpringButton className="cta-huge giga-cta" onClick={() => window.open('https://github.com', '_blank')}>My GitHub</SpringButton></Magnetic>
+          <Magnetic><SpringButton className="cta-huge giga-cta" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>Hire Me</SpringButton></Magnetic>
         </div>
-
       </div>
     </section>
   );
 };
-
 
 // ==========================================
 // MATTER.JS - НАДЕЖНЫЕ СТЕНЫ И СПАВН
@@ -380,7 +347,6 @@ const PhysicsPlayground = ({ dict }) => {
 
   useEffect(() => {
     const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint, Events, Composite } = Matter;
-    
     const engine = Engine.create();
     engineRef.current = engine;
     engine.world.gravity.y = 0.8; 
@@ -406,12 +372,7 @@ const PhysicsPlayground = ({ dict }) => {
         Math.random() * (width - 150) + 75, 
         Math.random() * -400 - 50,          
         w, h, 
-        {
-          chamfer: { radius: 25 }, 
-          restitution: 0.6,        
-          friction: 0.1,           
-          frictionAir: 0.02,       
-        }
+        { chamfer: { radius: 25 }, restitution: 0.6, friction: 0.1, frictionAir: 0.02 }
       );
     });
     
@@ -419,13 +380,7 @@ const PhysicsPlayground = ({ dict }) => {
     World.add(engine.world, newBodies);
 
     const mouse = Mouse.create(container);
-    const mouseConstraint = MouseConstraint.create(engine, {
-      mouse: mouse,
-      constraint: {
-        stiffness: 0.2,
-        render: { visible: false }
-      }
-    });
+    const mouseConstraint = MouseConstraint.create(engine, { mouse: mouse, constraint: { stiffness: 0.2, render: { visible: false } } });
     World.add(engine.world, mouseConstraint);
 
     Events.on(engine, "beforeUpdate", () => {
@@ -434,13 +389,9 @@ const PhysicsPlayground = ({ dict }) => {
           const dx = body.position.x - mouse.position.x;
           const dy = body.position.y - mouse.position.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          
           if (dist < 120) {
             const force = 0.00015 * (120 - dist) / 120;
-            Matter.Body.applyForce(body, body.position, {
-              x: dx * force,
-              y: dy * force
-            });
+            Matter.Body.applyForce(body, body.position, { x: dx * force, y: dy * force });
           }
         });
       }
@@ -452,9 +403,7 @@ const PhysicsPlayground = ({ dict }) => {
     Events.on(engine, 'afterUpdate', () => {
       newBodies.forEach((body, index) => {
         const el = elementsRef.current[index];
-        if (el) {
-          el.style.transform = `translate(calc(-50% + ${body.position.x}px), calc(-50% + ${body.position.y}px)) rotate(${body.angle}rad)`;
-        }
+        if (el) el.style.transform = `translate(calc(-50% + ${body.position.x}px), calc(-50% + ${body.position.y}px)) rotate(${body.angle}rad)`;
       });
     });
 
@@ -490,22 +439,10 @@ const PhysicsPlayground = ({ dict }) => {
         <h2 className="physics-title">{dict.physicsTitle}</h2>
         <p className="physics-sub">{dict.physicsSub}</p>
       </div>
-      
-      <div 
-        ref={sceneRef} 
-        className="physics-dom-container" 
-        onClick={handleExplodeClick}
-      >
+      <div ref={sceneRef} className="physics-dom-container" onClick={handleExplodeClick} data-cursor="DRAG / CLICK">
         <div className="physics-hint">Click anywhere to explode! 💥</div>
-
         {skills.map((skill, i) => (
-          <div
-            key={skill}
-            ref={(el) => (elementsRef.current[i] = el)}
-            className="physics-skill-pill"
-          >
-            {skill}
-          </div>
+          <div key={skill} ref={(el) => (elementsRef.current[i] = el)} className="physics-skill-pill">{skill}</div>
         ))}
       </div>
     </section>
@@ -520,7 +457,6 @@ const GsapPanelsShowcase = () => {
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {}); 
-    
     const timer = setTimeout(() => {
       ctx.add(() => {
         let panels = gsap.utils.toArray(".gsap-panel");
@@ -533,7 +469,6 @@ const GsapPanelsShowcase = () => {
             invalidateOnRefresh: true, 
           }
         });
-
         tl.fromTo(panels[1], { xPercent: 100, rotation: 10 }, { xPercent: 0, rotation: 0, ease: "power2.inOut" })
           .fromTo(panels[2], { yPercent: -100, scale: 0.5 }, { yPercent: 0, scale: 1, ease: "power2.inOut" })
           .fromTo(panels[3], { xPercent: -100, rotation: -10 }, { xPercent: 0, rotation: 0, ease: "power2.inOut" });
@@ -541,27 +476,25 @@ const GsapPanelsShowcase = () => {
       ScrollTrigger.refresh();
     }, 100); 
 
-    return () => {
-      clearTimeout(timer);
-      ctx.revert();
-    };
+    return () => { clearTimeout(timer); ctx.revert(); };
   }, []);
 
   return (
     <section ref={containerRef} className="gsap-panels-container">
-      <div className="gsap-panel panel-one">
+      {/* 🌟 ОБНОВЛЕНО: Добавлен дата-атрибут для смарт-курсора */}
+      <div className="gsap-panel panel-one" data-cursor="VIEW">
         <div className="bg-circle" />
         <h2 className="panel-text">Aura Computers</h2>
       </div>
-      <div className="gsap-panel panel-two">
+      <div className="gsap-panel panel-two" data-cursor="VIEW">
         <div className="bg-circle" />
         <h2 className="panel-text">Atam Store</h2>
       </div>
-      <div className="gsap-panel panel-three">
+      <div className="gsap-panel panel-three" data-cursor="VIEW">
         <div className="bg-circle" />
         <h2 className="panel-text">Sonus Music</h2>
       </div>
-      <div className="gsap-panel panel-four">
+      <div className="gsap-panel panel-four" data-cursor="VIEW">
         <div className="bg-circle" />
         <h2 className="panel-text">Turkmen Store</h2>
       </div>
@@ -578,36 +511,22 @@ const SkillsHorizontal = ({ lang, dict }) => {
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {});
-    
     const timer = setTimeout(() => {
       ctx.add(() => {
         const scrollWidth = scrollRef.current.scrollWidth - window.innerWidth;
         gsap.to(scrollRef.current, {
           x: -scrollWidth,
           ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            pin: true,
-            scrub: 1,
-            end: `+=${scrollWidth}`,
-            invalidateOnRefresh: true 
-          }
+          scrollTrigger: { trigger: containerRef.current, pin: true, scrub: 1, end: `+=${scrollWidth}`, invalidateOnRefresh: true }
         });
-        
         gsap.utils.toArray('.panel-num').forEach(num => {
-          gsap.to(num, {
-            x: 100, ease: "none",
-            scrollTrigger: { trigger: containerRef.current, scrub: 1 }
-          });
+          gsap.to(num, { x: 100, ease: "none", scrollTrigger: { trigger: containerRef.current, scrub: 1 } });
         });
       });
       ScrollTrigger.refresh();
     }, 100);
 
-    return () => {
-      clearTimeout(timer);
-      ctx.revert();
-    };
+    return () => { clearTimeout(timer); ctx.revert(); };
   }, [lang]);
 
   return (
@@ -617,7 +536,7 @@ const SkillsHorizontal = ({ lang, dict }) => {
       </div>
       <div ref={scrollRef} className="horizontal-scroll-container">
         {dict.skills.map((skill, i) => (
-          <div key={i} className="horizontal-panel">
+          <div key={i} className="horizontal-panel" data-cursor="SCROLL">
             <div className="panel-content">
               <span className="panel-num">0{i + 1}</span>
               <h3>{skill.title}</h3>
@@ -651,7 +570,8 @@ const TiltCard = ({ tech }) => {
   const handleClick = () => gsap.timeline().to(cardRef.current, { scale: 0.9, duration: 0.1 }).to(cardRef.current, { scale: 1, duration: 0.6, ease: "elastic.out(1, 0.3)" });
 
   return (
-    <div ref={cardRef} className="tech-card" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} onClick={handleClick}>
+    // 🌟 ОБНОВЛЕНО: Добавлен data-cursor
+    <div ref={cardRef} className="tech-card" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} onClick={handleClick} data-cursor="EXPLORE">
       <div className="tech-card-glow" />
       <div className="tech-icon">{tech.icon}</div>
       <div className="tech-info">
@@ -669,6 +589,19 @@ const TechBentoGrid = ({ dict, techStack }) => {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
 
+  // 🌟 ОБНОВЛЕНО: Логика Proximity Glow (Свечение фонарика при движении мыши по сетке)
+  const handleGridMouseMove = (e) => {
+    if (!sectionRef.current) return;
+    const cards = sectionRef.current.querySelectorAll('.tech-card');
+    for (const card of cards) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    }
+  };
+
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
       gsap.from(titleRef.current, { scrollTrigger: { trigger: sectionRef.current, start: "top 80%" }, y: 100, opacity: 0, duration: 1.2, ease: "power4.out" });
@@ -679,7 +612,7 @@ const TechBentoGrid = ({ dict, techStack }) => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="tech-bento-section" id="work">
+    <section ref={sectionRef} className="tech-bento-section" id="work" onMouseMove={handleGridMouseMove}>
       <div className="container">
         <div className="section-title-wrapper" ref={titleRef}>
           <span className="section-subtitle">{dict.bentoSub}</span>
@@ -690,6 +623,46 @@ const TechBentoGrid = ({ dict, techStack }) => {
         </div>
       </div>
     </section>
+  );
+};
+
+// ==========================================
+// 🌟 НОВОЕ: INFINITE VELOCITY MARQUEE (Бегущая строка)
+// ==========================================
+const VelocityMarquee = () => {
+  const textRef = useRef(null);
+  
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      // Искажение (skew) при скролле
+      let proxy = { skew: 0 },
+          skewSetter = gsap.quickSetter(".marquee-inner", "skewX", "deg"),
+          clamp = gsap.utils.clamp(-20, 20);
+
+      ScrollTrigger.create({
+        onUpdate: (self) => {
+          let skew = clamp(self.getVelocity() / -100);
+          if (Math.abs(skew) > Math.abs(proxy.skew)) {
+            proxy.skew = skew;
+            gsap.to(proxy, {skew: 0, duration: 0.8, ease: "power3", overwrite: true, onUpdate: () => skewSetter(proxy.skew)});
+          }
+        }
+      });
+    }, textRef);
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div className="velocity-marquee-container" ref={textRef}>
+      <div className="marquee-inner">
+        <div className="marquee-part">
+          PREMIUM DEVELOPMENT • WEBGL ANIMATIONS • CREATIVE ENGINEERING • REACT ECOSYSTEM • 
+        </div>
+        <div className="marquee-part">
+          PREMIUM DEVELOPMENT • WEBGL ANIMATIONS • CREATIVE ENGINEERING • REACT ECOSYSTEM • 
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -722,6 +695,14 @@ export default function App() {
   const heroTextBlockRef = useRef(null); 
 
   const dict = translations[lang];
+
+  // 🌟 НОВОЕ: Глобальный прогресс скролла
+  const { scrollYProgress } = useScroll();
+  const scaleX = useFramerSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   const techStack = [
     { name: "React", icon: "⚛️", level: "Expert" },
@@ -778,6 +759,9 @@ export default function App() {
 
   return (
     <SmoothScroll>
+      {/* 🌟 НОВОЕ: Индикатор прогресса */}
+      <motion.div className="scroll-progress-bar" style={{ scaleX }} />
+
       <div className={`app-wrapper ${a11yMode ? 'a11y-active' : ''}`}>
         <CustomCursor />
         
@@ -792,19 +776,9 @@ export default function App() {
             <span style={{ fontSize: "30px" }} className="name custom-font">Atayev Kemal</span>
           </div>
           <ul className="nav-links">
-            <li>
-              <Magnetic>
-                <a href="#work">{dict.navWork}</a>
-                </Magnetic>
-            </li>
-            <li>
-              <Magnetic>
-                <a href="#expertise">{dict.navExpertise}</a>
-              </Magnetic>
-            </li>
-            <li>
-              <Magnetic>
-                <a href="#contact">{dict.navContact}</a></Magnetic></li>
+            <li><Magnetic><a href="#work">{dict.navWork}</a></Magnetic></li>
+            <li><Magnetic><a href="#expertise">{dict.navExpertise}</a></Magnetic></li>
+            <li><Magnetic><a href="#contact">{dict.navContact}</a></Magnetic></li>
           </ul>
           <div className="nav-right">
             <div className="lang-switcher">
@@ -814,10 +788,7 @@ export default function App() {
             </div>
             <Magnetic>
               <button className={`a11y-toggle-btn ${a11yMode ? 'active' : ''}`} onClick={() => setA11yMode(!a11yMode)} title={dict.a11yTooltip}>
-                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
-                </svg>
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               </button>
             </Magnetic>
             <SpringButton className="nav-cta">{dict.navBtn}</SpringButton>
@@ -825,46 +796,25 @@ export default function App() {
         </motion.nav>
 
         <AnimatePresence mode="wait">
-          <motion.div 
-            key={lang}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6 }}
-            onAnimationComplete={() => {
-              setTimeout(() => ScrollTrigger.refresh(), 100); 
-            }}
-          >
+          <motion.div key={lang} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6 }} onAnimationComplete={() => { setTimeout(() => ScrollTrigger.refresh(), 100); }}>
             <main>
               {/* HERO SECTION */}
-              <section 
-                className="hero-premium" 
-                onMouseMove={handleHeroMouseMove}
-                onMouseLeave={handleHeroMouseLeave}
-              >
+              <section className="hero-premium" onMouseMove={handleHeroMouseMove} onMouseLeave={handleHeroMouseLeave}>
                 <div className="noise-overlay" />
                 <div className="parallax-orb orb-1"></div>
                 <div className="parallax-orb orb-2"></div>
-                
                 <FloatingParticles />
 
                 <div className="container hero-container" ref={heroTextRef}>
-                  
                   <div className="hero-text-block" ref={heroTextBlockRef}>
                     <motion.span className="hero-badge" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1, type: "spring" }}>
                       {dict.heroBadge}
                     </motion.span>
-                    
                     <h1 className="hero-h1">
-                      <div className="line-wrap">
-                        <SplitText>{dict.heroTitle1}</SplitText>
-                        </div>
-                      <div className="line-wrap">
-                        <span className="text-gradient"><SplitText>{dict.heroTitle2}</SplitText></span>
-                      </div>
+                      <div className="line-wrap"><SplitText>{dict.heroTitle1}</SplitText></div>
+                      <div className="line-wrap"><span className="text-gradient"><SplitText>{dict.heroTitle2}</SplitText></span></div>
                       <div className="line-wrap"><SplitText>{dict.heroTitle3}</SplitText><span className="split-char">.</span></div>
                     </h1>
-
                     <motion.p className="hero-desc" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5, duration: 1 }}>
                       {dict.heroDesc}
                     </motion.p>
@@ -872,7 +822,6 @@ export default function App() {
                       <Lottie animationData={scrollLottieData} loop={true} style={{ width: 80, height: 80 }} />
                     </div>
                   </div>
-                  
                   <div className="model-viewer-canvas">
                     <Spline scene="https://prod.spline.design/Qr2knMM4aKElH8x7/scene.splinecode" />
                   </div>
@@ -885,17 +834,20 @@ export default function App() {
               {/* TECH BENTO GRID */}
               <TechBentoGrid dict={dict} techStack={techStack} />
 
+              {/* 🌟 НОВОЕ: Встроенная бегущая строка между секциями */}
+              <VelocityMarquee />
+
               {/* АНИМАЦИЯ ПАНЕЛЕЙ GSAP */}
               <GsapPanelsShowcase />
 
               {/* HORIZONTAL SKILLS */}
               <SkillsHorizontal lang={lang} dict={dict} />
 
-              {/* РЕАЛЬНАЯ ФИЗИКА (MATTER.JS - ОБНОВЛЕННАЯ ВЕРСИЯ) */}
+              {/* РЕАЛЬНАЯ ФИЗИКА (MATTER.JS) */}
               <PhysicsPlayground dict={dict} />
 
               {/* FOOTER */}
-              <footer className="footer-premium" id="contact">
+              <footer className="footer-premium" id="contact" data-cursor="CONTACT">
                 <div className="container">
                   <motion.h2 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }}>
                     {dict.footerTitle1} <br/><span className="text-gradient">{dict.footerTitle2}</span>
