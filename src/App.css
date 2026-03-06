@@ -84,7 +84,7 @@ body {
                 gn -bezier(0.165, 0.84, 0.44, 1), 
                 background-color 0.3s, border-color 0.3s;
     display: flex; justify-content: center; align-items: center;
-    backdrop-filter: blur(0px); /* Будет блюрить фон при расширени */
+    backdrop-filter: blur(0px); /* Будет блюрить фон при расширен */
 }
 .custom-cursor-follower.expanded {
     width: 90px;
