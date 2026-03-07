@@ -49,7 +49,7 @@ body {
 
 .container { max-width: 1400px; margin: 0 auto; padding: 0 4vw; }
 
-/* 🌟 НОВОЕ: ГЛОБАЛЬНЫЙ ПРОГРЕСС СКРОЛЛА */
+/* 🌟 НОВОЕ: ГЛОБАЛЬНЫЙ ПРОГРЕСС СКРОЛЛ */
 .scroll-progress-bar {
     position: fixed;
     top: 0;
