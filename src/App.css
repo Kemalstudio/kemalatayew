@@ -198,7 +198,7 @@ body {
 .tech-card {
     position: relative; 
 
-    background: rgba(255, 255, 255, 0.02); /* Ч */
+    background: rgba(255, 255, 255, 0.02); /*  */
     border: 1px solid var(--border-light);
     border-radius: 24px; padding: 40px 30px; display: flex; align-items: center; gap: 20px;
     backdrop-filter: blur(20px); transform-style: preserve-3d; cursor: pointer;
