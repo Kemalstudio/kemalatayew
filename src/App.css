@@ -227,10 +227,10 @@ body {
 /* Граница, которая тоже светится от курсора */
 .tech-card::after {
     content: "";
-    position: absolute;
+    
     inset: 0;
     border-radius: inherit;
-    padding: 2px; /* Толщина границы */
+    padding: 2px; 
     background: radial-gradient(
         400px circle at var(--mouse-x, 0) var(--mouse-y, 0),
         rgba(0, 255, 255, 0.4),
