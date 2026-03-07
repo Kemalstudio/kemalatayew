@@ -202,7 +202,7 @@ body {
     border: 1px solid var(--border-light);
     border-radius: 24px; padding: 40px 30px; display: flex; align-items: center; gap: 20px;
     backdrop-filter: blur(20px); transform-style: preserve-3d; cursor: pointer;
-    overflow: hidden; /* Важно для обрезки эффекта свечен */
+    overflow: hidden; /* Важно для обрезки эффекта свече */
 }
 
 /* Динамический эффект фонарика с использованием CSS переменных из JS */
