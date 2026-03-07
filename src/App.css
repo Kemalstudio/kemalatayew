@@ -135,7 +135,7 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* ДОСТУПНОСТЬ, ПРЕЛОАДЕР, NAVBAR, HERO (Без изменений) .. */
+/* ДОСТУПНОСТЬ, ПРЕЛОАДЕР, NAVBAR, HERO (Без изменений) . */
 .a11y-active p, .a11y-active a, .a11y-active span:not(.custom-font):not(.split-char), .a11y-active .tech-level, .a11y-active .loader-subtext, .a11y-active .section-subtitle { font-size: 130% !important; color: #ffffff !important; font-weight: 800 !important; letter-spacing: 1px !important; line-height: 1.8 !important; }
 .a11y-active h1, .a11y-active h2, .a11y-active h3, .a11y-active h4, .a11y-active .panel-text, .a11y-active .horizontal-bg-text { color: #ffff00 !important; text-shadow: 3px 3px 0px #000000 !important; font-weight: 900 !important; }
 .a11y-active .text-gradient { background: none !important; color: #ffff00 !important; -webkit-text-fill-color: #ffff00 !important; }
