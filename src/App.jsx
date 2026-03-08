@@ -16,7 +16,8 @@ gsap.registerPlugin(ScrollTrigger);
 // ========================================
 const translations = {
   en: {
-    navWork: "Work", navExpertise: "Expertise", navAbout: "About", navContact: "Contact", navBtn: "Let's Talk",
+    navWork: "Work", navExpertise:
+     "Expertise", navAbout: "About", navContact: "Contact", navBtn: "Let's Talk",
     heroBadge: "AVAILABLE FOR HIRE", heroTitle1: "Creative", heroTitle2: "Full Stack", heroTitle3: "Developer",
     heroDesc: "Kemal Atayev — Creative Developer bridging the gap between exceptional design and flawless engineering.",
     bentoSub: "01 // ARSENAL", bentoTitle: "Technologies & Tools",
