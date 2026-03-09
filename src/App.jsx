@@ -124,7 +124,7 @@ const CustomCursor = () => {
       xToFollower(e.clientX);
       yToFollower(e.clientY);
 
-      // Логика обнаружения дата-атрибута для смены состоян
+      // Логика обнаружения дата-атрибута для смены состоя
       const target = e.target.closest('[data-cursor]');
       if (target) {
         setIsHovered(true);
