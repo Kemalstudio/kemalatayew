@@ -12,7 +12,7 @@ import './App.css';
 gsap.registerPlugin(ScrollTrigger);
 
 // ========================================
-// МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ (i18n) - ОСТАВЛЕН БЕЗ ИЗМЕНЕНИЙ
+// МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ (i18n)
 // ========================================
 const translations = {
   en: {
@@ -101,7 +101,7 @@ const SmoothScroll = ({ children }) => {
 };
 
 // =========================================
-// 🌟 ОБНОВЛЕНО: SMART CUSTOM CURSOR С ТЕКСТОМ
+// SMART CUSTOM CURSOR С ТЕКСТОМ
 // =========================================
 const CustomCursor = () => {
   const cursorDotRef = useRef(null);
@@ -124,7 +124,6 @@ const CustomCursor = () => {
       xToFollower(e.clientX);
       yToFollower(e.clientY);
 
-      // Логика обнаружения дата-атрибута для
       const target = e.target.closest('[data-cursor]');
       if (target) {
         setIsHovered(true);
@@ -451,7 +450,7 @@ const PhysicsPlayground = ({ dict }) => {
 };
 
 // ==========================================
-// ПОЛНОЭКРАННАЯ СЕКЦИЯ GSAP 
+// ПОЛНОЭКРАННАЯ СЕКЦИЯ GSAP С ВИДЕО
 // ==========================================
 const GsapPanelsShowcase = () => {
   const containerRef = useRef(null);
@@ -470,9 +469,9 @@ const GsapPanelsShowcase = () => {
             invalidateOnRefresh: true, 
           }
         });
-        tl.fromTo(panels[1], { xPercent: 100, rotation: 10 }, { xPercent: 0, rotation: 0, ease: "power2.inOut" })
-          .fromTo(panels[2], { yPercent: -100, scale: 0.5 }, { yPercent: 0, scale: 1, ease: "power2.inOut" })
-          .fromTo(panels[3], { xPercent: -100, rotation: -10 }, { xPercent: 0, rotation: 0, ease: "power2.inOut" });
+        tl.fromTo(panels[1], { xPercent: 100, rotation: 5 }, { xPercent: 0, rotation: 0, ease: "power2.inOut" })
+          .fromTo(panels[2], { yPercent: -100, scale: 0.8 }, { yPercent: 0, scale: 1, ease: "power2.inOut" })
+          .fromTo(panels[3], { xPercent: -100, rotation: -5 }, { xPercent: 0, rotation: 0, ease: "power2.inOut" });
       });
       ScrollTrigger.refresh();
     }, 100); 
@@ -482,22 +481,44 @@ const GsapPanelsShowcase = () => {
 
   return (
     <section ref={containerRef} className="gsap-panels-container">
-      {/* 🌟 ОБНОВЛЕНО: Добавлен дата-атрибут для смарт-курсора */}
+      {/* ПАНЕЛЬ 1 */}
       <div className="gsap-panel panel-one" data-cursor="VIEW">
         <div className="bg-circle" />
-        <h2 className="panel-text">Aura Computers</h2>
+        <div className="project-video-wrapper">
+          <video src="/video/aura.mp4" autoPlay loop muted playsInline className="project-video"></video>
+          <div className="video-gradient-overlay"></div>
+          <h2 className="project-video-title">Aura Computers</h2>
+        </div>
       </div>
+
+      {/* ПАНЕЛЬ 2 */}
       <div className="gsap-panel panel-two" data-cursor="VIEW">
         <div className="bg-circle" />
-        <h2 className="panel-text">Atam Store</h2>
+        <div className="project-video-wrapper">
+          <video src="/video/atam.mp4" autoPlay loop muted playsInline className="project-video"></video>
+          <div className="video-gradient-overlay"></div>
+          <h2 className="project-video-title">Atam Store</h2>
+        </div>
       </div>
+
+      {/* ПАНЕЛЬ 3 */}
       <div className="gsap-panel panel-three" data-cursor="VIEW">
         <div className="bg-circle" />
-        <h2 className="panel-text">Sonus Music</h2>
+        <div className="project-video-wrapper">
+          <video src="/video/sonus.mp4" autoPlay loop muted playsInline className="project-video"></video>
+          <div className="video-gradient-overlay"></div>
+          <h2 className="project-video-title">Sonus Music</h2>
+        </div>
       </div>
+
+      {/* ПАНЕЛЬ 4 */}
       <div className="gsap-panel panel-four" data-cursor="VIEW">
         <div className="bg-circle" />
-        <h2 className="panel-text">Turkmen Store</h2>
+        <div className="project-video-wrapper">
+          <video src="/video/turkmen.mp4" autoPlay loop muted playsInline className="project-video"></video>
+          <div className="video-gradient-overlay"></div>
+          <h2 className="project-video-title">Turkmen Store</h2>
+        </div>
       </div>
     </section>
   );
@@ -571,7 +592,6 @@ const TiltCard = ({ tech }) => {
   const handleClick = () => gsap.timeline().to(cardRef.current, { scale: 0.9, duration: 0.1 }).to(cardRef.current, { scale: 1, duration: 0.6, ease: "elastic.out(1, 0.3)" });
 
   return (
-    // 🌟 ОБНОВЛЕНО: Добавлен data-cursor
     <div ref={cardRef} className="tech-card" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} onClick={handleClick} data-cursor="EXPLORE">
       <div className="tech-card-glow" />
       <div className="tech-icon">{tech.icon}</div>
@@ -590,7 +610,6 @@ const TechBentoGrid = ({ dict, techStack }) => {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
 
-  // 🌟 ОБНОВЛЕНО: Логика Proximity Glow (Свечение фонарика при движении мыши по сетке)
   const handleGridMouseMove = (e) => {
     if (!sectionRef.current) return;
     const cards = sectionRef.current.querySelectorAll('.tech-card');
@@ -628,14 +647,13 @@ const TechBentoGrid = ({ dict, techStack }) => {
 };
 
 // ==========================================
-// 🌟 НОВОЕ: INFINITE VELOCITY MARQUEE (Бегущая строка)
+// INFINITE VELOCITY MARQUEE (Бегущая строка)
 // ==========================================
 const VelocityMarquee = () => {
   const textRef = useRef(null);
   
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
-      // Искажение (skew) при скролле
       let proxy = { skew: 0 },
           skewSetter = gsap.quickSetter(".marquee-inner", "skewX", "deg"),
           clamp = gsap.utils.clamp(-20, 20);
@@ -697,7 +715,6 @@ export default function App() {
 
   const dict = translations[lang];
 
-  // 🌟 НОВОЕ: Глобальный прогресс скролла
   const { scrollYProgress } = useScroll();
   const scaleX = useFramerSpring(scrollYProgress, {
     stiffness: 100,
@@ -760,7 +777,6 @@ export default function App() {
 
   return (
     <SmoothScroll>
-      {/* 🌟 НОВОЕ: Индикатор прогресса */}
       <motion.div className="scroll-progress-bar" style={{ scaleX }} />
 
       <div className={`app-wrapper ${a11yMode ? 'a11y-active' : ''}`}>
@@ -829,13 +845,13 @@ export default function App() {
                 </div>
               </section>
 
-              {/* === СЕКЦИЯ GIGABYTE === */}
+              {/* СЕКЦИЯ GIGABYTE */}
               <GigabyteScrollEffect />
 
               {/* TECH BENTO GRID */}
               <TechBentoGrid dict={dict} techStack={techStack} />
 
-              {/* 🌟 НОВОЕ: Встроенная бегущая строка между секциями */}
+              {/* VELOCITY MARQUEE */}
               <VelocityMarquee />
 
               {/* АНИМАЦИЯ ПАНЕЛЕЙ GSAP */}
