@@ -18,7 +18,7 @@
 
 @font-face {
     font-family: 'Amsterdam';
-    src: url('/fonts/Amsterdam-ZVGqm.ttf') format('truetype');`
+    src: url('/fonts/Amsterdam-ZVGqm.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -180,7 +180,7 @@ body {
 .hero-container { display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 50px; z-index: 2; position: relative; }
 .hero-text-block { transform-style: preserve-3d; }
 .hero-badge { display: inline-block; padding: 8px 16px; border: 1px solid var(--border-light); border-radius: 30px; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 30px; font-weight: 800; backdrop-filter: blur(10px); background: rgba(255,255,255,0.02); transform: translateZ(30px); }
-.hero-h1 { font-size: clamp(3.5rem, 6.5vw, 7.5rem); line-height: 0.95; margin-bottom: 30px; font-weight: 900; display: flex; flex-direction: column; gap: 0px; transform: translateZ(50px); }
+.hero-h1 { font-size: clamp(3rem, 5vw, 7rem); line-height: 0.95; margin-bottom: 30px; font-weight: 900; display: flex; flex-direction: column; gap: 0px; transform: translateZ(50px); }
 .line-wrap { display: block; padding-bottom: 10px; }
 .hero-desc { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; max-width: 500px; font-weight: 600; transform: translateZ(20px);}
 .model-viewer-canvas { width: 150%; height: 105vh; pointer-events: auto; margin-top: -110px; z-index: 10; }
