@@ -845,7 +845,7 @@ export default function App() {
                 </div>
               </section>
 
-              {/* СЕКЦИЯ GIGABYTE */}
+              {/* СЕКЦИЯ (GIGABYTE) */}
               <GigabyteScrollEffect />
 
               {/* TECH BENTO GRID */}
@@ -867,7 +867,8 @@ export default function App() {
               <footer className="footer-premium" id="contact" data-cursor="CONTACT">
                 <div className="container">
                   <motion.h2 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }}>
-                    {dict.footerTitle1} <br/><span className="text-gradient">{dict.footerTitle2}</span>
+                    {dict.footerTitle1} <br/>
+                    <span className="text-gradient">{dict.footerTitle2}</span>
                   </motion.h2>
                   <Magnetic>
                     <SpringButton className="cta-huge">{dict.footerBtn}</SpringButton>
@@ -875,9 +876,12 @@ export default function App() {
                   <div className="footer-bottom">
                     <p>© 2024 Kemal Atayev. {dict.rights}</p>
                     <div className="socials">
-                      <Magnetic><a href="#">Twitter</a></Magnetic>
-                      <Magnetic><a href="#">LinkedIn</a></Magnetic>
-                      <Magnetic><a href="#">GitHub</a></Magnetic>
+                      <Magnetic>
+                        <a href="#">Twitter</a></Magnetic>
+                      <Magnetic>
+                        <a href="#">LinkedIn</a></Magnetic>
+                      <Magnetic>
+                        <a href="#">GitHub</a></Magnetic>
                     </div>
                   </div>
                 </div>
