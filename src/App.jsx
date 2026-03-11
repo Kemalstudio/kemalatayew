@@ -16,8 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
 // ========================================
 const translations = {
   en: {
-    navWork: "Work", navExpertise:
-     "Expertise", navAbout: "About", navContact: "Contact", navBtn: "Let's Talk",
+    navWork: "Work", navExpertise: "Expertise", navAbout: "About", navContact: "Contact", navBtn: "Let's Talk",
     heroBadge: "AVAILABLE FOR HIRE", heroTitle1: "Creative", heroTitle2: "Full Stack", heroTitle3: "Developer",
     heroDesc: "Kemal Atayev — Creative Developer bridging the gap between exceptional design and flawless engineering.",
     bentoSub: "01 // ARSENAL", bentoTitle: "Technologies & Tools",
@@ -30,7 +29,34 @@ const translations = {
     ],
     physicsTitle: "Play with my skills", physicsSub: "DRAG, THROW & CLICK",
     footerTitle1: "Let's build the", footerTitle2: "impossible.", footerBtn: "Start a Project", rights: "All rights reserved.",
-    a11yTooltip: "Accessibility Mode"
+    a11yTooltip: "Accessibility Mode",
+    // ДАННЫЕ ПРОЕКТОВ
+    projects: {
+      aura: {
+        title: "Aura Computers",
+        role: "Full Stack Development",
+        desc: "Aura-Computers is a modern, responsive website featuring a full administration panel for effortless content, product, and service management. It delivers a clean user experience with secure authentication, fast performance, and a structure built with SEO best practices in mind to support future growth.",
+        tech: ["PHP", "Laravel", "Javascript", "MySql/SQL", "AJAX", "JQuery", "Blade", "Bootstrap/Icons", "Chart.js", "Postman", "Brevo"]
+      },
+      atam: {
+        title: "Atam Store",
+        role: "Frontend & UI/UX",
+        desc: "Modern digital storefront focusing on exceptional user experience and blazing fast page transitions.",
+        tech: ["Next.js", "GSAP", "Zustand", "Figma", "Vercel"]
+      },
+      sonus: {
+        title: "Sonus Music",
+        role: "Creative Web App",
+        desc: "An immersive music discovery platform with visualizers and real-time audio processing.",
+        tech: ["Vue.js", "Three.js", "Web Audio API", "Firebase"]
+      },
+      turkmen: {
+        title: "Turkmen Store",
+        role: "Full Stack Architecture",
+        desc: "A localized marketplace application tailored for regional commerce and payment gateways.",
+        tech: ["React Native", "Express", "MongoDB", "Redux Toolkit"]
+      }
+    }
   },
   ru: {
     navWork: "Работы", navExpertise: "Навыки", navAbout: "Обо мне", navContact: "Контакты", navBtn: "Обсудить",
@@ -46,7 +72,33 @@ const translations = {
     ],
     physicsTitle: "Поиграйте с моими навыками", physicsSub: "ТЯНИ, БРОСАЙ И КЛИКАЙ",
     footerTitle1: "Давайте создадим", footerTitle2: "невозможное.", footerBtn: "Начать проект", rights: "Все права защищены.",
-    a11yTooltip: "Версия для слабовидящих"
+    a11yTooltip: "Версия для слабовидящих",
+    projects: {
+      aura: {
+        title: "Aura Computers",
+        role: "Full Stack Разработка",
+        desc: "Aura Computers — это современный адаптивный веб-сайт с полной административной панелью для удобного управления контентом, товарами и услугами. Он обеспечивает чистый и удобный интерфейс, безопасную аутентификацию, высокую скорость работы и структуру, созданную с учётом лучших практик SEO для будущего развития.",
+        tech: ["PHP", "Laravel", "Javascript", "MySql/SQL", "AJAX", "JQuery", "Blade", "Bootstrap/Icons", "Chart.js", "Postman", "Brevo"]
+      },
+      atam: {
+        title: "Atam Store",
+        role: "Frontend & UI/UX",
+        desc: "Современная цифровая витрина с акцентом на UX и быстрые переходы.",
+        tech: ["Next.js", "GSAP", "Zustand", "Figma", "Vercel"]
+      },
+      sonus: {
+        title: "Sonus Music",
+        role: "Креативное приложение",
+        desc: "Иммерсивная платформа для поиска музыки с визуализаторами.",
+        tech: ["Vue.js", "Three.js", "Web Audio API", "Firebase"]
+      },
+      turkmen: {
+        title: "Turkmen Store",
+        role: "Full Stack Архитектура",
+        desc: "Локальный маркетплейс с интеграцией региональных платежных систем.",
+        tech: ["React Native", "Express", "MongoDB", "Redux Toolkit"]
+      }
+    }
   },
   tk: {
     navWork: "Işler", navExpertise: "Başarnyklar", navAbout: "Barada", navContact: "Habarlaşmak", navBtn: "Gürleşeliň",
@@ -62,7 +114,33 @@ const translations = {
     ],
     physicsTitle: "Başarnyklarym bilen oýnaň", physicsSub: "ÇEK, ZYŇ WE BAS",
     footerTitle1: "Mümkin däl zady", footerTitle2: "döredeliň.", footerBtn: "Taslama Başla", rights: "Ähli hukuklar goralan.",
-    a11yTooltip: "Gözüň görşüni ýeňilleşdiriş"
+    a11yTooltip: "Gözüň görşüni ýeňilleşdiriş",
+    projects: {
+      aura: {
+        title: "Aura Computers",
+        role: "Full Stack Ösüşi",
+        desc: "Aura Computers — häzirki zaman, ähli enjamlar üçin amatly görünýän web-saýt bolup, mazmuny, harytlary we hyzmatlary dolandyrmak üçin doly administratiw panel bilen üpjün edilendir. Ol arassa we peýdalanyjy üçin amatly interfeýs, ygtybarly awtentifikasiýa, ýokary tizlikde işlemek mümkinçiliklerini berýär we geljekki ösüşi üpjün etmek üçin SEO-nyň iň gowy tejribeleri esasynda gurlan gurluşa eýedir.",
+        tech: ["PHP", "Laravel", "Javascript", "MySql/SQL", "AJAX", "JQuery", "Blade", "Bootstrap/Icons", "Chart.js", "Postman", "Brevo"]
+      },
+      atam: {
+        title: "Atam Store",
+        role: "Frontend & UI/UX",
+        desc: "Tizlik we amatlylyk üçin niýetlenen häzirki zaman dükany.",
+        tech: ["Next.js", "GSAP", "Zustand", "Figma", "Vercel"]
+      },
+      sonus: {
+        title: "Sonus Music",
+        role: "Kreatiw Web Programmasy",
+        desc: "Saz diňlemek we wizualizasiýa üçin niýetlenen platforma.",
+        tech: ["Vue.js", "Three.js", "Web Audio API", "Firebase"]
+      },
+      turkmen: {
+        title: "Turkmen Store",
+        role: "Full Stack Arhitekturasy",
+        desc: "Sebitleýin söwda üçin ýöriteleşdirilen ýerli bazar programmasy.",
+        tech: ["React Native", "Express", "MongoDB", "Redux Toolkit"]
+      }
+    }
   }
 };
 
@@ -450,9 +528,9 @@ const PhysicsPlayground = ({ dict }) => {
 };
 
 // ==========================================
-// ПОЛНОЭКРАННАЯ СЕКЦИЯ GSAP С ВИДЕО
+// ПОЛНОЭКРАННАЯ СЕКЦИЯ GSAP С ВИДЕО 
 // ==========================================
-const GsapPanelsShowcase = () => {
+const GsapPanelsShowcase = ({ onOpenProject }) => {
   const containerRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -481,43 +559,52 @@ const GsapPanelsShowcase = () => {
 
   return (
     <section ref={containerRef} className="gsap-panels-container">
-      {/* ПАНЕЛЬ 1 */}
       <div className="gsap-panel panel-one" data-cursor="VIEW">
         <div className="bg-circle" />
         <div className="project-video-wrapper">
           <video src="/video/aura.mp4" autoPlay loop muted playsInline className="project-video"></video>
           <div className="video-gradient-overlay"></div>
           <h2 className="project-video-title">Aura Computers</h2>
+          <button className="project-info-btn" onClick={() => onOpenProject('aura')} data-cursor="CLICK">
+            <span>Project Details</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </button>
         </div>
       </div>
 
-      {/* ПАНЕЛЬ 2 */}
       <div className="gsap-panel panel-two" data-cursor="VIEW">
         <div className="bg-circle" />
         <div className="project-video-wrapper">
           <video src="/video/atam.mp4" autoPlay loop muted playsInline className="project-video"></video>
           <div className="video-gradient-overlay"></div>
           <h2 className="project-video-title">Atam Store</h2>
+          <button className="project-info-btn" onClick={() => onOpenProject('atam')} data-cursor="CLICK">
+            <span>Project Details</span>
+          </button>
         </div>
       </div>
 
-      {/* ПАНЕЛЬ 3 */}
       <div className="gsap-panel panel-three" data-cursor="VIEW">
         <div className="bg-circle" />
         <div className="project-video-wrapper">
           <video src="/video/sonus.mp4" autoPlay loop muted playsInline className="project-video"></video>
           <div className="video-gradient-overlay"></div>
           <h2 className="project-video-title">Sonus Music</h2>
+          <button className="project-info-btn" onClick={() => onOpenProject('sonus')} data-cursor="CLICK">
+            <span>Project Details</span>
+          </button>
         </div>
       </div>
 
-      {/* ПАНЕЛЬ 4 */}
       <div className="gsap-panel panel-four" data-cursor="VIEW">
         <div className="bg-circle" />
         <div className="project-video-wrapper">
           <video src="/video/turkmen.mp4" autoPlay loop muted playsInline className="project-video"></video>
           <div className="video-gradient-overlay"></div>
           <h2 className="project-video-title">Turkmen Store</h2>
+          <button className="project-info-btn" onClick={() => onOpenProject('turkmen')} data-cursor="CLICK">
+            <span>Project Details</span>
+          </button>
         </div>
       </div>
     </section>
@@ -709,11 +796,13 @@ export default function App() {
   const [lang, setLang] = useState('en');
   const [a11yMode, setA11yMode] = useState(false);
   const [loadingEnded, setLoadingEnded] = useState(false);
+  const [activeProjectId, setActiveProjectId] = useState(null); 
   
   const heroTextRef = useRef(null);
   const heroTextBlockRef = useRef(null); 
 
   const dict = translations[lang];
+  const activeProject = activeProjectId ? dict.projects[activeProjectId] : null;
 
   const { scrollYProgress } = useScroll();
   const scaleX = useFramerSpring(scrollYProgress, {
@@ -781,12 +870,54 @@ export default function App() {
 
       <div className={`app-wrapper ${a11yMode ? 'a11y-active' : ''}`}>
         <CustomCursor />
+
+        <AnimatePresence>
+          {activeProjectId && (
+            <motion.div 
+              className="project-modal-overlay"
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="project-modal-backdrop" onClick={() => setActiveProjectId(null)}></div>
+              <motion.div 
+                className="project-modal-box"
+                initial={{ y: 50, scale: 0.95, opacity: 0 }} 
+                animate={{ y: 0, scale: 1, opacity: 1 }} 
+                exit={{ y: 20, scale: 0.95, opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <button className="project-modal-close" onClick={() => setActiveProjectId(null)} data-cursor="CLOSE">✕</button>
+                
+                <div className="project-modal-content">
+                  <span className="project-modal-role">{activeProject.role}</span>
+                  <h3 className="project-modal-title">{activeProject.title}</h3>
+                  <p className="project-modal-desc">{activeProject.desc}</p>
+                  
+                  <h4 className="project-modal-tech-title">Technologies Used</h4>
+                  <div className="project-modal-tech-list">
+                    {activeProject.tech.map((t, i) => (
+                      <span key={i} className="project-modal-tech-tag">{t}</span>
+                    ))}
+                  </div>
+
+                  {/* Дополнительный красивый функционал */}
+                  <div className="project-modal-footer">
+                    <SpringButton className="modal-btn-live" onClick={() => window.open('#', '_blank')} data-cursor="OPEN SITE">Live Preview</SpringButton>
+                    <SpringButton className="modal-btn-github" onClick={() => window.open('#', '_blank')} data-cursor="SOURCE">Source Code</SpringButton>
+                  </div>
+                </div>
+                <div className="modal-decorative-glow" />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         
         <AnimatePresence>
           {!loadingEnded && <LoadingScreen onComplete={() => setLoadingEnded(true)} />}
         </AnimatePresence>
         
-        {/* NAVBAR */}
         <motion.nav className="navbar" initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}>
           <div className="nav-logo">
             <div className="logo-dot" />
@@ -815,7 +946,6 @@ export default function App() {
         <AnimatePresence mode="wait">
           <motion.div key={lang} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6 }} onAnimationComplete={() => { setTimeout(() => ScrollTrigger.refresh(), 100); }}>
             <main>
-              {/* HERO SECTION */}
               <section className="hero-premium" onMouseMove={handleHeroMouseMove} onMouseLeave={handleHeroMouseLeave}>
                 <div className="noise-overlay" />
                 <div className="parallax-orb orb-1"></div>
@@ -845,25 +975,13 @@ export default function App() {
                 </div>
               </section>
 
-              {/* СЕКЦИЯ (GIGABYTE) */}
               <GigabyteScrollEffect />
-
-              {/* TECH BENTO GRID */}
               <TechBentoGrid dict={dict} techStack={techStack} />
-
-              {/* VELOCITY MARQUEE */}
               <VelocityMarquee />
-
-              {/* АНИМАЦИЯ ПАНЕЛЕЙ GSAP */}
-              <GsapPanelsShowcase />
-
-              {/* HORIZONTAL SKILLS */}
+              <GsapPanelsShowcase onOpenProject={setActiveProjectId} />
               <SkillsHorizontal lang={lang} dict={dict} />
-
-              {/* РЕАЛЬНАЯ ФИЗИКА (MATTER.JS) */}
               <PhysicsPlayground dict={dict} />
 
-              {/* FOOTER */}
               <footer className="footer-premium" id="contact" data-cursor="CONTACT">
                 <div className="container">
                   <motion.h2 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }}>
@@ -876,12 +994,7 @@ export default function App() {
                   <div className="footer-bottom">
                     <p>© 2024 Kemal Atayev. {dict.rights}</p>
                     <div className="socials">
-                      <Magnetic>
-                        <a href="#">Twitter</a></Magnetic>
-                      <Magnetic>
-                        <a href="#">LinkedIn</a></Magnetic>
-                      <Magnetic>
-                        <a href="#">GitHub</a></Magnetic>
+                      <a href="#">Twitter</a><a href="#">LinkedIn</a><a href="#">GitHub</a>
                     </div>
                   </div>
                 </div>
