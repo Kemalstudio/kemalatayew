@@ -287,7 +287,7 @@ body {
 }
 
 /* ==========================================
-   GSAP PANELS С ВИДЕО 
+   GSAP PANELS С ВИДЕО И КНОПКОЙ МОДАЛКИ
    ========================================== */
 .gsap-panels-container { width: 100%; height: 100vh; position: relative; overflow: hidden; }
 .gsap-panel { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; box-shadow: 0 -20px 50px rgba(0,0,0,0.5); perspective: 1000px; }
@@ -338,6 +338,140 @@ body {
     letter-spacing: -1px;
 }
 
+/* Кнопка "Project Details" на видео */
+.project-info-btn {
+    position: absolute;
+    bottom: 40px;
+    right: 50px;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-body);
+}
+
+.project-info-btn:hover {
+    background: var(--text-main);
+    color: var(--bg-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* ==========================================
+   СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА
+   ========================================== */
+.project-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 999999; /* Поверх всего */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: all;
+}
+
+.project-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+    cursor: pointer;
+}
+
+.project-modal-box {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    background: #111111;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 50px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px inset rgba(255, 255, 255, 0.05);
+    z-index: 10;
+}
+
+.project-modal-close {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.project-modal-close:hover {
+    background: var(--accent-2);
+    color: #000;
+    transform: rotate(90deg);
+}
+
+.project-modal-role {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-2);
+    font-weight: 800;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.project-modal-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.project-modal-desc {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.project-modal-tech-title {
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.project-modal-tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.project-modal-tech-tag {
+    background: rgba(0, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    color: var(--accent-2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
 /* ==========================================
    HORIZONTAL SCROLL, PHYSICS, FOOTER, GIGABYTE
    ========================================== */
@@ -379,6 +513,8 @@ body {
     
     .project-video-wrapper { width: 85vw; height: 50vh; }
     .project-video-title { bottom: 20px; left: 20px; font-size: 2.5rem; }
+    .project-info-btn { bottom: 20px; right: 20px; padding: 10px 20px; font-size: 0.9rem; }
+    .project-modal-box { padding: 30px; }
     
     .footer-bottom { flex-direction: column; gap: 20px; }
 }
