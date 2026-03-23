@@ -562,7 +562,7 @@ const GsapPanelsShowcase = ({ onOpenProject }) => {
       <div className="gsap-panel panel-one" data-cursor="VIEW">
         <div className="bg-circle" />
         <div className="project-video-wrapper">
-          <video src="/video/aura.mp4" autoPlay loop muted playsInline className="project-video"></video>
+          <video src="video/aura.mp4" autoPlay loop muted playsInline className="project-video"></video>
           <div className="video-gradient-overlay"></div>
           <h2 className="project-video-title">Aura Computers</h2>
           <button className="project-info-btn" onClick={() => onOpenProject('aura')} data-cursor="CLICK">
