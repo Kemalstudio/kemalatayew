@@ -529,7 +529,7 @@ const PhysicsPlayground = ({ dict }) => {
 
 // ========================================
 // ПОЛНОЭКРАННАЯ СЕКЦИЯ GSAP С ВИДЕО 
-// ========================================
+// =======================================
 const GsapPanelsShowcase = ({ onOpenProject }) => {
   const containerRef = useRef(null);
 
