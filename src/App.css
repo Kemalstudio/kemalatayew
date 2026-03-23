@@ -795,7 +795,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 9999999; /* Поверх всего основного контента */
+  z-index: 9999999; /* Поверх всего основного контент */
   display: flex;
   justify-content: center;
   align-items: center;
