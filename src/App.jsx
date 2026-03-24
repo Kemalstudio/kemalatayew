@@ -992,7 +992,7 @@ export default function App() {
                     <SpringButton className="cta-huge">{dict.footerBtn}</SpringButton>
                   </Magnetic>
                   <div className="footer-bottom">
-                    <p>© 2024 Kemal Atayev. {dict.rights}</p>
+                    <p>© 2026 Kemal Atayev. {dict.rights}</p>
                     <div className="socials">
                       <a href="#">Twitter</a>
                       <a href="#">LinkedIn</a>
