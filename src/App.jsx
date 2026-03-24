@@ -902,7 +902,7 @@ export default function App() {
                     ))}
                   </div>
 
-                  {/* Дополнительный красивый функцион */}
+                  {/* Дополнительный красивый функцио */}
                   <div className="project-modal-footer">
                     <SpringButton className="modal-btn-live" onClick={() => window.open('#', '_blank')} data-cursor="OPEN SITE">Live Preview</SpringButton>
                     <SpringButton className="modal-btn-github" onClick={() => window.open('#', '_blank')} data-cursor="SOURCE">Source Code</SpringButton>
