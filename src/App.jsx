@@ -994,7 +994,9 @@ export default function App() {
                   <div className="footer-bottom">
                     <p>© 2024 Kemal Atayev. {dict.rights}</p>
                     <div className="socials">
-                      <a href="#">Twitter</a><a href="#">LinkedIn</a><a href="#">GitHub</a>
+                      <a href="#">Twitter</a>
+                      <a href="#">LinkedIn</a>
+                      <a href="#">GitHub</a>
                     </div>
                   </div>
                 </div>
