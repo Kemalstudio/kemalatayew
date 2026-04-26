@@ -7,6 +7,14 @@ import Spline from '@splinetool/react-spline';
 import { useSpring, animated } from '@react-spring/web'; 
 import Matter from 'matter-js'; 
 import Lottie from 'lottie-react'; 
+import {
+  HTMLIcon, CSSIcon, JavaScriptIcon, ReactIcon, VueIcon, NodeIcon, TailwindIcon, GSAPIcon,
+  ThreeJsIcon, PhpIcon, LaravelIcon, PythonIcon, DjangoIcon, MongoDBIcon, PostgreSQLIcon,
+  GitIcon, FigmaIcon, TypeScriptIcon, SassIcon, BootstrapIcon, AWSIcon, VercelIcon, DockerIcon,
+  NextJsIcon, ViteIcon, GitHubIcon, ExpressIcon, WebGLIcon, GraphQLIcon, PostmanIcon, JestIcon,
+  WebpackIcon, ESLintIcon, SVGIcon, CanvasIcon, JQueryIcon, AJAXIcon, RESTAPIIcon, CIIcon,
+  LinuxIcon, NginxIcon, MySQLIcon, APIIcon
+} from './icons/index.jsx';
 import './App.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,6 +28,8 @@ const translations = {
     heroBadge: "AVAILABLE FOR HIRE", heroTitle1: "Creative", heroTitle2: "Full Stack", heroTitle3: "Developer",
     heroDesc: "Kemal Atayev — Creative Developer bridging the gap between exceptional design and flawless engineering.",
     bentoSub: "01 // ARSENAL", bentoTitle: "Technologies & Tools",
+    techToolsTitle: "Technologies & Tools",
+    techToolsSub: "02 // STACK",
     expTitle: "EXPERTISE",
     skills: [
       { title: "Frontend Engineering", desc: "Pixel-perfect, performant UIs with React ecosystem." },
@@ -63,6 +73,8 @@ const translations = {
     heroBadge: "ОТКРЫТ ДЛЯ ПРЕДЛОЖЕНИЙ", heroTitle1: "Креативный", heroTitle2: "Full Stack", heroTitle3: "Разработчик",
     heroDesc: "Кемаль Атаев — Креативный разработчик, объединяющий исключительный дизайн и безупречный код.",
     bentoSub: "01 // АРСЕНАЛ", bentoTitle: "Технологии и Инструменты",
+    techToolsTitle: "Технологии и Инструменты",
+    techToolsSub: "02 // СТЕК",
     expTitle: "ЭКСПЕРТИЗА",
     skills: [
       { title: "Frontend Разработка", desc: "Идеальные и быстрые интерфейсы на React." },
@@ -105,6 +117,8 @@ const translations = {
     heroBadge: "IŞLEMÄGE TAÝÝAR", heroTitle1: "Kreatiw", heroTitle2: "Full Stack", heroTitle3: "Programmist",
     heroDesc: "Kemal Ataýew — Ajaýyp dizaýny we kämil inženerçiligi birleşdirýän kreatiw programmist.",
     bentoSub: "01 // GURALLAR", bentoTitle: "Tehnologiýalar we Gurallar",
+    techToolsTitle: "Tehnologiýalar we Gurallar",
+    techToolsSub: "02 // STEK",
     expTitle: "HÜNÄR",
     skills: [
       { title: "Frontend Ösüşi", desc: "React ekosistemasy bilen kämil we çalt interfeýsler." },
@@ -790,6 +804,213 @@ const SpringButton = ({ children, onClick, className }) => {
 };
 
 // ==========================================
+// TECHNOLOGIES & TOOLS SECTION
+// ==========================================
+const TechnologiesToolsSection = ({ dict, lang }) => {
+  const [activeTab, setActiveTab] = useState('frontend');
+  const containerRef = useRef(null);
+  const cardsRef = useRef([]);
+
+  const techData = {
+    frontend: [
+      { name: "HTML", Icon: HTMLIcon },
+      { name: "CSS", Icon: CSSIcon },
+      { name: "Sass", Icon: SassIcon },
+      { name: "Bootstrap", Icon: BootstrapIcon },
+      { name: "JavaScript", Icon: JavaScriptIcon },
+      { name: "React", Icon: ReactIcon },
+      { name: "Vue.js", Icon: VueIcon },
+      { name: "Tailwind", Icon: TailwindIcon },
+    ],
+    backend: [
+      { name: "Node.js", Icon: NodeIcon },
+      { name: "PHP", Icon: PhpIcon },
+      { name: "Laravel", Icon: LaravelIcon },
+      { name: "Python", Icon: PythonIcon },
+      { name: "Django", Icon: DjangoIcon },
+      { name: "Express", Icon: ExpressIcon },
+      { name: "MongoDB", Icon: MongoDBIcon },
+      { name: "PostgreSQL", Icon: PostgreSQLIcon },
+    ],
+    webdesign: [
+      { name: "Figma", Icon: FigmaIcon },
+      { name: "GSAP", Icon: GSAPIcon },
+      { name: "Three.js", Icon: ThreeJsIcon },
+      { name: "WebGL", Icon: WebGLIcon },
+      { name: "SVG", Icon: SVGIcon },
+      { name: "Canvas", Icon: CanvasIcon },
+      { name: "Next.js", Icon: NextJsIcon },
+      { name: "Vite", Icon: ViteIcon },
+    ],
+    server: [
+      { name: "AWS", Icon: AWSIcon },
+      { name: "Vercel", Icon: VercelIcon },
+      { name: "Docker", Icon: DockerIcon },
+      { name: "Git", Icon: GitIcon },
+      { name: "GitHub", Icon: GitHubIcon },
+      { name: "CI/CD", Icon: CIIcon },
+      { name: "Linux", Icon: LinuxIcon },
+      { name: "Nginx", Icon: NginxIcon },
+    ],
+    other: [
+      { name: "TypeScript", Icon: TypeScriptIcon },
+      { name: "GraphQL", Icon: GraphQLIcon },
+      { name: "REST API", Icon: RESTAPIIcon },
+      { name: "Postman", Icon: PostmanIcon },
+      { name: "Jest", Icon: JestIcon },
+      { name: "Webpack", Icon: WebpackIcon },
+      { name: "ESLint", Icon: ESLintIcon },
+      { name: "MySQL", Icon: MySQLIcon },
+    ],
+  };
+      { name: "Express", icon: "E" },
+      { name: "MongoDB", icon: "🍃" },
+      { name: "PostgreSQL", icon: "🐘" },
+    ],
+    webdesign: [
+      { name: "Figma", icon: "F" },
+      { name: "Adobe XD", icon: "A" },
+      { name: "GSAP", icon: "✨" },
+      { name: "Three.js", icon: "🧊" },
+      { name: "WebGL", icon: "🌐" },
+      { name: "SVG", icon: "📐" },
+      { name: "Canvas", icon: "🎭" },
+      { name: "Animation", icon: "🎬" },
+    ],
+    server: [
+      { name: "AWS", icon: "A" },
+      { name: "Vercel", icon: "V" },
+      { name: "Docker", icon: "🐳" },
+      { name: "Git", icon: "🔀" },
+      { name: "GitHub", icon: "👨‍💻" },
+      { name: "CI/CD", icon: "⚙️" },
+      { name: "Linux", icon: "🐧" },
+      { name: "Nginx", icon: "N" },
+    ],
+    other: [
+      { name: "TypeScript", icon: "📘" },
+      { name: "GraphQL", icon: "Q" },
+      { name: "REST API", icon: "📡" },
+      { name: "Postman", icon: "📮" },
+      { name: "Jest", icon: "🧪" },
+      { name: "Webpack", icon: "📦" },
+      { name: "Vite", icon: "⚡" },
+      { name: "ESLint", icon: "✅" },
+    ],
+  };
+
+  const tabs = [
+    { key: 'frontend', label: 'Frontend' },
+    { key: 'backend', label: 'Backend' },
+    { key: 'webdesign', label: 'Web Design' },
+    { key: 'server', label: 'Server' },
+    { key: 'other', label: 'Other' },
+  ];
+
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      gsap.from(containerRef.current, {
+        scrollTrigger: { trigger: containerRef.current, start: "top 80%" },
+        y: 100,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power4.out"
+      });
+
+      // Animate cards on tab change
+      cardsRef.current.forEach((card, index) => {
+        gsap.fromTo(card, 
+          { opacity: 0, y: 30, scale: 0.9 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.5)", delay: index * 0.05 }
+        );
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [activeTab]);
+
+  const handleCardHover = (e) => {
+    const card = e.currentTarget;
+    gsap.to(card, {
+      scale: 1.08,
+      y: -10,
+      boxShadow: "0 20px 50px rgba(0, 255, 255, 0.3)",
+      duration: 0.4,
+      ease: "power2.out"
+    });
+  };
+
+  const handleCardLeave = (e) => {
+    const card = e.currentTarget;
+    gsap.to(card, {
+      scale: 1,
+      y: 0,
+      boxShadow: "0 10px 30px rgba(0, 255, 255, 0.1)",
+      duration: 0.4,
+      ease: "elastic.out(1, 0.3)"
+    });
+  };
+
+  const currentTechs = techData[activeTab] || [];
+
+  return (
+    <section ref={containerRef} className="tech-tools-section">
+      <div className="container">
+        <div className="tech-tools-header">
+          <span className="tech-tools-sub">{dict.techToolsSub}</span>
+          <h2 className="tech-tools-title">{dict.techToolsTitle}</h2>
+        </div>
+
+        <div className="tech-tabs">
+          {tabs.map((tab) => (
+            <motion.button
+              key={tab.key}
+              className={`tech-tab ${activeTab === tab.key ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab.key)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {tab.label}
+              {activeTab === tab.key && (
+                <motion.div className="tab-underline" layoutId="tabUnderline" />
+              )}
+            </motion.button>
+          ))}
+        </div>
+
+        <motion.div 
+          className="tech-cards-grid"
+          layout
+        >
+          <AnimatePresence mode="wait">
+            {currentTechs.map((tech, i) => (
+              <motion.div
+                key={`${activeTab}-${i}`}
+                ref={(el) => (cardsRef.current[i] = el)}
+                className="tech-tool-card"
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -30, scale: 0.9 }}
+                transition={{ duration: 0.4, ease: "back.out(1.5)", delay: i * 0.05 }}
+                onMouseEnter={handleCardHover}
+                onMouseLeave={handleCardLeave}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="tech-card-inner">
+                  <div className="tech-card-icon"><tech.Icon /></div>
+                  <h4 className="tech-card-name">{tech.name}</h4>
+                </div>
+                <div className="tech-card-glow" />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+// ==========================================
 // MAIN APP
 // ==========================================
 export default function App() {
@@ -977,6 +1198,7 @@ export default function App() {
 
               <GigabyteScrollEffect />
               <TechBentoGrid dict={dict} techStack={techStack} />
+              <TechnologiesToolsSection dict={dict} lang={lang} />
               <VelocityMarquee />
               <GsapPanelsShowcase onOpenProject={setActiveProjectId} />
               <SkillsHorizontal lang={lang} dict={dict} />
